@@ -1,5 +1,9 @@
 Project Contributors
 
-Maaz Syed \par
-Ozair Faisal \par
-Areeb Shahid \par
+Maaz Syed
+
+Ozair Faisal
+
+Areeb Shahid
+
+Syed Mustafa Umar
