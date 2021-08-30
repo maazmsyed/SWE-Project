@@ -4,8 +4,8 @@ Maaz Syed
 
 Ozair Faisal
 
-Areeb Shahid
-
 Syed Mustafa Umar
+
+Areeb Shahid
 
 I Yu-Heng (Danny) 
