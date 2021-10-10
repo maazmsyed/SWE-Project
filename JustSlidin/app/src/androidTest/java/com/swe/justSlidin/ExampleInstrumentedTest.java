@@ -1,4 +1,4 @@
-package com.swe.justSlidin;
+package com.swe.justslidin;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.swe.justSlidin", appContext.getPackageName());
+        assertEquals("com.swe.justslidin", appContext.getPackageName());
     }
 }

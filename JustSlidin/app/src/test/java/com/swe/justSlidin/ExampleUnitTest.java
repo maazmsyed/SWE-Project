@@ -1,4 +1,4 @@
-package com.swe.justSlidin;
+package com.swe.justslidin;
 
 import org.junit.Test;
 
