@@ -6,7 +6,7 @@ android {
     compileSdk 31
 
     defaultConfig {
-        applicationId "ync.ysc3232.week7"
+        applicationId "com.swe.justslidin"
         minSdk 21
         targetSdk 31
         versionCode 1

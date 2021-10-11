@@ -1,6 +1,7 @@
-package ync.ysc3232.week7.io;
+package com.swe.justslidin.io;
 
-import ync.ysc3232.week7.models.Position;
+
+import com.swe.justslidin.models.Position;
 
 public interface ClickAction extends Action {
     void execute(Position a);

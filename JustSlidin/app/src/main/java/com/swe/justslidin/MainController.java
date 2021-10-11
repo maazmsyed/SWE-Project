@@ -1,14 +1,15 @@
-package ync.ysc3232.week7;
+package com.swe.justslidin;
 
 import android.view.SurfaceView;
 
-import ync.ysc3232.week7.io.AddAction;
-import ync.ysc3232.week7.io.InputHandler;
-import ync.ysc3232.week7.io.InputListener;
-import ync.ysc3232.week7.models.Universe;
-import ync.ysc3232.week7.view.GraphicsRenderer;
+import com.swe.justslidin.io.AddAction;
+import com.swe.justslidin.io.InputHandler;
+import com.swe.justslidin.io.InputListener;
+import com.swe.justslidin.models.Universe;
+import com.swe.justslidin.view.GraphicsRenderer;
 
-public class MainController extends Thread {
+public class MainController {
+
     private final SurfaceView sv;
     private final Universe universe;
     private final GraphicsRenderer graphicsRenderer;

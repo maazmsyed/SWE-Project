@@ -1,4 +1,4 @@
-package ync.ysc3232.week7;
+package com.swe.justslidin;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,6 +13,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         SurfaceView sv = findViewById(R.id.surfaceView);
         MainController mc = new MainController(sv);
-        mc.start();
+        mc.start()
     }
+
 }

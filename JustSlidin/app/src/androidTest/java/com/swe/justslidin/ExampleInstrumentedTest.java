@@ -1,4 +1,4 @@
-package ync.ysc3232.week7;
+package com.swe.justslidin;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("ync.ysc3232.week7", appContext.getPackageName());
+        assertEquals("com.swe.justslidin", appContext.getPackageName());
     }
 }
