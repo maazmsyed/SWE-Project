@@ -1,4 +1,4 @@
-package com.swe.justslidin.view;
+package ync.ysc3232.week7.view;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -7,12 +7,11 @@ import android.view.SurfaceHolder;
 
 import androidx.annotation.NonNull;
 
-import com.swe.justslidin.models.Character;
-import com.swe.justslidin.models.Position;
-import com.swe.justslidin.models.Universe;
+import ync.ysc3232.week7.models.Ball;
+import ync.ysc3232.week7.models.Position;
+import ync.ysc3232.week7.models.Universe;
 
 public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callback {
-
     private static final String TAG = "GraphicsRenderer";
     private final Universe universe;
     private SurfaceHolder holder;
@@ -35,7 +34,7 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
         ballPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         ballPaint.setStrokeWidth(10);
         ballPaint.setARGB(135, 0, 0, 0);
-        for (Character b : universe.getChar()) {
+        for (Ball b : universe.getBalls()) {
             Position p = b.getPosition();
             Position r = new Position(b.getRadius());
             canvas.drawCircle(p.getX(), p.getY(), b.getRadius(), ballPaint);
@@ -63,6 +62,4 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
     public void universeChanged(Universe u) {
         drawSurfaceView();
     }
-
-
 }

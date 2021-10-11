@@ -1,4 +1,4 @@
-package com.swe.justslidin;
+package ync.ysc3232.week7;
 
 import org.junit.Test;
 

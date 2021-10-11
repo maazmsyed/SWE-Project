@@ -1,10 +1,9 @@
-package com.swe.justslidin.io;
+package ync.ysc3232.week7.io;
 
 import android.util.Log;
 
-import com.swe.justslidin.models.Position;
-import com.swe.justslidin.models.Universe;
-
+import ync.ysc3232.week7.models.Position;
+import ync.ysc3232.week7.models.Universe;
 
 public class AddAction implements ClickAction {
     private static final String TAG = "AddAction";
@@ -17,6 +16,6 @@ public class AddAction implements ClickAction {
     @Override
     public void execute(Position pos) {
         Log.i(TAG, "AddAction executed");
-        universe.addChar(pos);
+        universe.addBall(pos);
     }
 }

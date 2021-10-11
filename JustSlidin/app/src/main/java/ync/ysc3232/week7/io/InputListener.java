@@ -1,10 +1,10 @@
-package com.swe.justslidin.io;
+package ync.ysc3232.week7.io;
 
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.swe.justslidin.models.Position;
-
+import ync.ysc3232.week7.io.InputHandler;
+import ync.ysc3232.week7.models.Position;
 
 public class InputListener implements View.OnTouchListener {
     private Position

@@ -1,7 +1,6 @@
-package com.swe.justslidin.io;
+package ync.ysc3232.week7.io;
 
-
-import com.swe.justslidin.models.Position;
+import ync.ysc3232.week7.models.Position;
 
 public class InputHandler implements InputListener.Callback
 {
