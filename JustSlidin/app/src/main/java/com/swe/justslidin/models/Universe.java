@@ -10,7 +10,7 @@ public class Universe {
     List<Character> data;
 
     public Universe () {
-        this (new Motion(0,5f)); // TODO : constant is bad !!
+        this (new Motion(0, 5.0f)); // TODO : constant is bad !!
     }
 
     public Universe (Motion g) {
@@ -27,7 +27,7 @@ public class Universe {
         return data;
     }
 
-    public void step() {
+    public void down() {
         for (Character b : data) {
             b.move(this.gravity);
         }

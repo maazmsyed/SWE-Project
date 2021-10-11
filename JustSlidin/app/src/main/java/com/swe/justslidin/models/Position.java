@@ -19,6 +19,14 @@ public class Position {
         this.y += p.y;
     }
 
+    public void left(float by) {
+        this.x -= by;
+    }
+
+    public void right(float by) {
+        this.x += by;
+    }
+
     @Override
     public boolean equals(Object obj) {
         Position p = (Position) obj;

@@ -35,7 +35,7 @@ public class MainController extends Thread {
     @Override
     public void run() {
         while (true) {
-            this.universe.step();
+            this.universe.down();
             try {
                 Thread.sleep(20);
             } catch (InterruptedException e) {
