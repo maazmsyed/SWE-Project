@@ -17,6 +17,6 @@ public class AddAction implements ClickAction {
     @Override
     public void execute(Position pos) {
         Log.i(TAG, "AddAction executed");
-        universe.addChar(pos);
+        //universe.addChar(pos); TODO: THIS DOESNT WORK BECAUSE addChar method is non-functional.
     }
 }

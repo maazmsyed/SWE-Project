@@ -35,11 +35,11 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
         ballPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         ballPaint.setStrokeWidth(10);
         ballPaint.setARGB(135, 0, 0, 0);
-        for (Character b : universe.getChar()) {
-            Position p = b.getPosition();
-            Position r = new Position(b.getRadius());
-            canvas.drawCircle(p.getX(), p.getY(), b.getRadius(), ballPaint);
-        }
+//        for (Character b : universe.getChar()) { //TODO: FIX THIS
+//            Position p = b.getPosition();
+//            Position r = new Position(b.getRadius());
+//            canvas.drawCircle(p.getX(), p.getY(), b.getRadius(), ballPaint);
+//        }
     }
 
     @Override

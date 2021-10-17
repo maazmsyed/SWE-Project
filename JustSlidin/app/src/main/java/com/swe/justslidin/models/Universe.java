@@ -52,7 +52,7 @@ public class Universe {
         this.addBarrier(pos.getX(), pos.getY(),h,l);
     }
 
-
+// TODO: ADD A ADDCHAR METHOD that works properly.
 //    public void addChar(Position pos) {
 //        this.addChar(pos.getX(),pos.getY());
 //    }
