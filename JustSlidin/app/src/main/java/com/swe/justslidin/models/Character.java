@@ -29,6 +29,10 @@ public class Character extends Elements {
         this.hitBox.updateRight(by);
     }
 
+    public HitBox getHitBox() {
+        return this.hitBox;
+    }
+
     public float getRadius() {
         return this.rad;
     }

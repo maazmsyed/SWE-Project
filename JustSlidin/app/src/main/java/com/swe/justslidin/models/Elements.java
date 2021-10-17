@@ -10,7 +10,6 @@ public class Elements {
     // TODO: Do we actually need this in Elements?
 //    private MainController mc;
     private Position pos;
-    private HitBox hitBox;
     private boolean pause = false;
 
     public Elements(float x, float y) {
@@ -40,13 +39,9 @@ public class Elements {
         this.pause = pause;
     }
 
-    public HitBox getHitBox() {
-        return this.hitBox;
-    }
-
-    public void setHitBox(HitBox hitBox) {
-        this.hitBox = hitBox;
-    }
+//    public void setHitBox(HitBox hitBox) {
+//        this.hitBox = hitBox;
+//    }
 
 //    void updateHitBoxLeft(float value) {
 //        this.hitBox.setLeft(value);
