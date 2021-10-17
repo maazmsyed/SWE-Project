@@ -14,7 +14,7 @@ public class HitBox {
         this.top = t;
     }
 
-    boolean collide(HitBox hb){
+    public boolean collide(HitBox hb){
         return !(this.top >= hb.bottom ||
                 this.bottom <= hb.top ||
                 this.right <= hb.left ||
@@ -53,19 +53,19 @@ public class HitBox {
         this.right = right;
     }
 
-    void updateLeft(float value) {
+    public void updateLeft(float value) {
         this.setLeft(this.left - value);
     }
 
-    void updateRight(float value) {
+    public void updateRight(float value) {
         this.setRight(this.right + value);
     }
 
-    void updateTop(float value) {
+    public void updateTop(float value) {
         this.setTop(this.top - value);
     }
 
-    void updateBottom(float value) {
+    public void updateBottom(float value) {
         this.setBottom(this.bottom + value);
     }
 
