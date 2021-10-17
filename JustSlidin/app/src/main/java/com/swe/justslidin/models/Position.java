@@ -16,7 +16,9 @@ public class Position {
 
     public void add(Position p) {
         this.x += p.x;
-        this.y += p.y;
+        this.y -= p.y;
+        // System.out.println(this.x);
+        // System.out.println(this.y);
     }
 
     public void left(float by) {
@@ -28,18 +30,19 @@ public class Position {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        Position p = (Position) obj;
-        if (p != null) return x == p.x && y == p.y;
-        return false;
-    }
-
-    @Override
     public String toString() {
         return "Position{" +
                 "x=" + x +
                 ", y=" + y +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Position position = (Position) o;
+        return Float.compare(position.x, x) == 0 && Float.compare(position.y, y) == 0;
     }
 
     public float getX() {
@@ -49,4 +52,13 @@ public class Position {
     public float getY() {
         return this.y;
     }
+
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    public void setY(float y) {
+        this.y = y;
+    }
+
 }

@@ -12,7 +12,7 @@ public class Barrier extends Elements {
     private char id = 'b';
 
     public Barrier(float x, float y, float h, float l) {
-        super(x, y);
+        super();
         // this.mc = mc;
         this.pos = new Position(x,y);
         this.hitBox =
@@ -28,6 +28,8 @@ public class Barrier extends Elements {
         return this.hitBox;
     }
 
+    public Position getPosition () { return this.pos; }
+
     public char getId() {
         return this.id;
     }
@@ -41,9 +43,11 @@ public class Barrier extends Elements {
     }
 
     @Override public void moveUp(Motion m) {
-        // float x = m.getX();
+        float x = m.getX();
         float y = m.getY();
         this.pos.add(m);
+        this.hitBox.updateLeft(x); // Won't really use
+        this.hitBox.updateRight(x); // Won't really use
         this.hitBox.updateTop(y);
         this.hitBox.updateBottom(y);
     }

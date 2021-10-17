@@ -53,17 +53,13 @@ public class HitBox {
         this.right = right;
     }
 
-    public void updateLeft(float value) {
-        this.setLeft(this.left - value);
-    }
+    public void updateLeft(float value) { this.setLeft(this.left + value); }
 
     public void updateRight(float value) {
         this.setRight(this.right + value);
     }
 
-    public void updateTop(float value) {
-        this.setTop(this.top - value);
-    }
+    public void updateTop(float value) { this.setTop(this.top - value); }
 
     public void updateBottom(float value) {
         this.setBottom(this.bottom - value);

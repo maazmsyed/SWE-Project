@@ -10,7 +10,7 @@ public class Character extends Elements {
 //    private MainController mc;
 
     public Character(float x, float y, float rad) {
-        super(x, y);
+        super();
         this.pos = new Position(x,y);
         this.hitBox =
                 new HitBox(x - rad, x + rad, y + rad, y - rad);
@@ -19,15 +19,17 @@ public class Character extends Elements {
 
     public void moveLeft(float by) {
         this.pos.left(by);
-        this.hitBox.updateLeft(by);
-        this.hitBox.updateRight(-by);
+        this.hitBox.updateLeft(-by);
+        this.hitBox.updateRight(-by); // TODO: Minus sign?
     }
 
     public void moveRight(float by) {
         this.pos.right(by);
-        this.hitBox.updateLeft(-by);
+        this.hitBox.updateLeft(by); // TODO: Minus sign?
         this.hitBox.updateRight(by);
     }
+
+    public Position getPosition () { return this.pos; }
 
     public HitBox getHitBox() {
         return this.hitBox;

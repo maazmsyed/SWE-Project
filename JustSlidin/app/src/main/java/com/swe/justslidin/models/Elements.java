@@ -9,12 +9,12 @@ public class Elements {
 
     // TODO: Do we actually need this in Elements?
 //    private MainController mc;
-    private Position pos;
+//    private Position pos;
     private boolean pause = false;
 
-    public Elements(float x, float y) {
+    public Elements() {
 //        this.mc = mc;
-        this.pos = new Position(x, y);
+//        this.pos = new Position(x, y);
     }
 
     public void draw(Canvas canvas) {
@@ -23,9 +23,9 @@ public class Elements {
     public void moveUp(Motion m) {
     }
 
-    public Position getPosition () {
-        return this.pos;
-    }
+//    public Position getPosition () {
+//        return this.pos;
+//    }
 
 //    public MainController getMainController() {
 //        return this.mc;

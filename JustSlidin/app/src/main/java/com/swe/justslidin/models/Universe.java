@@ -10,7 +10,7 @@ public class Universe {
     List<Elements> elements;
 
     public Universe () {
-        this (new Motion(0,-5f)); // TODO : constant is bad !!
+        this (new Motion(0,5f)); // TODO : constant is bad !!
     }
 
     public Universe (Motion g) {
