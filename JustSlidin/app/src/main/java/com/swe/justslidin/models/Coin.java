@@ -10,13 +10,17 @@ public class Coin extends Elements {
 //    private MainController mc;
     private char id = 'c';
 
-    public Coin( float x, float y, float rad) {
+    public Coin(float x, float y, float rad) {
         super(x, y);
 //        this.mc = mc;
         this.pos = new Position(x,y);
         this.hitBox =
                 new HitBox(x - rad, x + rad, y + rad, y - rad);
         this.rad = rad;
+    }
+
+    public HitBox getHitBox() {
+        return this.hitBox;
     }
 
     public char getId() {

@@ -22,7 +22,7 @@ public class HitBox {
     }
 
     public float getLeft() {
-        return left;
+        return this.left;
     }
 
     public void setLeft(float left) {
@@ -30,7 +30,7 @@ public class HitBox {
     }
 
     public float getTop() {
-        return top;
+        return this.top;
     }
 
     public void setTop(float top) {
@@ -38,7 +38,7 @@ public class HitBox {
     }
 
     public float getBottom() {
-        return bottom;
+        return this.bottom;
     }
 
     public void setBottom(float bottom) {
@@ -46,7 +46,7 @@ public class HitBox {
     }
 
     public float getRight() {
-        return right;
+        return this.right;
     }
 
     public void setRight(float right) {
@@ -66,7 +66,7 @@ public class HitBox {
     }
 
     public void updateBottom(float value) {
-        this.setBottom(this.bottom + value);
+        this.setBottom(this.bottom - value);
     }
 
 }

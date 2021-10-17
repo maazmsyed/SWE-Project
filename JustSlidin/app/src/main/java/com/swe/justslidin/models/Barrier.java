@@ -24,6 +24,10 @@ public class Barrier extends Elements {
         this.length = l;
     }
 
+    public HitBox getHitBox() {
+        return this.hitBox;
+    }
+
     public char getId() {
         return this.id;
     }
