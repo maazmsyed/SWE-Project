@@ -7,10 +7,10 @@ public class Character extends Elements {
     private float rad;
     private Position pos;
     private HitBox hitBox;
-    private MainController mc;
+//    private MainController mc;
 
-    public Character(MainController mc, float x, float y, float rad) {
-        super(mc, x, y);
+    public Character(float x, float y, float rad) {
+        super(x, y);
         this.pos = new Position(x,y);
         this.hitBox =
                 new HitBox(x - rad, x + rad, y + rad, y - rad);

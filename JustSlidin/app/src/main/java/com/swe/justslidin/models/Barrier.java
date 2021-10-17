@@ -8,12 +8,12 @@ public class Barrier extends Elements {
     private float length;
     private Position pos;
     private HitBox hitBox;
-    private MainController mc;
+//    private MainController mc;
     private char id = 'b';
 
-    public Barrier(MainController mc, float x, float y, float h, float l) {
-        super(mc, x, y);
-        this.mc = mc;
+    public Barrier(float x, float y, float h, float l) {
+        super(x, y);
+        // this.mc = mc;
         this.pos = new Position(x,y);
         this.hitBox =
                 new HitBox(x - (l / 2),

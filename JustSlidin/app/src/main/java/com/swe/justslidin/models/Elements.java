@@ -8,13 +8,13 @@ import java.util.Vector;
 public class Elements {
 
     // TODO: Do we actually need this in Elements?
-    private MainController mc;
+//    private MainController mc;
     private Position pos;
     private HitBox hitBox;
     private boolean pause = false;
 
-    public Elements(MainController mc, float x, float y) {
-        this.mc = mc;
+    public Elements(float x, float y) {
+//        this.mc = mc;
         this.pos = new Position(x, y);
     }
 
@@ -28,9 +28,9 @@ public class Elements {
         return this.pos;
     }
 
-    public MainController getMainController() {
-        return this.mc;
-    }
+//    public MainController getMainController() {
+//        return this.mc;
+//    }
 
     public boolean getPause() {
         return this.pause;
