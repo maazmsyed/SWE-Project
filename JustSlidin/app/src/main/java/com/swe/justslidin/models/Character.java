@@ -17,19 +17,19 @@ public class Character extends Elements {
         this.rad = rad;
     }
 
-    public void moveLeft(float by) {
-        this.pos.left(by);
-        this.hitBox.updateLeft(-by);
-        this.hitBox.updateRight(-by); // TODO: Minus sign?
+    public void moveLeft() {
+        this.pos.left(10f); // Move character by 10 units to left. Can be changed accordingly.
+        this.hitBox.updateLeft(-10f);
+        this.hitBox.updateRight(-10f); // Updates hitbox to reflect new player position
     }
 
-    public void moveRight(float by) {
-        this.pos.right(by);
-        this.hitBox.updateLeft(by); // TODO: Minus sign?
-        this.hitBox.updateRight(by);
+    public void moveRight() {
+        this.pos.right(10f); // Move character by 10 units to right. Can be changed accordingly.
+        this.hitBox.updateLeft(10f);
+        this.hitBox.updateRight(10f);
     }
 
-    public Position getPosition () { return this.pos; }
+    public Position getPosition () {return this.pos;}
 
     public HitBox getHitBox() {
         return this.hitBox;
@@ -41,10 +41,11 @@ public class Character extends Elements {
 
     @Override
     public String toString() {
+        float li[] = hitBox.getBox();
         return "Character{" +
                 "rad=" + rad +
                 ", pos=" + pos +
-                ", hitBox=" + hitBox +
+                ", hitBox=" + li[0] + " " +  li[1] + " " + li[2] + " " +  li[3] +
                 '}';
     }
 

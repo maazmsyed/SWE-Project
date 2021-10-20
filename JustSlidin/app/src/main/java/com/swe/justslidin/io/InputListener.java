@@ -13,6 +13,7 @@ public class InputListener implements View.OnTouchListener {
     public void setCallback(InputHandler cb) {
         this.callback = cb;
     }
+
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         switch(motionEvent.getAction())

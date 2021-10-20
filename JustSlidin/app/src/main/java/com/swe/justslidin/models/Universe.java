@@ -1,21 +1,26 @@
 package com.swe.justslidin.models;
 
+import android.util.Log;
+
 import java.util.List;
 import java.util.Vector;
 
 public class Universe {
 
+    private static final String TAG = "Universe";
     Motion gravity;
+    Character player;
     // List<Character> data;
     List<Elements> elements;
 
     public Universe () {
-        this (new Motion(0,5f)); // TODO : constant is bad !!
+        this (new Motion(0,5f), new Character(540, 100, 50f)); // TODO : constant is bad !!
     }
 
-    public Universe (Motion g) {
+    public Universe (Motion g, Character pl) {
         elements = new Vector<>();
         gravity = g;
+        player = pl;
     }
 
 //    public void addChar(float x, float y, float rad) {
@@ -51,6 +56,21 @@ public class Universe {
     public void addBarrier(Position pos, float h, float l) {
         this.addBarrier(pos.getX(), pos.getY(),h,l);
     }
+
+    public void moveCharLeft() {
+        Log.i(TAG,"CHAR HAS MOVED LEFT.");
+        player.moveLeft();
+        System.out.println(player.getPosition());
+    }
+
+    public void moveCharRight() {
+        Log.i(TAG,"CHAR HAS MOVED RIGHT.");
+        player.moveRight();
+        System.out.println(player.getPosition());
+    }
+
+    public Position getPosition () { return player.getPosition(); }
+
 
 // TODO: ADD A ADDCHAR METHOD that works properly.
 //    public void addChar(Position pos) {

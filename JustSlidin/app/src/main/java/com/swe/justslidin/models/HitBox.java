@@ -65,4 +65,5 @@ public class HitBox {
         this.setBottom(this.bottom - value);
     }
 
+
 }
