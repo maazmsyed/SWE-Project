@@ -20,7 +20,7 @@ public class MainController extends Thread {
         this.graphicsRenderer = new GraphicsRenderer(this.universe);
         this.universe.setCallBack(this.graphicsRenderer);
         this.sv.setWillNotDraw(false);
-        this.sv.getHolder().addCallback(this.graphicsRenderer); //triggers graphics renderer
+        this.sv.getHolder().addCallback(this.graphicsRenderer); //triggers graphics renderer BAD DESIGN TODO: MC TRIGGERED BY RENDERER & THEN TRIGGERS ITSELF
 
         InputListener inputListener = new InputListener();
         this.sv.setOnTouchListener(inputListener);
