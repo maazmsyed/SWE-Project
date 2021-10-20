@@ -65,5 +65,9 @@ public class HitBox {
         this.setBottom(this.bottom - value);
     }
 
+    public float[] getBox() {
+        float fl[] = {this.left, this.top, this.right, this.bottom};
+        return (fl);
+    }
 
 }

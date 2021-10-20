@@ -19,8 +19,14 @@ public class MoveAction implements ClickAction {
         Log.i(TAG, "MoveAction executed");
         //universe.addChar(pos);
         // TODO: get screen width
+        if (pos.getX()<=540){
+            Log.i(TAG,"ON THE LEFT");
+            universe.moveCharLeft();
+        }
+        else{
+            Log.i(TAG,"ON THE RIGHT");
+            universe.moveCharRight();
         }
 
     }
-
-
+}

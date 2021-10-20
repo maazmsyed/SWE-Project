@@ -58,24 +58,19 @@ public class Universe {
     }
 
     public void moveCharLeft() {
-        Log.i(TAG,"CHAR HAS MOVED LEFT.");
+        //Log.i(TAG,"CHAR HAS MOVED LEFT.");
         player.moveLeft();
         System.out.println(player.getPosition());
     }
 
     public void moveCharRight() {
-        Log.i(TAG,"CHAR HAS MOVED RIGHT.");
+        //Log.i(TAG,"CHAR HAS MOVED RIGHT.");
         player.moveRight();
         System.out.println(player.getPosition());
     }
 
     public Position getPosition () { return player.getPosition(); }
 
-
-// TODO: ADD A ADDCHAR METHOD that works properly.
-//    public void addChar(Position pos) {
-//        this.addChar(pos.getX(),pos.getY());
-//    }
 
     public interface Callback {
         void universeChanged ( Universe u ) ;
