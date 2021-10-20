@@ -20,7 +20,7 @@ public class MainController extends Thread {
         this.graphicsRenderer = new GraphicsRenderer(this.universe);
         this.universe.setCallBack(this.graphicsRenderer);
         this.sv.setWillNotDraw(false);
-        this.sv.getHolder().addCallback(this.graphicsRenderer);
+        this.sv.getHolder().addCallback(this.graphicsRenderer); //triggers graphics renderer
 
         InputListener inputListener = new InputListener();
         this.sv.setOnTouchListener(inputListener);
