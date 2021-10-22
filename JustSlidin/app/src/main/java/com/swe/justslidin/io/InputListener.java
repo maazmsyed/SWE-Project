@@ -28,7 +28,7 @@ public class InputListener implements View.OnTouchListener {
             case MotionEvent.ACTION_DOWN:
                 break;
             case MotionEvent.ACTION_UP:
-                up_pos = new Position(motionEvent.getX(), motionEvent.getY());
+                up_pos = new Position(motionEvent.getRawX(), motionEvent.getRawY());
                 callback.onClick(up_pos);
                 break;
         }
