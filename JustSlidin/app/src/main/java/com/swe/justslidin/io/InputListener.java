@@ -5,6 +5,13 @@ import android.view.View;
 
 import com.swe.justslidin.models.Position;
 
+/**
+ * Handles touch input from the user.
+ *
+ *
+ *
+ *
+ */
 
 public class InputListener implements View.OnTouchListener {
     private Position
