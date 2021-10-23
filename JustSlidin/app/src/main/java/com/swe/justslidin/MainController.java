@@ -1,5 +1,6 @@
 package com.swe.justslidin;
 
+import android.content.res.Resources;
 import android.view.SurfaceView;
 
 import com.swe.justslidin.io.AddAction;
@@ -14,10 +15,10 @@ public class MainController extends Thread {
     private final Universe universe;
     private final GraphicsRenderer graphicsRenderer;
 
-    public MainController(SurfaceView sv) {
+    public MainController(SurfaceView sv, Resources context) {
         this.sv = sv;
         this.universe = new Universe();
-        this.graphicsRenderer = new GraphicsRenderer(this.universe);
+        this.graphicsRenderer = new GraphicsRenderer(this.universe, context);
         this.universe.setCallBack(this.graphicsRenderer);
         this.sv.setWillNotDraw(false);
         this.sv.getHolder().addCallback(this.graphicsRenderer); //triggers graphics renderer BAD DESIGN TODO: MC TRIGGERED BY RENDERER & THEN TRIGGERS ITSELF
@@ -28,6 +29,10 @@ public class MainController extends Thread {
         InputHandler inputHandler = new InputHandler();
         inputHandler.setOnClickAction(new AddAction(this.universe));
         inputListener.setCallback(inputHandler);
+
+    }
+
+    public void GenerateCoins(){
 
     }
 

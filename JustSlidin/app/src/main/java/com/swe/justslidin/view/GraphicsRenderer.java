@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
@@ -20,13 +19,16 @@ import com.swe.justslidin.models.HitBox;
 import com.swe.justslidin.models.Position;
 import com.swe.justslidin.models.Universe;
 
+import java.util.Random;
+
 public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callback {
 
     private static final String TAG = "GraphicsRenderer";
     private final Universe universe;
     private SurfaceHolder holder;
     private Bitmap coinBitmap;
-    private Bitmap barrierBitmap;
+//    private Bitmap barrierBitmap;
+
 
     public GraphicsRenderer(Universe u, Resources context) {
         this.universe = u;
@@ -42,7 +44,7 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
         }
     }
 
-    private void draw(Canvas canvas, Rect bounds) {
+    private void draw(Canvas canvas) {
         canvas.drawARGB(255, 255, 255, 255);
         Paint ballPaint = new Paint();
         ballPaint.setStyle(Paint.Style.FILL_AND_STROKE);
@@ -50,9 +52,13 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
         ballPaint.setARGB(135, 0, 0, 0);
         for (Elements elem : universe.getElements()) {
             if (elem instanceof Coin) {
-                Bitmap scaled_bmp = Bitmap.createScaledBitmap(this.coinBitmap,
-                        bounds.width(), bounds.height(), true);
-                canvas.drawBitmap(scaled_bmp, bounds.left, bounds.bottom, ballPaint);
+                Coin c = (Coin)elem;
+                Position p = c.getPosition();
+                float r = c.getRad();
+                HitBox hb = c.getHitBox();
+                Bitmap scaledCoin = Bitmap.createScaledBitmap(this.coinBitmap,
+                        (int)r*2, (int)r*2, true);
+                canvas.drawBitmap(scaledCoin, hb.getLeft(), hb.getTop(), ballPaint);
 //                Coin c = (Coin)elem;
 //                Position p = c.getPosition();
 //                canvas.drawCircle(p.getX(), p.getY(), c.getRad(), ballPaint);
