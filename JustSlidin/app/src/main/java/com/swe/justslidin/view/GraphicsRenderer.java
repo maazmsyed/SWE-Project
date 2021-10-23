@@ -1,13 +1,17 @@
 package com.swe.justslidin.view;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
 import androidx.annotation.NonNull;
 
+import com.swe.justslidin.R;
 import com.swe.justslidin.models.Barrier;
 import com.swe.justslidin.models.Character;
 import com.swe.justslidin.models.Coin;
@@ -24,11 +28,13 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
     private Bitmap coinBitmap;
     private Bitmap barrierBitmap;
 
-    public GraphicsRenderer(Universe u) {
+    public GraphicsRenderer(Universe u, Resources context) {
         this.universe = u;
+        this.universe.setCallBack(this);
+        this.coinBitmap = BitmapFactory.decodeResource(context, R.mipmap.coin);
     }
 
-    public void drawSurfaceView () {
+    public void drawSurfaceView () {    // TODO: Skipped. Do Later.
         if (universe != null && holder != null) {
             Canvas canvas = holder.lockCanvas();
             this.draw(canvas);
@@ -36,7 +42,7 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
         }
     }
 
-    private void draw(Canvas canvas) {
+    private void draw(Canvas canvas, Rect bounds) {
         canvas.drawARGB(255, 255, 255, 255);
         Paint ballPaint = new Paint();
         ballPaint.setStyle(Paint.Style.FILL_AND_STROKE);
@@ -44,9 +50,12 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
         ballPaint.setARGB(135, 0, 0, 0);
         for (Elements elem : universe.getElements()) {
             if (elem instanceof Coin) {
-                Coin c = (Coin)elem;
-                Position p = c.getPosition();
-                canvas.drawCircle(p.getX(), p.getY(), c.getRad(), ballPaint);
+                Bitmap scaled_bmp = Bitmap.createScaledBitmap(this.coinBitmap,
+                        bounds.width(), bounds.height(), true);
+                canvas.drawBitmap(scaled_bmp, bounds.left, bounds.bottom, ballPaint);
+//                Coin c = (Coin)elem;
+//                Position p = c.getPosition();
+//                canvas.drawCircle(p.getX(), p.getY(), c.getRad(), ballPaint);
             } else if (elem instanceof Barrier) {
                 Barrier b = (Barrier)elem;
                 Position p = b.getPosition();
