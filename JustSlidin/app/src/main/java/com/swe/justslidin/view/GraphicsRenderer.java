@@ -1,5 +1,6 @@
 package com.swe.justslidin.view;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.Log;
@@ -20,6 +21,8 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
     private static final String TAG = "GraphicsRenderer";
     private final Universe universe;
     private SurfaceHolder holder;
+    private Bitmap coinBitmap;
+    private Bitmap barrierBitmap;
 
     public GraphicsRenderer(Universe u) {
         this.universe = u;
