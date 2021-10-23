@@ -2,6 +2,7 @@ package com.swe.justslidin.models;
 
 import com.swe.justslidin.MainController;
 
+
 public class Coin extends Elements {
 
     private float rad;
@@ -10,6 +11,12 @@ public class Coin extends Elements {
 //    private MainController mc;
     private char id = 'c';
 
+    /**
+     * Constructor of the Coin
+     * @param x is the x coordinate of the coin
+     * @param y is the y coordinate of the coin
+     * @param rad is the radius of the coin
+     */
     public Coin(float x, float y, float rad) {
         super();
 //        this.mc = mc;
@@ -18,6 +25,7 @@ public class Coin extends Elements {
                 new HitBox(x - rad, x + rad, y + rad, y - rad);
         this.rad = rad;
     }
+
 
     public HitBox getHitBox() {
         return this.hitBox;
@@ -32,6 +40,11 @@ public class Coin extends Elements {
     public float getRad() {
         return this.rad;
     }
+
+    /**
+     * updates the position of the coin as well as its Hitbox by the given motion, moving the coin upwards
+     * @param m given motion m
+     */
 
     @Override public void moveUp(Motion m) {
         float x = m.getX();

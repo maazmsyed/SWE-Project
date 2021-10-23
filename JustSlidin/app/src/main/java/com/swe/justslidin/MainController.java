@@ -5,6 +5,7 @@ import android.view.SurfaceView;
 import com.swe.justslidin.io.AddAction;
 import com.swe.justslidin.io.InputHandler;
 import com.swe.justslidin.io.InputListener;
+import com.swe.justslidin.io.MoveAction;
 import com.swe.justslidin.models.Universe;
 import com.swe.justslidin.view.GraphicsRenderer;
 
@@ -26,7 +27,8 @@ public class MainController extends Thread {
         this.sv.setOnTouchListener(inputListener);
 
         InputHandler inputHandler = new InputHandler();
-        inputHandler.setOnClickAction(new AddAction(this.universe));
+        //inputHandler.setOnClickAction(new StartAction());
+        inputHandler.setOnClickAction(new MoveAction(this.universe));
         inputListener.setCallback(inputHandler);
 
     }
