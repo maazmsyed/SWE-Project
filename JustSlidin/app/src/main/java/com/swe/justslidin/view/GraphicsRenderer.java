@@ -7,7 +7,11 @@ import android.view.SurfaceHolder;
 
 import androidx.annotation.NonNull;
 
+import com.swe.justslidin.models.Barrier;
 import com.swe.justslidin.models.Character;
+import com.swe.justslidin.models.Coin;
+import com.swe.justslidin.models.Elements;
+import com.swe.justslidin.models.HitBox;
 import com.swe.justslidin.models.Position;
 import com.swe.justslidin.models.Universe;
 
@@ -35,6 +39,18 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
         ballPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         ballPaint.setStrokeWidth(10);
         ballPaint.setARGB(135, 0, 0, 0);
+        for (Elements elem : universe.getElements()) {
+            if (elem instanceof Coin) {
+                Coin c = (Coin)elem;
+                Position p = c.getPosition();
+                canvas.drawCircle(p.getX(), p.getY(), c.getRad(), ballPaint);
+            } else if (elem instanceof Barrier) {
+                Barrier b = (Barrier)elem;
+                Position p = b.getPosition();
+                HitBox hb = b.getHitBox();
+                canvas.drawRect(hb.getLeft(), hb.getTop(), hb.getRight(), hb.getBottom(), ballPaint);
+            }
+        }
 //        for (Character b : universe.getChar()) { //TODO: FIX THIS
 //            Position p = b.getPosition();
 //            Position r = new Position(b.getRadius());
