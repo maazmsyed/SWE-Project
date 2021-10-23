@@ -33,20 +33,20 @@ public class Character extends Elements {
     * Moves the character to the left by 10 units and updates hitbox to reflect the new position.
     *
      */
-    public void moveLeft() {
-        this.pos.left(10f);
-        this.hitBox.updateLeft(-10f);
-        this.hitBox.updateRight(-10f);
+    public void moveLeft(float f) {
+        this.pos.left(f);
+        this.hitBox.updateLeft(-f);
+        this.hitBox.updateRight(-f);
     }
 
     /**
     * Moves the character to the right by 10 units and updates character's hitbox w/ new coordinates.
     *
      */
-    public void moveRight() {
-        this.pos.right(10f);
-        this.hitBox.updateLeft(10f);
-        this.hitBox.updateRight(10f);
+    public void moveRight(float f) {
+        this.pos.right(f);
+        this.hitBox.updateLeft(f);
+        this.hitBox.updateRight(f);
     }
 
     /**

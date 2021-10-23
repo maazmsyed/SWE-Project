@@ -109,15 +109,15 @@ public class Universe {
         this.addBarrier(pos.getX(), pos.getY(),h,l);
     }
 
-    public void moveCharLeft() {
+    public void moveCharLeft(float f) {
         //Log.i(TAG,"CHAR HAS MOVED LEFT.");
-        player.moveLeft();
+        player.moveLeft(f);
         System.out.println(player.getPosition());
     }
 
-    public void moveCharRight() {
+    public void moveCharRight(float f) {
         //Log.i(TAG,"CHAR HAS MOVED RIGHT.");
-        player.moveRight();
+        player.moveRight(f);
         System.out.println(player.getPosition());
     }
 
