@@ -5,6 +5,13 @@ import android.view.View;
 
 import com.swe.justslidin.models.Position;
 
+/**
+ * Handles touch input from the user.
+ *
+ *
+ *
+ *
+ */
 
 public class InputListener implements View.OnTouchListener {
     private Position
@@ -13,6 +20,7 @@ public class InputListener implements View.OnTouchListener {
     public void setCallback(InputHandler cb) {
         this.callback = cb;
     }
+
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         switch(motionEvent.getAction())
@@ -20,7 +28,7 @@ public class InputListener implements View.OnTouchListener {
             case MotionEvent.ACTION_DOWN:
                 break;
             case MotionEvent.ACTION_UP:
-                up_pos = new Position(motionEvent.getX(), motionEvent.getY());
+                up_pos = new Position(motionEvent.getRawX(), motionEvent.getRawY());
                 callback.onClick(up_pos);
                 break;
         }

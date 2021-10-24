@@ -1,27 +1,33 @@
 package com.swe.justslidin.models;
 
+
 import android.graphics.Bitmap;
 
 import com.swe.justslidin.view.GraphicsRenderer;
+import android.util.Log;
+
 
 import java.util.List;
 import java.util.Vector;
 
 public class Universe {
 
+    private static final String TAG = "Universe";
     // TODO: Do we still need gravity?
     final static Motion DEFAULT_GRAVITY_MOTION = new Motion(0,5f); // Added after referring prof
     Motion gravity;
+    Character player;
     List<Elements> elements;
     Background background = new Background();
 
     public Universe () {
-        this (DEFAULT_GRAVITY_MOTION);
+        this (DEFAULT_GRAVITY_MOTION, new Character(540, 100, 50f));
     }
 
-    public Universe (Motion g) {
+    public Universe (Motion g, Character pl) {
         elements = new Vector<>();
         gravity = g;
+        player = pl;
 //        this.background = new Background();
     }
 
@@ -119,10 +125,20 @@ public class Universe {
         this.addBarrier(pos.getX(), pos.getY(),h,l);
     }
 
-// TODO: ADD A ADDCHAR METHOD that works properly.
-//    public void addChar(Position pos) {
-//        this.addChar(pos.getX(),pos.getY());
-//    }
+    public void moveCharLeft(float f) {
+        //Log.i(TAG,"CHAR HAS MOVED LEFT.");
+        player.moveLeft(f);
+        System.out.println(player.getPosition());
+    }
+
+    public void moveCharRight(float f) {
+        //Log.i(TAG,"CHAR HAS MOVED RIGHT.");
+        player.moveRight(f);
+        System.out.println(player.getPosition());
+    }
+
+    public Position getPosition () { return player.getPosition(); }
+
 
     public interface Callback {
         void universeChanged ( Universe u ) ;
