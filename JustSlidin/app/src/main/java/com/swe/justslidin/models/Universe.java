@@ -1,5 +1,9 @@
 package com.swe.justslidin.models;
 
+import android.graphics.Bitmap;
+
+import com.swe.justslidin.view.GraphicsRenderer;
+
 import java.util.List;
 import java.util.Vector;
 
@@ -9,6 +13,7 @@ public class Universe {
     final static Motion DEFAULT_GRAVITY_MOTION = new Motion(0,5f); // Added after referring prof
     Motion gravity;
     List<Elements> elements;
+    Background background = new Background();
 
     public Universe () {
         this (DEFAULT_GRAVITY_MOTION);
@@ -17,6 +22,15 @@ public class Universe {
     public Universe (Motion g) {
         elements = new Vector<>();
         gravity = g;
+//        this.background = new Background();
+    }
+
+    public void setBackgroundBitmap(Bitmap bitmap) {
+        this.background.setBackgroundBitmap(bitmap);
+    }
+
+    public Background getBackground() {
+        return this.background;
     }
 
 //    public void addChar(float x, float y, float rad) {
@@ -70,6 +84,7 @@ public class Universe {
      * all the coins and barriers in the game have a natural upward movement.
      */
     public void step() {
+        background.moveUp(this.gravity);
         for (Elements e : elements) {
             e.moveUp(this.gravity);
         }

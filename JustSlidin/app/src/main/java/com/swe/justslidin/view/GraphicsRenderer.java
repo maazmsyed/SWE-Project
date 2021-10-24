@@ -11,6 +11,7 @@ import android.view.SurfaceHolder;
 import androidx.annotation.NonNull;
 
 import com.swe.justslidin.R;
+import com.swe.justslidin.models.Background;
 import com.swe.justslidin.models.Barrier;
 import com.swe.justslidin.models.Character;
 import com.swe.justslidin.models.Coin;
@@ -19,7 +20,6 @@ import com.swe.justslidin.models.HitBox;
 import com.swe.justslidin.models.Position;
 import com.swe.justslidin.models.Universe;
 
-import java.util.Random;
 
 public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callback {
 
@@ -27,16 +27,31 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
     private final Universe universe;
     private SurfaceHolder holder;
     private Bitmap coinBitmap;
-//    private Bitmap barrierBitmap;
+    private Bitmap shortBarrierBitmap;
+    private Bitmap longBarrierBitmap;
+    private Bitmap bgBitmap;
+    private Bitmap scaledBG;
+//    private Background background;
+
+    private int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
+    private int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
 
 
     public GraphicsRenderer(Universe u, Resources context) {
         this.universe = u;
         this.universe.setCallBack(this);
         this.coinBitmap = BitmapFactory.decodeResource(context, R.mipmap.coin);
+        this.longBarrierBitmap = BitmapFactory.decodeResource(context, R.mipmap.long_barrier);
+        this.shortBarrierBitmap = BitmapFactory.decodeResource(context, R.mipmap.short_barrier);
+
+        this.bgBitmap = BitmapFactory.decodeResource(context, R.mipmap.background);
+        this.scaledBG = Bitmap.createScaledBitmap(this.bgBitmap, screenWidth, screenHeight, true);
+        this.universe.setBackgroundBitmap(scaledBG);
+//        this.background = new Background(scaledBG);
     }
 
-    public void drawSurfaceView () {    // TODO: Skipped. Do Later.
+
+    public void drawSurfaceView () {
         if (universe != null && holder != null) {
             Canvas canvas = holder.lockCanvas();
             this.draw(canvas);
@@ -44,36 +59,36 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
         }
     }
 
+
     private void draw(Canvas canvas) {
+
         canvas.drawARGB(255, 255, 255, 255);
         Paint ballPaint = new Paint();
         ballPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         ballPaint.setStrokeWidth(10);
         ballPaint.setARGB(135, 0, 0, 0);
+
+        this.universe.getBackground().draw(canvas);
+
         for (Elements elem : universe.getElements()) {
+
             if (elem instanceof Coin) {
-                Coin c = (Coin)elem;
+                Coin c = (Coin) elem;
                 Position p = c.getPosition();
                 float r = c.getRad();
                 HitBox hb = c.getHitBox();
                 Bitmap scaledCoin = Bitmap.createScaledBitmap(this.coinBitmap,
                         (int)r*2, (int)r*2, true);
-                canvas.drawBitmap(scaledCoin, hb.getLeft(), hb.getTop(), ballPaint);
-//                Coin c = (Coin)elem;
-//                Position p = c.getPosition();
-//                canvas.drawCircle(p.getX(), p.getY(), c.getRad(), ballPaint);
+                canvas.drawBitmap(scaledCoin, hb.getLeft(), hb.getTop(), null);
+
             } else if (elem instanceof Barrier) {
+
                 Barrier b = (Barrier)elem;
                 Position p = b.getPosition();
                 HitBox hb = b.getHitBox();
                 canvas.drawRect(hb.getLeft(), hb.getTop(), hb.getRight(), hb.getBottom(), ballPaint);
             }
         }
-//        for (Character b : universe.getChar()) { //TODO: FIX THIS
-//            Position p = b.getPosition();
-//            Position r = new Position(b.getRadius());
-//            canvas.drawCircle(p.getX(), p.getY(), b.getRadius(), ballPaint);
-//        }
     }
 
     @Override

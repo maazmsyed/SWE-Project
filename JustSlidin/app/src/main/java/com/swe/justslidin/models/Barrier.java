@@ -19,7 +19,7 @@ public class Barrier extends Elements {
      * @param x the x-value of the position.
      * @param y the y-value of the position.
      * @param h the height of the barrier.
-     * @param l
+     * @param l the length of the barrier.
      */
     public Barrier(float x, float y, float h, float l) {
         super();
