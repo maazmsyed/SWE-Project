@@ -1,6 +1,7 @@
 package com.swe.justslidin.models;
 
-import com.swe.justslidin.MainController;
+import android.content.res.Resources;
+
 
 /**
 * Character class that handles everything related to the player character.
@@ -11,9 +12,9 @@ import com.swe.justslidin.MainController;
 
 public class Character extends Elements {
     private float rad;
+    private int coinCount;
     private Position pos;
     private HitBox hitBox;
-//    private MainController mc;
 
     /**
     * Constructor that creates a new Character with a certain x- and y-coordinate, radius, and hitbox.
@@ -27,6 +28,7 @@ public class Character extends Elements {
         this.hitBox =
                 new HitBox(x - rad, x + rad, y + rad, y - rad);
         this.rad = rad;
+        this.coinCount = 0;
     }
 
     /**
@@ -34,9 +36,11 @@ public class Character extends Elements {
     *
      */
     public void moveLeft(float f) {
-        this.pos.left(f);
-        this.hitBox.updateLeft(-f);
-        this.hitBox.updateRight(-f);
+        if (this.pos.getX() > this.rad) {
+            this.pos.left(f);
+            this.hitBox.updateLeft(-f);
+            this.hitBox.updateRight(-f);
+        }
     }
 
     /**
@@ -44,21 +48,24 @@ public class Character extends Elements {
     *
      */
     public void moveRight(float f) {
-        this.pos.right(f);
-        this.hitBox.updateLeft(f);
-        this.hitBox.updateRight(f);
+        float widthPixels = Resources.getSystem().getDisplayMetrics().widthPixels;
+        if (this.pos.getX() < widthPixels - this.rad) {
+            this.pos.right(f);
+            this.hitBox.updateLeft(f);
+            this.hitBox.updateRight(f);
+        }
     }
 
     /**
     * Returns the Position of the Character. Composed of x- and y-coordinate.
-    * @return: position
+    * @return: Position object of the character.
      */
     public Position getPosition () {return this.pos;}
 
 
     /**
     * Returns HitBox of the Character. Composed of 4-coordinates to get height and width.
-    * @return: hitbox values of player character.
+    * @return: Hitbox object of the character.
      */
     public HitBox getHitBox() {
         return this.hitBox;
@@ -66,14 +73,22 @@ public class Character extends Elements {
 
     /**
     * Returns radius of the Character object. Composed of a single value.
-    * @return: radius of Character object.
+    * @return: Radius of the Character object.
      */
     public float getRadius() {
         return this.rad;
     }
 
+    public int getCoinCount() {
+        return this.coinCount;
+    }
+
+    public void updateCoinCount() {
+        this.coinCount += 1;
+    }
+
     /**
-    * returns a String variable with all the relevant information of the Character
+    * Returns a String variable with all the relevant information of the Character
     * @return: String with Character, radius, position, and hitbox coordinates
      */
     @Override
