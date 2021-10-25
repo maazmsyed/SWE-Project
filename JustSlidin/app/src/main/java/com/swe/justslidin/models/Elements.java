@@ -11,6 +11,8 @@ public class Elements {
 //    private MainController mc;
 //    private Position pos;
     private boolean pause = false;
+//    private Position pos;
+//    private char id;
 
     public Elements() {
 //        this.mc = mc;
@@ -25,6 +27,10 @@ public class Elements {
 
 //    public Position getPosition () {
 //        return this.pos;
+//    }
+//
+//    public char getId() {
+//        return this.id;
 //    }
 
 //    public MainController getMainController() {

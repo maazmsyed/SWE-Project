@@ -12,7 +12,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         SurfaceView sv = findViewById(R.id.surfaceView);
-        MainController mc = new MainController(sv);
+        MainController mc = new MainController(sv, getResources());
         mc.start();
     }
 
