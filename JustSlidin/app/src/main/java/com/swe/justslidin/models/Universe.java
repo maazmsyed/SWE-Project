@@ -121,6 +121,61 @@ public class Universe {
         this.addBarrier(pos.getX(), pos.getY(),h);
     }
 
+    public void checkPlayerCollision() {
+        Vector<Elements> tempVec = new Vector<Elements>();
+        for (Elements elem : this.elements) {
+            if (elem instanceof Coin) {
+                Coin c = (Coin) elem;
+                HitBox hb = c.getHitBox();
+                System.out.println("Does this reach instance of coin?");
+                if (this.player.getHitBox().collide(hb)) {
+                    System.out.println("Do both hit?");
+                    this.player.updateCoinCount();
+                    // this.elements.remove(elem);
+                    tempVec.add(elem);
+                    // this.elements.remove(elements.indexOf(elem));
+                    System.out.println("But does this delete?");
+                }
+            } else if (elem instanceof Barrier) {
+                Barrier b = (Barrier) elem;
+                HitBox hb = b.getHitBox();
+                if (this.player.getHitBox().collide(hb)) {
+                    this.player.decrementCoinCount();
+                    this.player.decrementCoinCount();
+                    // this.elements.remove(elem);
+                    tempVec.add(elem);
+//                    this.elements.remove(elements.indexOf(elem));
+                }
+            }
+        }
+        this.elements.removeAll(tempVec);
+    }
+
+    public void removeExtraElements() {
+        Vector<Elements> tempVec = new Vector<Elements>();
+        for (Elements elem : this.elements) {
+            if (elem instanceof Coin) {
+                Coin c = (Coin) elem;
+                HitBox hb = c.getHitBox();
+                if (hb.getBottom() < 0) { // Out of the top of the screen
+                    // this.elements.remove(elem);
+                    // this.elements.remove(elements.indexOf(elem));
+                    tempVec.add(elem);
+                }
+            }
+            if (elem instanceof Barrier) {
+                Barrier b = (Barrier) elem;
+                HitBox hb = b.getHitBox();
+                if (hb.getBottom() < 0) {
+                    // this.elements.remove(elem);
+                    // this.elements.remove(elements.indexOf(elem));
+                    tempVec.add(elem);
+                }
+            }
+        }
+        this.elements.removeAll(tempVec);
+    }
+
     public void moveCharLeft(float f) {
         //Log.i(TAG,"CHAR HAS MOVED LEFT.");
         player.moveLeft(f);

@@ -87,6 +87,10 @@ public class Character extends Elements {
         this.coinCount += 1;
     }
 
+    public void decrementCoinCount() {
+        this.coinCount -= 1;
+    }
+
     /**
     * Returns a String variable with all the relevant information of the Character
     * @return: String with Character, radius, position, and hitbox coordinates
