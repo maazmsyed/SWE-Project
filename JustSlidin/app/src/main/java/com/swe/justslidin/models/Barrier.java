@@ -1,5 +1,7 @@
 package com.swe.justslidin.models;
 
+import java.util.Random;
+
 /**
  * This class represents the barrier objects that the player
  * will be placed on the slide.
@@ -8,10 +10,13 @@ public class Barrier extends Elements {
 
     private float height;
     private float length;
+    private boolean isShort;
     private Position pos;
     private HitBox hitBox;
     //    private MainController mc;
     private char id = 'b';
+    final static float DEFAULT_SHORT_SIZE = 200;
+    final static float DEFAULT_LONG_SIZE = 450;
 
     /**
      * Barrier class constructor constructs a barrier object by
@@ -19,19 +24,24 @@ public class Barrier extends Elements {
      * @param x the x-value of the position.
      * @param y the y-value of the position.
      * @param h the height of the barrier.
-     * @param l the length of the barrier.
      */
-    public Barrier(float x, float y, float h, float l) {
+    public Barrier(float x, float y, float h) {
         super();
         // this.mc = mc;
         this.pos = new Position(x,y);
+        this.height = h;
+        Random rd = new Random();
+        this.isShort = rd.nextBoolean();
+        if (this.isShort) {
+            this.length = DEFAULT_SHORT_SIZE;
+        } else {
+            this.length = DEFAULT_LONG_SIZE;
+        }
         this.hitBox =
-                new HitBox(x - (l / 2),
-                        x + (l / 2),
+                new HitBox(x - (this.length / 2),
+                        x + (this.length / 2),
                         y + (h / 2),
                         y - (h / 2));
-        this.height = h;
-        this.length = l;
     }
 
     /**
@@ -74,6 +84,9 @@ public class Barrier extends Elements {
         return this.length;
     }
 
+    public boolean isShort() {
+        return isShort;
+    }
     /**
      * moveUp gets the current position of the barrier and moves it up
      * (visually down) of the screen. While doing so, it changes the

@@ -9,6 +9,7 @@ import com.swe.justslidin.io.InputListener;
 import com.swe.justslidin.models.Background;
 import com.swe.justslidin.models.Motion;
 import com.swe.justslidin.io.MoveAction;
+import com.swe.justslidin.models.Position;
 import com.swe.justslidin.models.Universe;
 import com.swe.justslidin.view.GraphicsRenderer;
 
@@ -46,12 +47,19 @@ public class MainController extends Thread {
 
     @Override
     public void run() {
+        int counter = 0;
         while (true) {
 
             try {
 
                 this.universe.step();
-
+                counter += 1;
+                if (counter % 50 == 0) {
+                    this.universe.addCoin(new Position(500, 1000), 50);
+                }
+                if (counter % 77 == 0) {
+                    this.universe.addBarrier(new Position(700, 2000), 20);
+                }
                 Thread.sleep(1000/fps);
             } catch (InterruptedException e) {
                 e.printStackTrace();

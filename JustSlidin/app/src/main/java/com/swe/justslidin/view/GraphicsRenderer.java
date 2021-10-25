@@ -73,8 +73,7 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
         for (Elements elem : universe.getElements()) {
 
             if (elem instanceof Coin) {
-                Coin c = (Coin) elem;
-                Position p = c.getPosition();
+                Coin c = (Coin)elem;
                 float r = c.getRad();
                 HitBox hb = c.getHitBox();
                 Bitmap scaledCoin = Bitmap.createScaledBitmap(this.coinBitmap,
@@ -82,11 +81,18 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
                 canvas.drawBitmap(scaledCoin, hb.getLeft(), hb.getTop(), null);
 
             } else if (elem instanceof Barrier) {
-
                 Barrier b = (Barrier)elem;
-                Position p = b.getPosition();
                 HitBox hb = b.getHitBox();
-                canvas.drawRect(hb.getLeft(), hb.getTop(), hb.getRight(), hb.getBottom(), ballPaint);
+                if (b.isShort()) {
+                    Bitmap scaledShortBarrier = Bitmap.createScaledBitmap(this.shortBarrierBitmap,
+                            (int)b.getLength(), (int)b.getHeight(), true);
+                    canvas.drawBitmap(scaledShortBarrier, hb.getLeft(), hb.getTop(), null);
+                } else {
+                    Bitmap scaledLongBarrier = Bitmap.createScaledBitmap(this.longBarrierBitmap,
+                            (int)b.getLength(), (int)b.getHeight(), true);
+                    canvas.drawBitmap(scaledLongBarrier, hb.getLeft(), hb.getTop(), null);
+                }
+//                canvas.drawRect(hb.getLeft(), hb.getTop(), hb.getRight(), hb.getBottom(), ballPaint);
             }
         }
     }

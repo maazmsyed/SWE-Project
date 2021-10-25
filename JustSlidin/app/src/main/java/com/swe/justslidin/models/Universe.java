@@ -68,11 +68,9 @@ public class Universe {
      * This value defines the y-coordinate of the new barrier instance's position.
      * @param h
      * This value defines the height of the new barrier instance.
-     * @param l
-     * This value defines the length of the new barrier instance.
      */
-    public void addBarrier(float x, float y, float h, float l) {
-        elements.add(new Barrier (x,y,h,l));
+    public void addBarrier(float x, float y, float h) {
+        elements.add(new Barrier (x,y,h));
         castChanges();
     }
 
@@ -118,11 +116,9 @@ public class Universe {
      * The Position of the new barrier instance.
      * @param h
      * This value defines the height of the new barrier instance.
-     * @param l
-     * This value defines the length of the new barrier instance.
      */
-    public void addBarrier(Position pos, float h, float l) {
-        this.addBarrier(pos.getX(), pos.getY(),h,l);
+    public void addBarrier(Position pos, float h) {
+        this.addBarrier(pos.getX(), pos.getY(),h);
     }
 
     public void moveCharLeft(float f) {
