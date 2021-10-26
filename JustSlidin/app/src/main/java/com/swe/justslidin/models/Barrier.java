@@ -1,5 +1,7 @@
 package com.swe.justslidin.models;
 
+import com.swe.justslidin.constants.Constants;
+
 import java.util.Random;
 
 /**
@@ -13,10 +15,9 @@ public class Barrier extends Elements {
     private boolean isShort;
     private Position pos;
     private HitBox hitBox;
-    //    private MainController mc;
     private char id = 'b';
-    final static float DEFAULT_SHORT_SIZE = 200;
-    final static float DEFAULT_LONG_SIZE = 450;
+    final static float DEFAULT_SHORT_SIZE = Constants.BARRIER_SHORT_SIZE;
+    final static float DEFAULT_LONG_SIZE = Constants.BARRIER_LONG_SIZE;
 
     /**
      * Barrier class constructor constructs a barrier object by
@@ -27,7 +28,6 @@ public class Barrier extends Elements {
      */
     public Barrier(float x, float y, float h) {
         super();
-        // this.mc = mc;
         this.pos = new Position(x,y);
         this.height = h;
         Random rd = new Random();
