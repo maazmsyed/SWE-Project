@@ -4,6 +4,7 @@ import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.view.SurfaceView;
 
+import com.swe.justslidin.constants.Constants;
 import com.swe.justslidin.io.AddAction;
 import com.swe.justslidin.io.InputHandler;
 import com.swe.justslidin.io.InputListener;
@@ -45,27 +46,24 @@ public class MainController extends Thread {
 
     }
 
-    public void GenerateCoins(){
-
-    }
-
 
     @Override
     public void run() {
         int counter = 0;
+
         while (running) {
 
             try {
                 this.universe.checkPlayerCollision();
-                this.universe.CheckPlayerCoinCollision();
+                // this.universe.CheckPlayerCoinCollision();
                 this.universe.removeExtraElements();
                 this.universe.step();
                 counter += 1;
                 if (counter % 67 == 0) {
-                    this.universe.addCoin(new Position(100 + (new Random().nextFloat())*700, 1000), 50);
+                    this.universe.addCoin(new Position(100 + (new Random().nextFloat())*700, 1000), Constants.COIN_RADIUS);
                 }
                 if (counter % 127 == 0) {
-                    this.universe.addBarrier(new Position(100 + (new Random().nextFloat())*700, 2000), 150);
+                    this.universe.addBarrier(new Position(350 + (new Random().nextFloat())*400, 2000), Constants.BARRIER_HEIGHT);
                 }
                 Thread.sleep(1000/fps);
             } catch (InterruptedException e) {
