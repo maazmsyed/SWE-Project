@@ -1,7 +1,11 @@
 package com.swe.justslidin.models;
 
 import android.content.res.Resources;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
+import com.swe.justslidin.R;
 
 /**
 * Character class that handles everything related to the player character.
@@ -15,6 +19,9 @@ public class Character extends Elements {
     private int coinCount;
     private Position pos;
     private HitBox hitBox;
+    private Bitmap playerBitmap;
+    private boolean Hitcoin;
+
 
     /**
     * Constructor that creates a new Character with a certain x- and y-coordinate, radius, and hitbox.
@@ -29,6 +36,16 @@ public class Character extends Elements {
                 new HitBox(x - rad, x + rad, y + rad, y - rad);
         this.rad = rad;
         this.coinCount = 0;
+    }
+    public void setPlayerBitmap(Bitmap bitmap){
+        this.playerBitmap = bitmap;
+    }
+    public void setHitCoin(boolean bool){
+        this.Hitcoin = bool;
+    }
+
+    public boolean ifHitCoin(){
+        return this.Hitcoin;
     }
 
     /**

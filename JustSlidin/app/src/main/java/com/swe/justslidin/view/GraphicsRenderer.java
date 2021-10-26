@@ -31,6 +31,9 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
     private Bitmap longBarrierBitmap;
     private Bitmap bgBitmap;
     private Bitmap scaledBG;
+    private Bitmap characterBitmap;
+    private Resources context;
+    private int coinHitCount = 0;
 //    private Background background;
 
     private int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
@@ -40,9 +43,11 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
     public GraphicsRenderer(Universe u, Resources context) {
         this.universe = u;
         this.universe.setCallBack(this);
+        this.context = context;
         this.coinBitmap = BitmapFactory.decodeResource(context, R.mipmap.coin);
         this.longBarrierBitmap = BitmapFactory.decodeResource(context, R.mipmap.long_barrier);
         this.shortBarrierBitmap = BitmapFactory.decodeResource(context, R.mipmap.short_barrier);
+        this.characterBitmap = BitmapFactory.decodeResource(context,R.mipmap.player);
 
         this.bgBitmap = BitmapFactory.decodeResource(context, R.mipmap.background);
         this.scaledBG = Bitmap.createScaledBitmap(this.bgBitmap, screenWidth, screenHeight, true);
@@ -66,9 +71,32 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
         Paint ballPaint = new Paint();
         ballPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         ballPaint.setStrokeWidth(10);
+        ballPaint.setTextSize(50);
         ballPaint.setARGB(135, 0, 0, 0);
 
         this.universe.getBackground().draw(canvas);
+
+        Character character = this.universe.getPlayer();
+        HitBox hbCharacter = character.getHitBox();
+        float radius = character.getRadius();
+        if (this.coinHitCount == 20) {
+            this.coinHitCount = 0;
+            this.universe.getPlayer().setHitCoin(false);
+        }
+        if (this.universe.getPlayer().ifHitCoin()){
+            Bitmap scaledCharacter = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context,R.mipmap.happyplayer),
+                    (int) radius*3,
+                    (int) radius*3,true);
+            canvas.drawBitmap(scaledCharacter,(int) hbCharacter.getLeft(),(int) hbCharacter.getTop(),null);
+            this.coinHitCount += 1;
+//            this.universe.getPlayer().setHitCoin(false);
+        }else{
+            Bitmap scaledCharacter = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context,R.mipmap.player),
+                    (int) radius*3,
+                    (int) radius*3,true);
+            canvas.drawBitmap(scaledCharacter,(int) hbCharacter.getLeft(),(int) hbCharacter.getTop(),null);
+        }
+
 
         for (Elements elem : universe.getElements()) {
 
@@ -95,6 +123,7 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
 //                canvas.drawRect(hb.getLeft(), hb.getTop(), hb.getRight(), hb.getBottom(), ballPaint);
             }
         }
+        canvas.drawText("Total Count " + this.universe.getPlayer().getCoinCount(), 50f, 50f,ballPaint);
     }
 
     @Override

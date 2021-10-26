@@ -35,6 +35,8 @@ public class Universe {
         this.background.setBackgroundBitmap(bitmap);
     }
 
+    public void setPlayerBitmap(Bitmap bitmap){ this.player.setPlayerBitmap(bitmap);}
+
     public Background getBackground() {
         return this.background;
     }
@@ -57,6 +59,10 @@ public class Universe {
     public void addCoin(float x, float y, float rad) {
         elements.add(new Coin(x, y, rad));
         castChanges();
+    }
+
+    public Character getPlayer(){
+        return this.player;
     }
 
     /**
@@ -131,6 +137,7 @@ public class Universe {
                 if (this.player.getHitBox().collide(hb)) {
                     System.out.println("Do both hit?");
                     this.player.updateCoinCount();
+                    this.player.setHitCoin(true);
                     // this.elements.remove(elem);
                     tempVec.add(elem);
                     // this.elements.remove(elements.indexOf(elem));
@@ -142,13 +149,28 @@ public class Universe {
                 if (this.player.getHitBox().collide(hb)) {
                     this.player.decrementCoinCount();
                     this.player.decrementCoinCount();
+                    this.player.setHitCoin(false);
                     // this.elements.remove(elem);
                     tempVec.add(elem);
 //                    this.elements.remove(elements.indexOf(elem));
                 }
+            }else{
+                this.player.setHitCoin(false);
             }
         }
         this.elements.removeAll(tempVec);
+    }
+
+    public void CheckPlayerCoinCollision(){
+        for (Elements elem: elements){
+            if (elem instanceof Coin){
+                Coin c = (Coin) elem;
+                HitBox hb = c.getHitBox();
+                if (this.player.getHitBox().collide(hb)){
+                    this.player.setHitCoin(true);
+                }
+            }
+        }
     }
 
     public void removeExtraElements() {
