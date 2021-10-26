@@ -3,6 +3,7 @@ package com.swe.justslidin.models;
 
 import android.graphics.Bitmap;
 
+import com.swe.justslidin.constants.Constants;
 import com.swe.justslidin.view.GraphicsRenderer;
 import android.util.Log;
 
@@ -21,7 +22,7 @@ public class Universe {
     Background background = new Background();
 
     public Universe () {
-        this (DEFAULT_GRAVITY_MOTION, new Character(540, 100, 50f));
+        this (DEFAULT_GRAVITY_MOTION, new Character(540, 100, 75f));
     }
 
     public Universe (Motion g, Character pl) {
@@ -57,7 +58,25 @@ public class Universe {
      * This value defines the radius (size) of the new coin instance.
      */
     public void addCoin(float x, float y, float rad) {
-        elements.add(new Coin(x, y, rad));
+        Coin newCoin = new Coin(x, y, rad);
+        for (Elements elem : this.elements) {
+            if (elem instanceof Barrier) {
+                Barrier b = (Barrier) elem;
+                HitBox hb = b.getHitBox();
+                if (newCoin.getHitBox().collide(hb)) {
+                    float bLeft = hb.getLeft();
+                    float bRight = hb.getRight();
+                    if (bLeft <= Constants.SCREEN_WIDTH) {
+                        newCoin = new Coin(bRight + 100, y, rad);
+                        // newCoin.setPos(new Position(bRight + 100, y));
+                    } else {
+                        // newCoin.setPos(new Position(bLeft - 100, y));
+                        newCoin = new Coin(bLeft - 100, y, rad);
+                    }
+                }
+            }
+        }
+        elements.add(newCoin);
         castChanges();
     }
 
@@ -98,6 +117,7 @@ public class Universe {
         for (Elements e : elements) {
             e.moveUp(this.gravity);
         }
+
         castChanges();
     }
 
@@ -133,15 +153,15 @@ public class Universe {
             if (elem instanceof Coin) {
                 Coin c = (Coin) elem;
                 HitBox hb = c.getHitBox();
-                System.out.println("Does this reach instance of coin?");
+//                System.out.println("Does this reach instance of coin?");
                 if (this.player.getHitBox().collide(hb)) {
-                    System.out.println("Do both hit?");
+//                    System.out.println("Do both hit?");
                     this.player.updateCoinCount();
                     this.player.setHitCoin(true);
                     // this.elements.remove(elem);
                     tempVec.add(elem);
                     // this.elements.remove(elements.indexOf(elem));
-                    System.out.println("But does this delete?");
+//                    System.out.println("But does this delete?");
                 }
             } else if (elem instanceof Barrier) {
                 Barrier b = (Barrier) elem;
@@ -161,17 +181,17 @@ public class Universe {
         this.elements.removeAll(tempVec);
     }
 
-    public void CheckPlayerCoinCollision(){
-        for (Elements elem: elements){
-            if (elem instanceof Coin){
-                Coin c = (Coin) elem;
-                HitBox hb = c.getHitBox();
-                if (this.player.getHitBox().collide(hb)){
-                    this.player.setHitCoin(true);
-                }
-            }
-        }
-    }
+//    public void CheckPlayerCoinCollision(){
+//        for (Elements elem: elements){
+//            if (elem instanceof Coin){
+//                Coin c = (Coin) elem;
+//                HitBox hb = c.getHitBox();
+//                if (this.player.getHitBox().collide(hb)){
+//                    this.player.setHitCoin(true);
+//                }
+//            }
+//        }
+//    }
 
     public void removeExtraElements() {
         Vector<Elements> tempVec = new Vector<Elements>();
