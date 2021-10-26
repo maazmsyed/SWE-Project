@@ -15,21 +15,35 @@ public class Universe {
 
     private static final String TAG = "Universe";
     // TODO: Do we still need gravity?
-    final static Motion DEFAULT_GRAVITY_MOTION = new Motion(0,5f); // Added after referring prof
+    final static Motion DEFAULT_GRAVITY_MOTION = new Motion(0,10f); // Added after referring prof
     Motion gravity;
     Character player;
     List<Elements> elements;
     Background background = new Background();
+    private int additionalMotionY;
+    private int speedUpCounter;
 
     public Universe () {
-        this (DEFAULT_GRAVITY_MOTION, new Character(540, 100, 75f));
+        this (DEFAULT_GRAVITY_MOTION, new Character(Constants.SCREEN_WIDTH/2, 400, 75f));
     }
 
     public Universe (Motion g, Character pl) {
         elements = new Vector<>();
         gravity = g;
         player = pl;
+        additionalMotionY = 0;
+        speedUpCounter = 0;
 //        this.background = new Background();
+    }
+
+    public void incrementGravity() {
+        // this.gravity.setY(DEFAULT_GRAVITY_MOTION.getY() + additionalMotionY);
+        this.gravity = new Motion(0, DEFAULT_GRAVITY_MOTION.getY() + additionalMotionY); // Also not working
+        System.out.println((this.gravity.getY())); // TODO: This is not updating!
+    }
+
+    public void defaultGravity() {
+        this.gravity = DEFAULT_GRAVITY_MOTION;
     }
 
     public void setBackgroundBitmap(Bitmap bitmap) {
@@ -117,7 +131,15 @@ public class Universe {
         for (Elements e : elements) {
             e.moveUp(this.gravity);
         }
-
+        this.player.updateAbsPosY(this.gravity);
+        this.speedUpCounter += 1;
+        if (this.speedUpCounter <= 200 && this.speedUpCounter % 20 == 0) {
+            this.additionalMotionY += 0.75;
+            System.out.println("Does this reach here?");
+            // this.incrementGravity();
+            this.gravity.setY(DEFAULT_GRAVITY_MOTION.getY() + additionalMotionY);
+            System.out.println(this.gravity.getY());
+        }
         castChanges();
     }
 
@@ -173,9 +195,9 @@ public class Universe {
                     // this.elements.remove(elem);
                     tempVec.add(elem);
 //                    this.elements.remove(elements.indexOf(elem));
+                    this.gravity = DEFAULT_GRAVITY_MOTION;
+                    this.additionalMotionY = 0;
                 }
-            }else{
-                this.player.setHitCoin(false);
             }
         }
         this.elements.removeAll(tempVec);
