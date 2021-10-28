@@ -14,7 +14,10 @@ buildscript {
 
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0db451cdd4af12279b0fc7961458d13a3e8b0704
 
 
 task clean(type: Delete) {
