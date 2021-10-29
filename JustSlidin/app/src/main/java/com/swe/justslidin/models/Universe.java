@@ -1,6 +1,12 @@
 package com.swe.justslidin.models;
 
+
+import android.graphics.Bitmap;
+
+import com.swe.justslidin.constants.Constants;
+import com.swe.justslidin.view.GraphicsRenderer;
 import android.util.Log;
+
 
 import java.util.List;
 import java.util.Vector;
@@ -13,15 +19,27 @@ public class Universe {
     Motion gravity;
     Character player;
     List<Elements> elements;
+    Background background = new Background();
 
     public Universe () {
-        this (DEFAULT_GRAVITY_MOTION, new Character(540, 100, 50f));
+        this (DEFAULT_GRAVITY_MOTION, new Character(540, 100, 75f));
     }
 
     public Universe (Motion g, Character pl) {
         elements = new Vector<>();
         gravity = g;
         player = pl;
+//        this.background = new Background();
+    }
+
+    public void setBackgroundBitmap(Bitmap bitmap) {
+        this.background.setBackgroundBitmap(bitmap);
+    }
+
+    public void setPlayerBitmap(Bitmap bitmap){ this.player.setPlayerBitmap(bitmap);}
+
+    public Background getBackground() {
+        return this.background;
     }
 
 //    public void addChar(float x, float y, float rad) {
@@ -40,8 +58,30 @@ public class Universe {
      * This value defines the radius (size) of the new coin instance.
      */
     public void addCoin(float x, float y, float rad) {
-        elements.add(new Coin(x, y, rad));
+        Coin newCoin = new Coin(x, y, rad);
+        for (Elements elem : this.elements) {
+            if (elem instanceof Barrier) {
+                Barrier b = (Barrier) elem;
+                HitBox hb = b.getHitBox();
+                if (newCoin.getHitBox().collide(hb)) {
+                    float bLeft = hb.getLeft();
+                    float bRight = hb.getRight();
+                    if (bLeft <= Constants.SCREEN_WIDTH) {
+                        newCoin = new Coin(bRight + 100, y, rad);
+                        // newCoin.setPos(new Position(bRight + 100, y));
+                    } else {
+                        // newCoin.setPos(new Position(bLeft - 100, y));
+                        newCoin = new Coin(bLeft - 100, y, rad);
+                    }
+                }
+            }
+        }
+        elements.add(newCoin);
         castChanges();
+    }
+
+    public Character getPlayer(){
+        return this.player;
     }
 
     /**
@@ -53,11 +93,9 @@ public class Universe {
      * This value defines the y-coordinate of the new barrier instance's position.
      * @param h
      * This value defines the height of the new barrier instance.
-     * @param l
-     * This value defines the length of the new barrier instance.
      */
-    public void addBarrier(float x, float y, float h, float l) {
-        elements.add(new Barrier (x,y,h,l));
+    public void addBarrier(float x, float y, float h) {
+        elements.add(new Barrier (x,y,h));
         castChanges();
     }
 
@@ -75,9 +113,11 @@ public class Universe {
      * all the coins and barriers in the game have a natural upward movement.
      */
     public void step() {
+        background.moveUp(this.gravity);
         for (Elements e : elements) {
             e.moveUp(this.gravity);
         }
+
         castChanges();
     }
 
@@ -102,11 +142,80 @@ public class Universe {
      * The Position of the new barrier instance.
      * @param h
      * This value defines the height of the new barrier instance.
-     * @param l
-     * This value defines the length of the new barrier instance.
      */
-    public void addBarrier(Position pos, float h, float l) {
-        this.addBarrier(pos.getX(), pos.getY(),h,l);
+    public void addBarrier(Position pos, float h) {
+        this.addBarrier(pos.getX(), pos.getY(),h);
+    }
+
+    public void checkPlayerCollision() {
+        Vector<Elements> tempVec = new Vector<Elements>();
+        for (Elements elem : this.elements) {
+            if (elem instanceof Coin) {
+                Coin c = (Coin) elem;
+                HitBox hb = c.getHitBox();
+//                System.out.println("Does this reach instance of coin?");
+                if (this.player.getHitBox().collide(hb)) {
+//                    System.out.println("Do both hit?");
+                    this.player.updateCoinCount();
+                    this.player.setHitCoin(true);
+                    // this.elements.remove(elem);
+                    tempVec.add(elem);
+                    // this.elements.remove(elements.indexOf(elem));
+//                    System.out.println("But does this delete?");
+                }
+            } else if (elem instanceof Barrier) {
+                Barrier b = (Barrier) elem;
+                HitBox hb = b.getHitBox();
+                if (this.player.getHitBox().collide(hb)) {
+                    this.player.decrementCoinCount();
+                    this.player.decrementCoinCount();
+                    this.player.setHitCoin(false);
+                    // this.elements.remove(elem);
+                    tempVec.add(elem);
+//                    this.elements.remove(elements.indexOf(elem));
+                }
+            }else{
+                this.player.setHitCoin(false);
+            }
+        }
+        this.elements.removeAll(tempVec);
+    }
+
+//    public void CheckPlayerCoinCollision(){
+//        for (Elements elem: elements){
+//            if (elem instanceof Coin){
+//                Coin c = (Coin) elem;
+//                HitBox hb = c.getHitBox();
+//                if (this.player.getHitBox().collide(hb)){
+//                    this.player.setHitCoin(true);
+//                }
+//            }
+//        }
+//    }
+
+    public void removeExtraElements() {
+        Vector<Elements> tempVec = new Vector<Elements>();
+        for (Elements elem : this.elements) {
+            if (elem instanceof Coin) {
+                Coin c = (Coin) elem;
+                HitBox hb = c.getHitBox();
+                if (hb.getBottom() < 0) { // Out of the top of the screen
+                    // this.elements.remove(elem);
+                    // this.elements.remove(elements.indexOf(elem));
+                    tempVec.add(elem);
+                }
+            }
+            if (elem instanceof Barrier) {
+                Barrier b = (Barrier) elem;
+                HitBox hb = b.getHitBox();
+                if (hb.getBottom() < 0) {
+                    // this.elements.remove(elem);
+                    // this.elements.remove(elements.indexOf(elem));
+                    tempVec.add(elem);
+                }
+            }
+        }
+        this.elements.removeAll(tempVec);
     }
 
     public void moveCharLeft(float f) {

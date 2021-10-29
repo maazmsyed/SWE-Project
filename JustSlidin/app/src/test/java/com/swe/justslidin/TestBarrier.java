@@ -9,7 +9,7 @@ public class TestBarrier {
 
     @Test
     public void test_hitBox() {
-        Barrier b = new Barrier(50, 100, 10, 50);
+        Barrier b = new Barrier(50, 100, 10);
 
         assert (b.getHitBox().getLeft() == 25.0f);
         assert (b.getHitBox().getRight() == 75.0f);
@@ -41,7 +41,7 @@ public class TestBarrier {
 
     @Test
     public void test_pos_and_id() {
-        Barrier b = new Barrier(50, 100, 10, 30);
+        Barrier b = new Barrier(50, 100, 10);
 
         assert (b.getPosition().getX() == 50.0f);
         assert (b.getPosition().getY() == 100.0f);

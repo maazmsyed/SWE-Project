@@ -26,6 +26,9 @@ public class Coin extends Elements {
         this.rad = rad;
     }
 
+    public void setPos(Position pos) {
+        this.pos = pos;
+    }
 
     public HitBox getHitBox() {
         return this.hitBox;
