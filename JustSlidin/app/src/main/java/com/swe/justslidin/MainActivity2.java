@@ -3,6 +3,7 @@ package com.swe.justslidin;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -30,11 +31,17 @@ public class MainActivity2 extends AppCompatActivity {
                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
                 LocalDateTime now = LocalDateTime.now();
                 _myRef.setValue(dtf.format(now));
+                switchActivities();
             }
         });
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://softwareeng-cee86-default-rtdb.asia-southeast1.firebasedatabase.app/");
         _myRef=database.getReference("message");
         
         
+    }
+
+    private void switchActivities() {
+        Intent switchActivityIntent = new Intent(this, MainActivity.class);
+        startActivity(switchActivityIntent);
     }
 }
