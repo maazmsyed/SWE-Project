@@ -1,33 +1,34 @@
 {
   "project_info": {
-    "project_number": "252936695452",
-    "project_id": "justslidin-d4b80",
-    "storage_bucket": "justslidin-d4b80.appspot.com"
+    "project_number": "250814093443",
+    "firebase_url": "https://softwareeng-cee86-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "softwareeng-cee86",
+    "storage_bucket": "softwareeng-cee86.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:252936695452:android:b061fad824786cb70e8759",
+        "mobilesdk_app_id": "1:250814093443:android:74d89b2d4f8497657323b6",
         "android_client_info": {
           "package_name": "com.swe.justslidin"
         }
       },
       "oauth_client": [
         {
-          "client_id": "252936695452-j55rahtjrs6qfg285b82g4hmo9tkqrie.apps.googleusercontent.com",
+          "client_id": "250814093443-bvmjm9qrmh3hsvfup1jvhe4u6e1ivr8h.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDyCa3OVyQZeAW3FC-WM9Dxwf_qS_DvVvo"
+          "current_key": "AIzaSyDgNM1REHGM3ujg63Mbc4jFhiS7uHmJSeU"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "252936695452-j55rahtjrs6qfg285b82g4hmo9tkqrie.apps.googleusercontent.com",
+              "client_id": "250814093443-bvmjm9qrmh3hsvfup1jvhe4u6e1ivr8h.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

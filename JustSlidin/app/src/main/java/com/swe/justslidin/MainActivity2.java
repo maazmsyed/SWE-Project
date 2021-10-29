@@ -32,7 +32,7 @@ public class MainActivity2 extends AppCompatActivity {
                 _myRef.setValue(dtf.format(now));
             }
         });
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://softwareeng-cee86-default-rtdb.asia-southeast1.firebasedatabase.app/");
         _myRef=database.getReference("message");
         
         
