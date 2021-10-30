@@ -38,7 +38,7 @@ public class MainActivity2 extends AppCompatActivity {
         editText = findViewById(R.id.editText);
         button = findViewById(R.id.button);
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance("https://softwareeng-cee86-default-rtdb.asia-southeast1.firebasedatabase.app/");
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://justslidin-d4b80-default-rtdb.asia-southeast1.firebasedatabase.app/");
         button.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
@@ -88,7 +88,7 @@ public class MainActivity2 extends AppCompatActivity {
     }
 
     private void switchActivities() {
-        Intent switchActivityIntent = new Intent(this, MainActivity.class);
+        Intent switchActivityIntent = new Intent(this, MainActivity3.class);
         startActivity(switchActivityIntent);
     }
 }
