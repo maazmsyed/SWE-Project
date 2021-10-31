@@ -39,7 +39,7 @@ public class Universe {
     public void incrementGravity() {
         // this.gravity.setY(DEFAULT_GRAVITY_MOTION.getY() + additionalMotionY);
         this.gravity = new Motion(0, DEFAULT_GRAVITY_MOTION.getY() + additionalMotionY); // Also not working
-        System.out.println((this.gravity.getY())); // TODO: This is not updating!
+        System.out.println((gravity.getY())); // TODO: This is not updating!
     }
 
     public void defaultGravity() {
