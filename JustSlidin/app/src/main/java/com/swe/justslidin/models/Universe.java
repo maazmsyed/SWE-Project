@@ -133,9 +133,6 @@ public class Universe {
             // this.incrementGravity();
 //            this.gravity.setY(DEFAULT_GRAVITY_MOTION.getY() + additionalMotionY);
             this.gravity.setY(additionalMotionY);
-            System.out.println("grav" + gravity.getY());
-            System.out.println("aM" + this.additionalMotionY);
-            System.out.println("counter" + this.speedUpCounter);
         }
         background.moveUp(this.gravity);
         for (Elements e : elements) {
