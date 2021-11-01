@@ -48,7 +48,6 @@ public class Coin extends Elements {
      * updates the position of the coin as well as its Hitbox by the given motion, moving the coin upwards
      * @param m given motion m
      */
-
     @Override public void moveUp(Motion m) {
         float x = m.getX();
         float y = m.getY();

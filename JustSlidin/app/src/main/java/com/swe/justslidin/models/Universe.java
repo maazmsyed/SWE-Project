@@ -14,7 +14,6 @@ import java.util.Vector;
 public class Universe {
 
     private static final String TAG = "Universe";
-    // TODO: Do we still need gravity?
     final static Motion DEFAULT_GRAVITY_MOTION = new Motion(0,10f); // Added after referring prof
     Motion gravity;
     Character player;
@@ -22,6 +21,10 @@ public class Universe {
     Background background = new Background();
     private float additionalMotionY;
     private int speedUpCounter;
+    FinishingLine finishingLine = new FinishingLine((Constants.SCREEN_WIDTH / 2),
+            Constants.SCREEN_HEIGHT * 5); // TODO: When to end game?
+    private volatile Boolean gameRunning;
+
 
     public Universe () {
         this (DEFAULT_GRAVITY_MOTION, new Character(Constants.SCREEN_WIDTH / 2,
@@ -34,7 +37,16 @@ public class Universe {
         player = pl;
         additionalMotionY = DEFAULT_GRAVITY_MOTION.getY();
         speedUpCounter = 0;
+        gameRunning = true;
 //        this.background = new Background();
+    }
+
+    public Boolean isGameRunning() {
+        return this.gameRunning;
+    }
+
+    public void setGameRunning(Boolean gameRunning) {
+        this.gameRunning = gameRunning;
     }
 
 //    public void incrementGravity() {
@@ -51,16 +63,20 @@ public class Universe {
         this.background.setBackgroundBitmap(bitmap);
     }
 
-    public void setPlayerBitmap(Bitmap bitmap){ this.player.setPlayerBitmap(bitmap);}
+    public void setFinishingLineBitmap(Bitmap bitmap) {
+        this.finishingLine.setFinishingBitmap(bitmap);
+    }
+
+    public FinishingLine getFinishingLine() {
+        return this.finishingLine;
+    }
+
+//    public void setPlayerBitmap(Bitmap bitmap){ this.player.setPlayerBitmap(bitmap);}
 
     public Background getBackground() {
         return this.background;
     }
 
-//    public void addChar(float x, float y, float rad) {
-//        data.add(new Character (x,y,rad));
-//        castChanges();
-//    }
 
     /**
      * This method adds an instantiation of a coin to the elements list.
@@ -136,11 +152,16 @@ public class Universe {
             this.additionalMotionY += 0.75;
             this.gravity.setY(additionalMotionY);
         }
+        finishingLine.moveUp(this.gravity);
         background.moveUp(this.gravity);
         for (Elements e : elements) {
             e.moveUp(this.gravity);
         }
         this.player.updateAbsPosY(this.gravity);
+        if (this.player.getHitBox().collide(this.finishingLine.getHitBox())) {
+            gameRunning = false;
+        }
+        // if (this.finishingLine.getHitBox().collide())
         castChanges();
     }
 
@@ -235,6 +256,10 @@ public class Universe {
         //Log.i(TAG,"CHAR HAS MOVED RIGHT.");
         player.moveRight(f);
         System.out.println(player.getPosition());
+    }
+
+    public void waitingForOthers() {
+        castChanges();
     }
 
     public Position getPosition () { return player.getPosition(); }

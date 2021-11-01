@@ -157,6 +157,16 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
         this.bgBitmap = Bitmap.createScaledBitmap(this.bgBitmap, screenWidth, screenHeight, true);
         this.universe.setBackgroundBitmap(this.bgBitmap);
 
+        // FinishingLine Bitmap
+        System.out.println(this.universe.getFinishingLine().getHitBox().getLeft());
+        System.out.println(this.universe.getFinishingLine().getHitBox().getTop());
+        this.finishingLine = BitmapFactory.decodeResource(context, R.mipmap.finishing_line);
+        this.finishingLine = Bitmap.createScaledBitmap(this.finishingLine,
+                screenWidth, (int) (this.universe.getFinishingLine().getHitBox().getBottom()
+                - this.universe.getFinishingLine().getHitBox().getTop()), true);
+        this.universe.setFinishingLineBitmap(this.finishingLine);
+//        System.out.println("Does it reach here?");
+
     }
 
 
@@ -180,9 +190,10 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
 
         this.universe.getBackground().draw(canvas);
 
+        this.universe.getFinishingLine().draw(canvas);
+
         Character player = this.universe.getPlayer();
         HitBox hbPlayer = player.getHitBox();
-        float radius = player.getRadius();
 
         // Reset player's coin reaction bitmap to normal
         if (this.coinBitmapCount >= 20) {
@@ -196,38 +207,49 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
             this.universe.getPlayer().setHitBarrier(false);
         }
 
-        if (this.universe.getPlayer().ifHitCoin() && (!this.universe.getPlayer().ifHitBarrier())) {
-            canvas.drawBitmap(this.playerCoin, (int) hbPlayer.getLeft(),
-                    (int) hbPlayer.getTop(), null);
-            this.coinBitmapCount += 1;
-        }
+        if (this.universe.isGameRunning()) {
 
-        if ((!this.universe.getPlayer().ifHitCoin()) && this.universe.getPlayer().ifHitBarrier()) {
-            canvas.drawBitmap(this.playerBarrier, (int) hbPlayer.getLeft(),
-                    (int) hbPlayer.getTop(), null);
-            this.barrierBitmapCount += 1;
-        }
-
-        if (this.universe.getPlayer().ifHitCoin() && this.universe.getPlayer().ifHitBarrier()) {
-            if (this.coinBitmapCount < this.barrierBitmapCount) {
+            if (this.universe.getPlayer().ifHitCoin() && (!this.universe.getPlayer().ifHitBarrier())) {
                 canvas.drawBitmap(this.playerCoin, (int) hbPlayer.getLeft(),
                         (int) hbPlayer.getTop(), null);
-            } else {
+                this.coinBitmapCount += 1;
+            }
+
+            if ((!this.universe.getPlayer().ifHitCoin()) && this.universe.getPlayer().ifHitBarrier()) {
                 canvas.drawBitmap(this.playerBarrier, (int) hbPlayer.getLeft(),
                         (int) hbPlayer.getTop(), null);
+                this.barrierBitmapCount += 1;
             }
-            this.coinBitmapCount += 1;
-            this.barrierBitmapCount += 1;
+
+            if (this.universe.getPlayer().ifHitCoin() && this.universe.getPlayer().ifHitBarrier()) {
+                if (this.coinBitmapCount < this.barrierBitmapCount) {
+                    canvas.drawBitmap(this.playerCoin, (int) hbPlayer.getLeft(),
+                            (int) hbPlayer.getTop(), null);
+                } else {
+                    canvas.drawBitmap(this.playerBarrier, (int) hbPlayer.getLeft(),
+                            (int) hbPlayer.getTop(), null);
+                }
+                this.coinBitmapCount += 1;
+                this.barrierBitmapCount += 1;
+            }
+
+            if ((!this.universe.getPlayer().ifHitCoin()) && (!this.universe.getPlayer().ifHitBarrier())) {
+                canvas.drawBitmap(this.playerWalking.get(this.playerWalkingCount),
+                        (int) hbPlayer.getLeft(), (int) hbPlayer.getTop(), null);
+                this.playerWalkingCount += 1;
+                if (this.playerWalkingCount >= 20) {
+                    this.playerWalkingCount = 0;
+                }
+            }
         }
 
-        if ((!this.universe.getPlayer().ifHitCoin()) && (!this.universe.getPlayer().ifHitBarrier())) {
-            canvas.drawBitmap(this.playerWalking.get(this.playerWalkingCount),
-                    (int) hbPlayer.getLeft(), (int) hbPlayer.getTop(), null);
-            this.playerWalkingCount += 1;
-            if (this.playerWalkingCount >= 20) {
-                this.playerWalkingCount = 0;
-            }
+        if (!this.universe.isGameRunning()) {
+
         }
+
+
+
+
 
         for (Elements elem : this.universe.getElements()) {
             if (elem instanceof Coin) {
