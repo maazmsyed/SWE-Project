@@ -50,7 +50,8 @@ public class MainActivity2 extends AppCompatActivity {
             _myRef = database.getReference("players/"+playerName);
             addEventListener();
             Character player = new Character(Constants.SCREEN_WIDTH/2, 400, 50f);
-            _myRef.setValue(player);
+            _myRef.child("pos").setValue(player.getPosition());
+            _myRef.child("rad").setValue(player.getRadius());
         }
 
 
@@ -67,7 +68,8 @@ public class MainActivity2 extends AppCompatActivity {
                     _myRef = database.getReference("players/" + playerName);
                     addEventListener();
                     Character player = new Character(Constants.SCREEN_WIDTH/2, 400, 50f);
-                    _myRef.setValue(player);
+                    _myRef.child("pos").setValue(player.getPosition());
+                    _myRef.child("rad").setValue(player.getRadius());
                 }
                 //_myRef.setValue(dtf.format(now));
                 switchActivities();
