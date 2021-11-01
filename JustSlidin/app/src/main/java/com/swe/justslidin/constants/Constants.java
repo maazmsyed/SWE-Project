@@ -6,7 +6,6 @@ import com.swe.justslidin.models.Motion;
 
 public abstract class Constants {
 
-    public static final Motion DEFAULT_GRAVITY_MOTION = new Motion(0,5f);
     public static final float SCREEN_WIDTH = Resources.getSystem().getDisplayMetrics().widthPixels;
     public static final float SCREEN_HEIGHT = Resources.getSystem().getDisplayMetrics().heightPixels;
 
