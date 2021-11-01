@@ -52,6 +52,7 @@ public class MainActivity2 extends AppCompatActivity {
             Character player = new Character(Constants.SCREEN_WIDTH/2, 400, 50f);
             _myRef.child("pos").setValue(player.getPosition());
             _myRef.child("rad").setValue(player.getRadius());
+            // TODO: store the entire object to the db instead of separating it
         }
 
 
@@ -70,6 +71,7 @@ public class MainActivity2 extends AppCompatActivity {
                     Character player = new Character(Constants.SCREEN_WIDTH/2, 400, 50f);
                     _myRef.child("pos").setValue(player.getPosition());
                     _myRef.child("rad").setValue(player.getRadius());
+                    // TODO: store the entire object to the db instead of separating it
                 }
                 //_myRef.setValue(dtf.format(now));
                 switchActivities();
