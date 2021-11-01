@@ -24,6 +24,10 @@ public class Character extends Elements {
     private boolean hitBarrier;
     private Position absolutePos;
 
+    public Character(){
+        // empty constructor for data snapshot
+    }
+
 
     /**
     * Constructor that creates a new Character with a certain x- and y-coordinate, radius, and hitbox.

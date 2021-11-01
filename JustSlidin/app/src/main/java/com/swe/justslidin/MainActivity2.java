@@ -18,6 +18,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.swe.justslidin.constants.Constants;
+import com.swe.justslidin.models.Character;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -47,7 +49,8 @@ public class MainActivity2 extends AppCompatActivity {
         if (!playerName.equals("")){
             _myRef = database.getReference("players/"+playerName);
             addEventListener();
-            _myRef.setValue("");
+            Character player = new Character(Constants.SCREEN_WIDTH/2, 400, 50f);
+            _myRef.setValue(player);
         }
 
 
@@ -63,7 +66,8 @@ public class MainActivity2 extends AppCompatActivity {
                     button.setEnabled(false);
                     _myRef = database.getReference("players/" + playerName);
                     addEventListener();
-                    _myRef.setValue("");
+                    Character player = new Character(Constants.SCREEN_WIDTH/2, 400, 50f);
+                    _myRef.setValue(player);
                 }
                 //_myRef.setValue(dtf.format(now));
                 switchActivities();
