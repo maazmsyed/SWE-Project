@@ -20,7 +20,7 @@ public class Universe {
     Character player;
     List<Elements> elements;
     Background background = new Background();
-    private int additionalMotionY;
+    private float additionalMotionY;
     private int speedUpCounter;
 
     public Universe () {
@@ -31,7 +31,7 @@ public class Universe {
         elements = new Vector<>();
         gravity = g;
         player = pl;
-        additionalMotionY = 0;
+        additionalMotionY = 10f;
         speedUpCounter = 0;
 //        this.background = new Background();
     }
@@ -127,19 +127,18 @@ public class Universe {
      * all the coins and barriers in the game have a natural upward movement.
      */
     public void step() {
+        this.speedUpCounter += 1;
+        if (this.additionalMotionY <= 20f && this.speedUpCounter % 20 == 0) {
+            this.additionalMotionY += 0.75;
+            // this.incrementGravity();
+//            this.gravity.setY(DEFAULT_GRAVITY_MOTION.getY() + additionalMotionY);
+            this.gravity.setY(additionalMotionY);
+        }
         background.moveUp(this.gravity);
         for (Elements e : elements) {
             e.moveUp(this.gravity);
         }
         this.player.updateAbsPosY(this.gravity);
-        this.speedUpCounter += 1;
-        if (this.speedUpCounter <= 200 && this.speedUpCounter % 20 == 0) {
-            this.additionalMotionY += 0.75;
-            System.out.println("Does this reach here?");
-            // this.incrementGravity();
-            this.gravity.setY(DEFAULT_GRAVITY_MOTION.getY() + additionalMotionY);
-            System.out.println(this.gravity.getY());
-        }
         castChanges();
     }
 
@@ -175,15 +174,11 @@ public class Universe {
             if (elem instanceof Coin) {
                 Coin c = (Coin) elem;
                 HitBox hb = c.getHitBox();
-//                System.out.println("Does this reach instance of coin?");
                 if (this.player.getHitBox().collide(hb)) {
-//                    System.out.println("Do both hit?");
                     this.player.updateCoinCount();
                     this.player.setHitCoin(true);
                     // this.elements.remove(elem);
                     tempVec.add(elem);
-                    // this.elements.remove(elements.indexOf(elem));
-//                    System.out.println("But does this delete?");
                 }
             } else if (elem instanceof Barrier) {
                 Barrier b = (Barrier) elem;
@@ -193,11 +188,14 @@ public class Universe {
                     this.player.decrementCoinCount();
                     this.player.setHitBarrier(true);
 //                    this.player.setHitCoin(false);
+
+                    this.speedUpCounter = 0;
+                    this.additionalMotionY = 7f;
                     // this.elements.remove(elem);
                     tempVec.add(elem);
 //                    this.elements.remove(elements.indexOf(elem));
                     this.gravity = DEFAULT_GRAVITY_MOTION;
-                    this.additionalMotionY = 0;
+//                    this.additionalMotionY = 0;
                 }
             }
         }
