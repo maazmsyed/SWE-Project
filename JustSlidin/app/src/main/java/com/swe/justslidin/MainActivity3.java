@@ -54,7 +54,7 @@ public class MainActivity3 extends AppCompatActivity {
                 button.setText("CREATING ROOM");
                 button.setEnabled(false);
                 roomName = playerName;
-                roomRef = database.getReference("rooms/" + roomName + "/player1");
+                roomRef = database.getReference("rooms/" + roomName + "/host");
                 addRoomEventListener();
                 roomRef.setValue(playerName);
             }
@@ -64,7 +64,7 @@ public class MainActivity3 extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 roomName = roomList.get(position);
-                roomRef = database.getReference("rooms/" + roomName + "/player2");
+                roomRef = database.getReference("rooms/" + roomName + "/guest");
                 addRoomEventListener();
                 roomRef.setValue(playerName);
             }
