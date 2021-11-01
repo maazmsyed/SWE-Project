@@ -31,8 +31,8 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
     private SurfaceHolder holder;
 
     // Coin
-    private Bitmap coinBitmap;
-    private Bitmap coinIconBitmap;
+    private Bitmap coinBitmap; // For coins
+    private Bitmap coinIconBitmap; // For coin counter
     private int coinBitmapCount;
 
     // Barrier
@@ -58,6 +58,9 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
 
     // Context
     private Resources context;
+
+    // Finishing Line
+    private Bitmap finishingLine;
 
     private int screenWidth;
     private int screenHeight;
@@ -142,13 +145,17 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
                 (int) Constants.PLAYER_RADIUS * 2,
                 (int) Constants.PLAYER_RADIUS * 2,true);
 
+        // Player Win
+        this.playerWin = BitmapFactory.decodeResource(context,R.mipmap.player_win);
+        this.playerWin = Bitmap.createScaledBitmap(this.playerWin,
+                (int) Constants.PLAYER_RADIUS * 2,
+                (int) Constants.PLAYER_RADIUS * 2,true);
+
+
         // Background Bitmap
         this.bgBitmap = BitmapFactory.decodeResource(context, R.mipmap.background);
         this.bgBitmap = Bitmap.createScaledBitmap(this.bgBitmap, screenWidth, screenHeight, true);
         this.universe.setBackgroundBitmap(this.bgBitmap);
-
-
-        // this.characterBitmap = BitmapFactory.decodeResource(context,R.mipmap.player);
 
     }
 
@@ -178,13 +185,13 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
         float radius = player.getRadius();
 
         // Reset player's coin reaction bitmap to normal
-        if (this.coinBitmapCount >= 12) {
+        if (this.coinBitmapCount >= 20) {
             this.coinBitmapCount = 0;
             this.universe.getPlayer().setHitCoin(false);
         }
 
         // Reset player's barrier hit reaction bitmap to normal
-        if (this.barrierBitmapCount >= 12) {
+        if (this.barrierBitmapCount >= 20) {
             this.barrierBitmapCount = 0;
             this.universe.getPlayer().setHitBarrier(false);
         }

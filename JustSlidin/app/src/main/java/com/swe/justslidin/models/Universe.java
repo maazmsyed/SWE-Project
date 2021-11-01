@@ -24,27 +24,28 @@ public class Universe {
     private int speedUpCounter;
 
     public Universe () {
-        this (DEFAULT_GRAVITY_MOTION, new Character(Constants.SCREEN_WIDTH/2, 400, 50f));
+        this (DEFAULT_GRAVITY_MOTION, new Character(Constants.SCREEN_WIDTH / 2,
+                Constants.SCREEN_HEIGHT / 4, Constants.PLAYER_RADIUS));
     }
 
     public Universe (Motion g, Character pl) {
         elements = new Vector<>();
         gravity = g;
         player = pl;
-        additionalMotionY = 10f;
+        additionalMotionY = DEFAULT_GRAVITY_MOTION.getY();
         speedUpCounter = 0;
 //        this.background = new Background();
     }
 
-    public void incrementGravity() {
-        // this.gravity.setY(DEFAULT_GRAVITY_MOTION.getY() + additionalMotionY);
-        this.gravity = new Motion(0, DEFAULT_GRAVITY_MOTION.getY() + additionalMotionY); // Also not working
-        System.out.println((gravity.getY())); // TODO: This is not updating!
-    }
+//    public void incrementGravity() {
+//        // this.gravity.setY(DEFAULT_GRAVITY_MOTION.getY() + additionalMotionY);
+//        this.gravity = new Motion(0, DEFAULT_GRAVITY_MOTION.getY() + additionalMotionY); // Also not working
+//        System.out.println((gravity.getY())); // TODO: This is not updating!
+//    }
 
-    public void defaultGravity() {
-        this.gravity = DEFAULT_GRAVITY_MOTION;
-    }
+//    public void defaultGravity() {
+//        this.gravity = DEFAULT_GRAVITY_MOTION;
+//    }
 
     public void setBackgroundBitmap(Bitmap bitmap) {
         this.background.setBackgroundBitmap(bitmap);
@@ -72,6 +73,8 @@ public class Universe {
      * This value defines the radius (size) of the new coin instance.
      */
     public void addCoin(float x, float y, float rad) {
+        System.out.println(Constants.SCREEN_WIDTH);
+        System.out.println(Constants.SCREEN_HEIGHT);
         Coin newCoin = new Coin(x, y, rad);
         for (Elements elem : this.elements) {
             if (elem instanceof Barrier) {
@@ -81,11 +84,11 @@ public class Universe {
                     float bLeft = hb.getLeft();
                     float bRight = hb.getRight();
                     if (bLeft <= Constants.SCREEN_WIDTH) {
-                        newCoin = new Coin(bRight + 100, y, rad);
+                        newCoin = new Coin(bRight + (Constants.SCREEN_WIDTH / 10), y, rad);
                         // newCoin.setPos(new Position(bRight + 100, y));
                     } else {
                         // newCoin.setPos(new Position(bLeft - 100, y));
-                        newCoin = new Coin(bLeft - 100, y, rad);
+                        newCoin = new Coin(bLeft - (Constants.SCREEN_WIDTH / 10), y, rad);
                     }
                 }
             }
@@ -128,10 +131,9 @@ public class Universe {
      */
     public void step() {
         this.speedUpCounter += 1;
-        if (this.additionalMotionY <= 20f && this.speedUpCounter % 20 == 0) {
+        if (this.additionalMotionY <= (DEFAULT_GRAVITY_MOTION.getY() * 2)
+                && this.speedUpCounter % 20 == 0) {
             this.additionalMotionY += 0.75;
-            // this.incrementGravity();
-//            this.gravity.setY(DEFAULT_GRAVITY_MOTION.getY() + additionalMotionY);
             this.gravity.setY(additionalMotionY);
         }
         background.moveUp(this.gravity);
@@ -177,7 +179,6 @@ public class Universe {
                 if (this.player.getHitBox().collide(hb)) {
                     this.player.updateCoinCount();
                     this.player.setHitCoin(true);
-                    // this.elements.remove(elem);
                     tempVec.add(elem);
                 }
             } else if (elem instanceof Barrier) {
@@ -187,32 +188,17 @@ public class Universe {
                     this.player.decrementCoinCount();
                     this.player.decrementCoinCount();
                     this.player.setHitBarrier(true);
-//                    this.player.setHitCoin(false);
-
-                    this.speedUpCounter = 0;
-                    this.additionalMotionY = 7f;
-                    // this.elements.remove(elem);
                     tempVec.add(elem);
-//                    this.elements.remove(elements.indexOf(elem));
+                    this.speedUpCounter = 0;
+                    this.additionalMotionY = DEFAULT_GRAVITY_MOTION.getY() -
+                            (DEFAULT_GRAVITY_MOTION.getY() / 4);
                     this.gravity = DEFAULT_GRAVITY_MOTION;
-//                    this.additionalMotionY = 0;
                 }
             }
         }
         this.elements.removeAll(tempVec);
     }
 
-//    public void CheckPlayerCoinCollision(){
-//        for (Elements elem: elements){
-//            if (elem instanceof Coin){
-//                Coin c = (Coin) elem;
-//                HitBox hb = c.getHitBox();
-//                if (this.player.getHitBox().collide(hb)){
-//                    this.player.setHitCoin(true);
-//                }
-//            }
-//        }
-//    }
 
     public void removeExtraElements() {
         Vector<Elements> tempVec = new Vector<Elements>();
