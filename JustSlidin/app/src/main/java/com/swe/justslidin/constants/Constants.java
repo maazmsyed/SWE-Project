@@ -17,6 +17,8 @@ public abstract class Constants {
     public static final float BARRIER_LONG_SIZE = (float) (SCREEN_WIDTH / 2.5);
     public static final float BARRIER_HEIGHT = SCREEN_HEIGHT / 12;
 
+    // Player
+    public static final float PLAYER_RADIUS = SCREEN_WIDTH / 20;
 
 
 }

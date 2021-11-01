@@ -24,7 +24,7 @@ public class Universe {
     private int speedUpCounter;
 
     public Universe () {
-        this (DEFAULT_GRAVITY_MOTION, new Character(Constants.SCREEN_WIDTH/2, 400, 75f));
+        this (DEFAULT_GRAVITY_MOTION, new Character(Constants.SCREEN_WIDTH/2, 400, 50f));
     }
 
     public Universe (Motion g, Character pl) {
@@ -186,9 +186,11 @@ public class Universe {
                 if (this.player.getHitBox().collide(hb)) {
                     this.player.decrementCoinCount();
                     this.player.decrementCoinCount();
+                    this.player.setHitBarrier(true);
+//                    this.player.setHitCoin(false);
+
                     this.speedUpCounter = 0;
                     this.additionalMotionY = 7f;
-                    this.player.setHitCoin(false);
                     // this.elements.remove(elem);
                     tempVec.add(elem);
 //                    this.elements.remove(elements.indexOf(elem));

@@ -21,6 +21,7 @@ public class Character extends Elements {
     private HitBox hitBox;
     private Bitmap playerBitmap;
     private boolean hitCoin;
+    private boolean hitBarrier;
     private Position absolutePos;
 
 
@@ -33,22 +34,23 @@ public class Character extends Elements {
     public Character(float x, float y, float rad) {
         super();
         this.pos = new Position(x,y);
-        this.hitBox =
-                new HitBox(x - rad, x + rad, y + rad, y - rad);
+        this.hitBox = new HitBox(x - rad, x + rad, y + rad, y - rad);
         this.rad = rad;
         this.coinCount = 0;
         this.absolutePos = new Position(x, y);
     }
+
     public void setPlayerBitmap(Bitmap bitmap){
         this.playerBitmap = bitmap;
     }
-    public void setHitCoin(boolean bool){
-        this.hitCoin = bool;
-    }
 
-    public boolean ifHitCoin(){
-        return this.hitCoin;
-    }
+    public void setHitCoin(boolean bool) { this.hitCoin = bool; }
+
+    public boolean ifHitCoin() { return this.hitCoin; }
+
+    public void setHitBarrier(boolean bool) { this.hitBarrier = bool; }
+
+    public boolean ifHitBarrier() { return this.hitBarrier; }
 
     public void updateAbsPosY(Motion m) {
         float y = this.absolutePos.getY();
