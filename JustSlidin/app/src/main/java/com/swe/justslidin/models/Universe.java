@@ -5,6 +5,9 @@ import android.graphics.Bitmap;
 
 import com.swe.justslidin.constants.Constants;
 import com.swe.justslidin.view.GraphicsRenderer;
+import com.swe.justslidin.view.SoundPlayer;
+
+import android.media.SoundPool;
 import android.util.Log;
 
 
@@ -22,6 +25,7 @@ public class Universe {
     Background background = new Background();
     private float additionalMotionY;
     private int speedUpCounter;
+    private SoundPlayer sound;
 
     public Universe () {
         this (DEFAULT_GRAVITY_MOTION, new Character(Constants.SCREEN_WIDTH/2, 400, 50f));
@@ -33,6 +37,7 @@ public class Universe {
         player = pl;
         additionalMotionY = 10f;
         speedUpCounter = 0;
+
 //        this.background = new Background();
     }
 

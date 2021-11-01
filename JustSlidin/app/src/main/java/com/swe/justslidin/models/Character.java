@@ -38,6 +38,7 @@ public class Character extends Elements {
         this.rad = rad;
         this.coinCount = 0;
         this.absolutePos = new Position(x, y);
+        this.hitCoin = false;
     }
 
     public void setPlayerBitmap(Bitmap bitmap){
