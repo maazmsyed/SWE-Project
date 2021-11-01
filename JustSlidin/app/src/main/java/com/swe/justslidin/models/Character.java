@@ -20,7 +20,9 @@ public class Character extends Elements {
     private Position pos;
     private HitBox hitBox;
     private Bitmap playerBitmap;
-    private boolean Hitcoin;
+    private boolean hitCoin;
+    private boolean hitBarrier;
+    private Position absolutePos;
 
 
     /**
@@ -32,20 +34,31 @@ public class Character extends Elements {
     public Character(float x, float y, float rad) {
         super();
         this.pos = new Position(x,y);
-        this.hitBox =
-                new HitBox(x - rad, x + rad, y + rad, y - rad);
+        this.hitBox = new HitBox(x - rad, x + rad, y + rad, y - rad);
         this.rad = rad;
         this.coinCount = 0;
+        this.absolutePos = new Position(x, y);
     }
+
     public void setPlayerBitmap(Bitmap bitmap){
         this.playerBitmap = bitmap;
     }
-    public void setHitCoin(boolean bool){
-        this.Hitcoin = bool;
+
+    public void setHitCoin(boolean bool) { this.hitCoin = bool; }
+
+    public boolean ifHitCoin() { return this.hitCoin; }
+
+    public void setHitBarrier(boolean bool) { this.hitBarrier = bool; }
+
+    public boolean ifHitBarrier() { return this.hitBarrier; }
+
+    public void updateAbsPosY(Motion m) {
+        float y = this.absolutePos.getY();
+        this.absolutePos.setY(y + m.getY());
     }
 
-    public boolean ifHitCoin(){
-        return this.Hitcoin;
+    public void updateAbsPosX() {
+        this.absolutePos.setX(this.pos.getX());
     }
 
     /**
@@ -57,6 +70,7 @@ public class Character extends Elements {
             this.pos.left(f);
             this.hitBox.updateLeft(-f);
             this.hitBox.updateRight(-f);
+            this.updateAbsPosX();
         }
     }
 
@@ -70,6 +84,7 @@ public class Character extends Elements {
             this.pos.right(f);
             this.hitBox.updateLeft(f);
             this.hitBox.updateRight(f);
+            this.updateAbsPosX();
         }
     }
 

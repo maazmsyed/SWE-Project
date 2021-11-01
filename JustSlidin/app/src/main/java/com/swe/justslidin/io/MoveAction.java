@@ -24,7 +24,7 @@ public class MoveAction implements ClickAction {
         if (pos.getX() <= screenWidth / 2){
             Log.i(TAG,"ON THE LEFT");
             // universe.moveCharLeft(10f);
-            this.universe.getPlayer().moveLeft(15);
+            this.universe.getPlayer().moveLeft(15);     // TODO; Check with Maaz
         }
         else{
             Log.i(TAG,"ON THE RIGHT");

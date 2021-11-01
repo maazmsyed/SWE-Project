@@ -15,21 +15,35 @@ public class Universe {
 
     private static final String TAG = "Universe";
     // TODO: Do we still need gravity?
-    final static Motion DEFAULT_GRAVITY_MOTION = new Motion(0,5f); // Added after referring prof
+    final static Motion DEFAULT_GRAVITY_MOTION = new Motion(0,10f); // Added after referring prof
     Motion gravity;
     Character player;
     List<Elements> elements;
     Background background = new Background();
+    private float additionalMotionY;
+    private int speedUpCounter;
 
     public Universe () {
-        this (DEFAULT_GRAVITY_MOTION, new Character(540, 100, 75f));
+        this (DEFAULT_GRAVITY_MOTION, new Character(Constants.SCREEN_WIDTH/2, 400, 50f));
     }
 
     public Universe (Motion g, Character pl) {
         elements = new Vector<>();
         gravity = g;
         player = pl;
+        additionalMotionY = 10f;
+        speedUpCounter = 0;
 //        this.background = new Background();
+    }
+
+    public void incrementGravity() {
+        // this.gravity.setY(DEFAULT_GRAVITY_MOTION.getY() + additionalMotionY);
+        this.gravity = new Motion(0, DEFAULT_GRAVITY_MOTION.getY() + additionalMotionY); // Also not working
+        System.out.println((gravity.getY())); // TODO: This is not updating!
+    }
+
+    public void defaultGravity() {
+        this.gravity = DEFAULT_GRAVITY_MOTION;
     }
 
     public void setBackgroundBitmap(Bitmap bitmap) {
@@ -113,11 +127,18 @@ public class Universe {
      * all the coins and barriers in the game have a natural upward movement.
      */
     public void step() {
+        this.speedUpCounter += 1;
+        if (this.additionalMotionY <= 20f && this.speedUpCounter % 20 == 0) {
+            this.additionalMotionY += 0.75;
+            // this.incrementGravity();
+//            this.gravity.setY(DEFAULT_GRAVITY_MOTION.getY() + additionalMotionY);
+            this.gravity.setY(additionalMotionY);
+        }
         background.moveUp(this.gravity);
         for (Elements e : elements) {
             e.moveUp(this.gravity);
         }
-
+        this.player.updateAbsPosY(this.gravity);
         castChanges();
     }
 
@@ -153,15 +174,11 @@ public class Universe {
             if (elem instanceof Coin) {
                 Coin c = (Coin) elem;
                 HitBox hb = c.getHitBox();
-//                System.out.println("Does this reach instance of coin?");
                 if (this.player.getHitBox().collide(hb)) {
-//                    System.out.println("Do both hit?");
                     this.player.updateCoinCount();
                     this.player.setHitCoin(true);
                     // this.elements.remove(elem);
                     tempVec.add(elem);
-                    // this.elements.remove(elements.indexOf(elem));
-//                    System.out.println("But does this delete?");
                 }
             } else if (elem instanceof Barrier) {
                 Barrier b = (Barrier) elem;
@@ -169,13 +186,17 @@ public class Universe {
                 if (this.player.getHitBox().collide(hb)) {
                     this.player.decrementCoinCount();
                     this.player.decrementCoinCount();
-                    this.player.setHitCoin(false);
+                    this.player.setHitBarrier(true);
+//                    this.player.setHitCoin(false);
+
+                    this.speedUpCounter = 0;
+                    this.additionalMotionY = 7f;
                     // this.elements.remove(elem);
                     tempVec.add(elem);
 //                    this.elements.remove(elements.indexOf(elem));
+                    this.gravity = DEFAULT_GRAVITY_MOTION;
+//                    this.additionalMotionY = 0;
                 }
-            }else{
-                this.player.setHitCoin(false);
             }
         }
         this.elements.removeAll(tempVec);
