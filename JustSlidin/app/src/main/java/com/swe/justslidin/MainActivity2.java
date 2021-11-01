@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -39,6 +40,17 @@ public class MainActivity2 extends AppCompatActivity {
         button = findViewById(R.id.button);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://justslidin-d4b80-default-rtdb.asia-southeast1.firebasedatabase.app/");
+        SharedPreferences preferences = getSharedPreferences("PREFS",0);
+
+        // checks if player exists and gets the reference
+        playerName = preferences.getString("playerName","");
+        if (!playerName.equals("")){
+            _myRef = database.getReference("players/"+playerName);
+            addEventListener();
+            _myRef.setValue("");
+        }
+
+
         button.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
@@ -69,7 +81,10 @@ public class MainActivity2 extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 //success - continue to the next screen after saving the player name.
                 if(!playerName.equals("")) {
-
+                    SharedPreferences preferences = getSharedPreferences("PREFS",0);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("playerName",playerName);
+                    editor.apply();
                     switchActivities();
                     finish();
                 }

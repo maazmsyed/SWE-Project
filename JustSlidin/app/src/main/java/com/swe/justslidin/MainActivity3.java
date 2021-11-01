@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -31,6 +32,7 @@ public class MainActivity3 extends AppCompatActivity {
 
     FirebaseDatabase database;
     DatabaseReference roomRef;
+    DatabaseReference roomsRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +40,8 @@ public class MainActivity3 extends AppCompatActivity {
         setContentView(R.layout.activity_main3);
 
         database = FirebaseDatabase.getInstance("https://justslidin-d4b80-default-rtdb.asia-southeast1.firebasedatabase.app/");
-
+        SharedPreferences preferences = getSharedPreferences("PREFS",0);
+        playerName = preferences.getString("playerName","");
         roomName = playerName;
         listView = findViewById(R.id.listView);
         button = findViewById(R.id.button);
@@ -86,22 +89,20 @@ public class MainActivity3 extends AppCompatActivity {
                 button.setText("CREATE ROOM");
                 button.setEnabled(true);
                 Toast.makeText(MainActivity3.this,"Error!",Toast.LENGTH_SHORT).show();
-
-
             }
         });
 
     }
 
     private void addRoomsEventListener() {
-        roomRef = database.getReference("rooms");
-        roomRef.addValueEventListener(new ValueEventListener() {
+        roomsRef = database.getReference("rooms");
+        roomsRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 roomList.clear();
-                Iterable<DataSnapshot> rooms = snapshot.getChildren();
-                for (DataSnapshot dataSnapshot : rooms){
-                    roomList.add(dataSnapshot.getKey());
+                Iterable<DataSnapshot> rooms = dataSnapshot.getChildren();
+                for (DataSnapshot snapshot : rooms){
+                    roomList.add(snapshot.getKey());
                     ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity3.this, android.R.layout.simple_list_item_1,roomList);
                     listView.setAdapter(adapter);
                 }
