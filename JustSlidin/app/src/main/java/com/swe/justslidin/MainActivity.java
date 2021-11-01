@@ -16,8 +16,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         SurfaceView sv = findViewById(R.id.surfaceView);
         MainController mc = new MainController(sv, getResources(),getApplicationContext());
-        MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.coins);
-        mp.start();
+//        MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.coins);
+//        mp.start();
         mc.start();
     }
 

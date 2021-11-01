@@ -14,11 +14,16 @@ public class SoundPlayer {
 
     public SoundPlayer(Context context) {
         this.soundPool = new SoundPool(2, AudioManager.STREAM_MUSIC, 0);
-        this.hitCoinSound = soundPool.load(context, R.raw.coins,1);
+        this.hitCoinSound = soundPool.load(context, R.raw.coin,1);
+        this.hitBarrierSound = soundPool.load(context,R.raw.barrier,1);
     }
 
     public void PlayCoinSound() {
         soundPool.play(hitCoinSound,1.0f,1.0f,1,0,1.0f);
+    }
+
+    public void PlayBarrierSound() {
+        soundPool.play(hitBarrierSound,1.0f,1.0f,1,0,1.0f);
     }
 
 

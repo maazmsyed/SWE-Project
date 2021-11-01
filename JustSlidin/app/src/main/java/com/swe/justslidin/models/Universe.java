@@ -182,6 +182,7 @@ public class Universe {
                 if (this.player.getHitBox().collide(hb)) {
                     this.player.updateCoinCount();
                     this.player.setHitCoin(true);
+                    this.player.setHitCoinSound(true);
                     // this.elements.remove(elem);
                     tempVec.add(elem);
                 }
@@ -192,6 +193,7 @@ public class Universe {
                     this.player.decrementCoinCount();
                     this.player.decrementCoinCount();
                     this.player.setHitBarrier(true);
+                    this.player.setHitBarrierSound(true);
 //                    this.player.setHitCoin(false);
 
                     this.speedUpCounter = 0;

@@ -61,9 +61,13 @@ public class MainController extends Thread {
         while (running) {
 
             try {
-                if (this.universe.getPlayer().ifHitCoin()){
+                if (this.universe.getPlayer().isHitCoinSound()){
                     sound.PlayCoinSound();
+                    this.universe.getPlayer().setHitCoinSound(false);
                     //this.universe.getPlayer().setHitCoin(false);
+                } else if (this.universe.getPlayer().isHitBarrierSound()){
+                    sound.PlayBarrierSound();
+                    this.universe.getPlayer().setHitBarrierSound(false);
                 }
                 this.universe.checkPlayerCollision();
                 // this.universe.CheckPlayerCoinCollision();
