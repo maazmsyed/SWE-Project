@@ -84,7 +84,14 @@ public class MainController extends Thread {
             }
         }
         while (!this.universe.isGameRunning()) {
-            this.universe.waitingForOthers();
+            try {
+                this.universe.stop();
+                // this.universe.waitingForOthers();
+                Thread.sleep(1000/fps);
+            } catch (InterruptedException e) {
+                e.printStackTrace(); // TODO: Could add graceful shutdown from PCDP midterm
+            }
+
         }
 
 

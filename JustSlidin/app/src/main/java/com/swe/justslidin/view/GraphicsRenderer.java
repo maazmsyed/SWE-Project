@@ -92,8 +92,8 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
         // Coin Icon Bitmap
         this.coinIconBitmap = BitmapFactory.decodeResource(context, R.mipmap.coin);
         this.coinIconBitmap = Bitmap.createScaledBitmap(this.coinBitmap,
-                (int) Constants.COIN_RADIUS * 2,
-                (int) Constants.COIN_RADIUS * 2, true);
+                (int) (Constants.COIN_RADIUS * 1.5f),
+                (int) (Constants.COIN_RADIUS * 1.5f), true);
 
         // Long Barrier Bitmap
         this.longBarrierBitmap = BitmapFactory.decodeResource(context, R.mipmap.long_barrier);
@@ -157,9 +157,9 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
 
         // Setting up playerWinning Vector
         this.playerWinning = new Vector<>();
-        for (int i = 0; i < 7; i++) { playerWinning.add(this.playerWinningOne); }
-        for (int i = 0; i < 7; i++) { playerWinning.add(this.playerWinningTwo); }
-        for (int i = 0; i < 7; i++) { playerWinning.add(this.playerWinningThree); }
+        for (int i = 0; i < 5; i++) { playerWinning.add(this.playerWinningOne); }
+        for (int i = 0; i < 5; i++) { playerWinning.add(this.playerWinningTwo); }
+        for (int i = 0; i < 5; i++) { playerWinning.add(this.playerWinningThree); }
 
         // Player Coin Interaction and Player Barrier Interaction Bitmap
         this.playerCoin = BitmapFactory.decodeResource(context,R.mipmap.player_coin);
@@ -191,7 +191,6 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
                 screenWidth, (int) (this.universe.getFinishingLine().getHitBox().getBottom()
                 - this.universe.getFinishingLine().getHitBox().getTop()), true);
         this.universe.setFinishingLineBitmap(this.finishingLine);
-//        System.out.println("Does it reach here?");
 
     }
 
@@ -233,7 +232,7 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
             this.universe.getPlayer().setHitBarrier(false);
         }
 
-        if (this.universe.isGameRunning()) {
+        if (this.universe.isGameRunning() || this.universe.getGravity().getY() > 0) {
 
             if (this.universe.getPlayer().ifHitCoin() && (!this.universe.getPlayer().ifHitBarrier())) {
                 canvas.drawBitmap(this.playerCoin, (int) hbPlayer.getLeft(),
@@ -267,13 +266,11 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
                     this.playerWalkingCount = 0;
                 }
             }
-        }
-
-        if (!this.universe.isGameRunning()) {
+        } else if (!this.universe.isGameRunning()) {
             canvas.drawBitmap(this.playerWinning.get(this.playerWinningCount),
                     (int) hbPlayer.getLeft(), (int) hbPlayer.getTop(), null);
             this.playerWinningCount += 1;
-            if (this.playerWinningCount >= 21) {
+            if (this.playerWinningCount >= 15) {
                 this.playerWinningCount = 0;
             }
         }
@@ -294,10 +291,10 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
             }
         }
 
-        canvas.drawBitmap(this.coinIconBitmap, 50f, 10f, null);
+        canvas.drawBitmap(this.coinIconBitmap, 50f, 20f, null);
         canvas.drawText(": " + this.universe.getPlayer().getCoinCount(), 150f, 75f, paint);
 
-//         TODO: Implement for the other player
+//         TODO: Implement for the other player(s)
 //         canvas.drawBitmap(this.coinIconBitmap, 50f, 100f, null);
 //         canvas.drawText(": " + this.universe.getPlayer().getCoinCount(), 150f, 165f, ballPaint);
 

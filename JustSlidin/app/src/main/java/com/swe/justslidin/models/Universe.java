@@ -15,12 +15,18 @@ public class Universe {
 
     private static final String TAG = "Universe";
     final static Motion DEFAULT_GRAVITY_MOTION = new Motion(0,10f); // Added after referring prof
+
+    public Motion getGravity() {
+        return gravity;
+    }
+
     Motion gravity;
     Character player;
     List<Elements> elements;
     Background background = new Background();
     private float additionalMotionY;
     private int speedUpCounter;
+    private int speedDownCounter;
     FinishingLine finishingLine = new FinishingLine((Constants.SCREEN_WIDTH / 2),
             Constants.SCREEN_HEIGHT * 5); // TODO: When to end game?
     private volatile Boolean gameRunning;
@@ -37,6 +43,7 @@ public class Universe {
         player = pl;
         additionalMotionY = DEFAULT_GRAVITY_MOTION.getY();
         speedUpCounter = 0;
+        speedDownCounter = 0;
         gameRunning = true;
 //        this.background = new Background();
     }
@@ -244,6 +251,22 @@ public class Universe {
             }
         }
         this.elements.removeAll(tempVec);
+    }
+
+    public void stop() {
+        this.speedDownCounter += 1;
+        if (this.gravity.getY() > 0 && this.speedDownCounter % 5 == 0) {
+            this.gravity.setY(this.gravity.getY() - 2.5f);
+        }
+        if (this.gravity.getY() < 0) {
+            this.gravity.setY(0f);
+        }
+        finishingLine.moveUp(this.gravity);
+        background.moveUp(this.gravity);
+        for (Elements e : elements) {
+            e.moveUp(this.gravity);
+        }
+        castChanges();
     }
 
     public void moveCharLeft(float f) {
