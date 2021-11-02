@@ -14,14 +14,14 @@ import com.swe.justslidin.models.Universe;
 
 
 
-public class MoveAction extends AppCompatActivity implements ClickAction {
+public class MoveAction implements ClickAction { //TODO: extends AppCompatActivity
     private static final String TAG = "MoveAction";
     private final Universe universe;
     private final float screenWidth = Constants.SCREEN_WIDTH;
     String playerName = "";
 
     FirebaseDatabase database = FirebaseDatabase.getInstance("https://justslidin-d4b80-default-rtdb.asia-southeast1.firebasedatabase.app/");
-    SharedPreferences preferences = getSharedPreferences("PREFS",0);
+    //TODO: SharedPreferences preferences = getSharedPreferences("PREFS",0);
     DatabaseReference move_ref= database.getReference("players/" + playerName).child("pos").child("x");
 
 
@@ -39,12 +39,13 @@ public class MoveAction extends AppCompatActivity implements ClickAction {
         Log.i(TAG, "MoveAction executed");
         //universe.addChar(pos);
 
-        playerName = preferences.getString("playerName","");
+        //TODO: playerName = preferences.getString("playerName","");
 
         if (pos.getX() <= screenWidth / 2){
             Log.i(TAG,"ON THE LEFT");
             // universe.moveCharLeft(10f);
             this.universe.getPlayer().moveLeft(15);     // TODO; Check with Maaz
+            Log.i(TAG, move_ref.toString());
             move_ref.setValue(this.universe.getPlayer().getPosition().getX());
 
         }
