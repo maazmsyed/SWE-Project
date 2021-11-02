@@ -8,8 +8,7 @@ public class Coin extends Elements {
     private float rad;
     private Position pos;
     private HitBox hitBox;
-//    private MainController mc;
-    private char id = 'c';
+    private static final String TAG = "Coin";
 
     /**
      * Constructor of the Coin
@@ -19,36 +18,52 @@ public class Coin extends Elements {
      */
     public Coin(float x, float y, float rad) {
         super();
-//        this.mc = mc;
         this.pos = new Position(x,y);
-        this.hitBox =
-                new HitBox(x - rad, x + rad, y + rad, y - rad);
+        this.hitBox = new HitBox(x - rad, x + rad, y + rad, y - rad);
         this.rad = rad;
     }
 
+    /**
+     * Sets the position of the coin.
+     * @param pos
+     * The new position of the coin.
+     */
     public void setPos(Position pos) {
         this.pos = pos;
     }
 
+    /**
+     * Gets the HitBox surrounding the coin.
+     * @return
+     * HitBox object of that coin.
+     */
     public HitBox getHitBox() {
         return this.hitBox;
     }
 
-    public char getId() {
-        return this.id;
-    }
-
+    /**
+     * Gets the current position of the coin.
+     * @return
+     * The position object of the coin.
+     */
     public Position getPosition () { return this.pos; }
 
+    /**
+     * Gets the radius of the coin as a float.
+     * @return
+     * The value of the coin's radius.
+     */
     public float getRad() {
         return this.rad;
     }
 
     /**
-     * updates the position of the coin as well as its Hitbox by the given motion, moving the coin upwards
-     * @param m given motion m
+     * Updates the position of the coin as well as its Hitbox by the given motion.
+     * Mainly used to change the vertical positioning of the coin but it can
+     * also work for horizontal motion changes.
+     * @param m
+     * The motion by which the coin is to move.
      */
-
     @Override public void moveUp(Motion m) {
         float x = m.getX();
         float y = m.getY();
