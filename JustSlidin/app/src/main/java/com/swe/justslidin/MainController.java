@@ -1,7 +1,10 @@
 package com.swe.justslidin;
 
+import android.app.Application;
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
+import android.media.MediaPlayer;
 import android.view.SurfaceView;
 
 import com.swe.justslidin.constants.Constants;
@@ -14,6 +17,7 @@ import com.swe.justslidin.io.MoveAction;
 import com.swe.justslidin.models.Position;
 import com.swe.justslidin.models.Universe;
 import com.swe.justslidin.view.GraphicsRenderer;
+import com.swe.justslidin.view.SoundPlayer;
 
 import java.util.Random;
 
@@ -24,18 +28,21 @@ public class MainController extends Thread {
     private final GraphicsRenderer graphicsRenderer;
     private final long fps = 60;
     private boolean running;
+    private SoundPlayer sound;
 
 
-    public MainController(SurfaceView sv, Resources context) {
+
+    public MainController(SurfaceView sv, Resources context, Context applicationContext) {
         this.sv = sv;
         this.universe = new Universe();
         this.running = true;
-
         this.graphicsRenderer = new GraphicsRenderer(this.universe, context);
+        this.sound = new SoundPlayer(applicationContext);
         this.universe.setCallBack(this.graphicsRenderer);
         this.sv.setWillNotDraw(false);
         this.sv.getHolder().addCallback(this.graphicsRenderer); //triggers graphics renderer BAD DESIGN TODO: MC TRIGGERED BY RENDERER & THEN TRIGGERS ITSELF
-
+//        MediaPlayer mp = MediaPlayer.create(context, R.raw.coin);
+//        mp.start();
         InputListener inputListener = new InputListener();
         this.sv.setOnTouchListener(inputListener);
 
@@ -54,6 +61,14 @@ public class MainController extends Thread {
         while (running) {
 
             try {
+                if (this.universe.getPlayer().isHitCoinSound()){
+                    sound.PlayCoinSound();
+                    this.universe.getPlayer().setHitCoinSound(false);
+                    //this.universe.getPlayer().setHitCoin(false);
+                } else if (this.universe.getPlayer().isHitBarrierSound()){
+                    sound.PlayBarrierSound();
+                    this.universe.getPlayer().setHitBarrierSound(false);
+                }
                 this.universe.checkPlayerCollision();
                 // this.universe.CheckPlayerCoinCollision();
                 this.universe.removeExtraElements();

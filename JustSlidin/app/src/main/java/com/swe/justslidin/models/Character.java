@@ -23,6 +23,8 @@ public class Character extends Elements {
     private boolean hitCoin;
     private boolean hitBarrier;
     private Position absolutePos;
+    private boolean hitCoinSound;
+    private boolean hitBarrierSound;
 
     public Character(){
         // empty constructor for data snapshot
@@ -42,11 +44,22 @@ public class Character extends Elements {
         this.rad = rad;
         this.coinCount = 0;
         this.absolutePos = new Position(x, y);
+        this.hitCoin = false;
     }
 
     public void setPlayerBitmap(Bitmap bitmap){
         this.playerBitmap = bitmap;
     }
+
+    public void setHitCoinSound(boolean hitCoinSound) { this.hitCoinSound = hitCoinSound; }
+
+    public void setHitBarrierSound(boolean hitBarrierSound) { this.hitBarrierSound = hitBarrierSound; }
+
+
+    public boolean isHitCoinSound() {  return hitCoinSound; }
+
+    public boolean isHitBarrierSound() { return hitBarrierSound;}
+
 
     public void setHitCoin(boolean bool) { this.hitCoin = bool; }
 
