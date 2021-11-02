@@ -10,7 +10,11 @@ public class TestBarrier {
 
     @Test
     public void test_hitBox() {
+        Constants constants = new Constants();
+
         Barrier b = new Barrier(50, 100, 10);
+        System.out.println(b.getHitBox().getLeft());
+        System.out.println(b.isShort());
 
         if (b.isShort()) {
             assert (b.getHitBox().getLeft() == 50.0f - (Constants.BARRIER_SHORT_SIZE/2));
