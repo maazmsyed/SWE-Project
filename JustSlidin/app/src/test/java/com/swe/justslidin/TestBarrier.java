@@ -1,5 +1,6 @@
 package com.swe.justslidin;
 
+import com.swe.justslidin.constants.Constants;
 import com.swe.justslidin.models.Barrier;
 import com.swe.justslidin.models.Motion;
 
@@ -11,20 +12,34 @@ public class TestBarrier {
     public void test_hitBox() {
         Barrier b = new Barrier(50, 100, 10);
 
-        assert (b.getHitBox().getLeft() == 25.0f);
-        assert (b.getHitBox().getRight() == 75.0f);
-        assert (b.getHitBox().getTop() == 95.0f);
+        if (b.isShort()) {
+            assert (b.getHitBox().getLeft() == 50.0f - (Constants.BARRIER_SHORT_SIZE/2));
+            assert (b.getHitBox().getRight() == 50.0f + (Constants.BARRIER_SHORT_SIZE/2));
+        } else {
+            assert (b.getHitBox().getLeft() == 50.0f - (Constants.BARRIER_LONG_SIZE/2));
+            assert (b.getHitBox().getRight() == 50.0f + (Constants.BARRIER_LONG_SIZE/2));
+        }
         assert (b.getHitBox().getBottom() == 105.0f);
+        assert (b.getHitBox().getTop() == 95.0f);
+//        assert (b.getHitBox().getLeft() == 25.0f);
+//        assert (b.getHitBox().getRight() == 75.0f);
+//        assert (b.getHitBox().getTop() == 95.0f);
+//        assert (b.getHitBox().getBottom() == 105.0f);
 
         // x is 0 because we wouldn't be changing the x-value
         // although y is positive, moveUp is adjusted to go up
         b.moveUp(new Motion(0, 10));
         b.moveUp(new Motion(0, 10));
 
-        assert (b.getHitBox().getLeft() == 25.0f);
-        assert (b.getHitBox().getRight() == 75.0f);
-        assert (b.getHitBox().getTop() == 75.0f);
+        if (b.isShort()) {
+            assert (b.getHitBox().getLeft() == 50.0f - (Constants.BARRIER_SHORT_SIZE/2));
+            assert (b.getHitBox().getRight() == 50.0f + (Constants.BARRIER_SHORT_SIZE/2));
+        } else {
+            assert (b.getHitBox().getLeft() == 50.0f - (Constants.BARRIER_LONG_SIZE/2));
+            assert (b.getHitBox().getRight() == 50.0f + (Constants.BARRIER_LONG_SIZE/2));
+        }
         assert (b.getHitBox().getBottom() == 85.0f);
+        assert (b.getHitBox().getTop() == 75.0f);
 
         // Still changing x just for testing purposes
         b.moveUp(new Motion(50, 10));
@@ -32,10 +47,17 @@ public class TestBarrier {
 
 //        System.out.println(c.getHitBox().getLeft());
 //        System.out.println(c.getHitBox().getRight());
-        assert (b.getHitBox().getLeft() == 175.0f);
-        assert (b.getHitBox().getRight() == 225.0f);
-        assert (b.getHitBox().getTop() == 55.0f);
+        if (b.isShort()) {
+            assert (b.getHitBox().getLeft() == 50.0f - (Constants.BARRIER_SHORT_SIZE/2) + 150);
+            assert (b.getHitBox().getRight() == 50.0f + (Constants.BARRIER_SHORT_SIZE/2) + 150);
+        } else {
+            assert (b.getHitBox().getLeft() == 50.0f - (Constants.BARRIER_LONG_SIZE/2) + 150);
+            assert (b.getHitBox().getRight() == 50.0f + (Constants.BARRIER_LONG_SIZE/2) + 150);
+        }
+//        assert (b.getHitBox().getLeft() == 175.0f);
+//        assert (b.getHitBox().getRight() == 225.0f);
         assert (b.getHitBox().getBottom() == 65.0f);
+        assert (b.getHitBox().getTop() == 55.0f);
 
     }
 
