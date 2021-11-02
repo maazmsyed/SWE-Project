@@ -24,12 +24,12 @@ public class MoveAction implements ClickAction {
         if (pos.getX() <= screenWidth / 2 && this.universe.isGameRunning()){
             Log.i(TAG,"ON THE LEFT");
             // universe.moveCharLeft(10f);
-            this.universe.getPlayer().moveLeft(15);
+            this.universe.getPlayer().moveLeft(25);
         }
         if (pos.getX() > screenWidth / 2 && this.universe.isGameRunning()) {
             Log.i(TAG,"ON THE RIGHT");
             // universe.moveCharRight(10f);
-            this.universe.getPlayer().moveRight(15);
+            this.universe.getPlayer().moveRight(25);
         }
 
     }

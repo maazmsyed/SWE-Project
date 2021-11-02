@@ -28,7 +28,7 @@ public class Universe {
     private int speedUpCounter;
     private int speedDownCounter;
     FinishingLine finishingLine = new FinishingLine((Constants.SCREEN_WIDTH / 2),
-            Constants.SCREEN_HEIGHT * 5); // TODO: When to end game?
+            Constants.SCREEN_HEIGHT * 20); // TODO: When to end game?
     private volatile Boolean gameRunning;
 
 
