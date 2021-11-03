@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.swe.justslidin.R;
+import com.swe.justslidin.constants.Constants;
 
 /**
 * Character class that handles everything related to the player character.
@@ -25,6 +26,7 @@ public class Character extends Elements {
     private static final String TAG = "Character";
     private boolean hitCoinSound;
     private boolean hitBarrierSound;
+    private static final Constants constants = new Constants();
 
 
     /**

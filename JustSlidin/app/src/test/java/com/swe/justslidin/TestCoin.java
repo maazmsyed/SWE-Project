@@ -56,9 +56,6 @@ public class TestCoin {
         assert (c.getPosition().getX() == 50.0f);
         assert (c.getPosition().getY() == 80.0f);
 
-        // id test
-        assert (c.getId() == 'c');
-
     }
 
 }

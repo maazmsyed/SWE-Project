@@ -1,6 +1,6 @@
 package com.swe.justslidin.models;
 
-import com.swe.justslidin.MainController;
+import com.swe.justslidin.constants.Constants;
 
 
 public class Coin extends Elements {
@@ -9,6 +9,7 @@ public class Coin extends Elements {
     private Position pos;
     private HitBox hitBox;
     private static final String TAG = "Coin";
+    private static final Constants constants = new Constants();
 
     /**
      * Constructor of the Coin

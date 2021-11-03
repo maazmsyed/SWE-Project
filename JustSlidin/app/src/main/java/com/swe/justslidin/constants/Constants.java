@@ -6,19 +6,19 @@ import com.swe.justslidin.models.Motion;
 
 public class Constants {
 
-    public static float SCREEN_WIDTH;
-    public static float SCREEN_HEIGHT;
+    public float SCREEN_WIDTH; // = Resources.getSystem().getDisplayMetrics().widthPixels;
+    public float SCREEN_HEIGHT; // = Resources.getSystem().getDisplayMetrics().heightPixels;
 
     // Coin
-    public static float COIN_RADIUS;
+    public float COIN_RADIUS; // = SCREEN_HEIGHT / 40f;
 
     // Barrier
-    public static float BARRIER_SHORT_SIZE;
-    public static float BARRIER_LONG_SIZE;
-    public static float BARRIER_HEIGHT;
+    public float BARRIER_SHORT_SIZE; // = SCREEN_WIDTH / 5f;
+    public float BARRIER_LONG_SIZE; // = SCREEN_WIDTH / 3f;
+    public float BARRIER_HEIGHT; // = SCREEN_HEIGHT / 18f;
 
     // Player
-    public static float PLAYER_RADIUS;
+    public float PLAYER_RADIUS; // = SCREEN_WIDTH / 20f;
 
     public Constants(){
 

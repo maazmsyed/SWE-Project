@@ -33,6 +33,7 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
     private static final String TAG = "GraphicsRenderer";
     private final Universe universe;
     private SurfaceHolder holder;
+    private static final Constants constants = new Constants();
 
     // Coin
     private Bitmap coinBitmap; // For coins
@@ -84,30 +85,30 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
         this.universe = u;
         this.universe.setCallBack(this);
         this.context = context;
-        this.screenWidth = (int) Constants.SCREEN_WIDTH;
-        this.screenHeight = (int) Constants.SCREEN_HEIGHT;
+        this.screenWidth = (int) constants.SCREEN_WIDTH;
+        this.screenHeight = (int) constants.SCREEN_HEIGHT;
 
         // Coin Bitmap
         this.coinBitmap = BitmapFactory.decodeResource(context, R.mipmap.coin);
         this.coinBitmap = Bitmap.createScaledBitmap(this.coinBitmap,
-                (int) Constants.COIN_RADIUS * 2,
-                (int) Constants.COIN_RADIUS * 2, true);
+                (int) constants.COIN_RADIUS * 2,
+                (int) constants.COIN_RADIUS * 2, true);
 
         // Coin Icon Bitmap
         this.coinIconBitmap = BitmapFactory.decodeResource(context, R.mipmap.coin);
         this.coinIconBitmap = Bitmap.createScaledBitmap(this.coinBitmap,
-                (int) (Constants.COIN_RADIUS * 1.5f),
-                (int) (Constants.COIN_RADIUS * 1.5f), true);
+                (int) (constants.COIN_RADIUS * 1.5f),
+                (int) (constants.COIN_RADIUS * 1.5f), true);
 
         // Long Barrier Bitmap
         this.longBarrierBitmap = BitmapFactory.decodeResource(context, R.mipmap.long_barrier);
         this.longBarrierBitmap = Bitmap.createScaledBitmap(this.longBarrierBitmap,
-                (int) Constants.BARRIER_LONG_SIZE, (int) Constants.BARRIER_HEIGHT, true);
+                (int) constants.BARRIER_LONG_SIZE, (int) constants.BARRIER_HEIGHT, true);
 
         // Short Barrier Bitmap
         this.shortBarrierBitmap = BitmapFactory.decodeResource(context, R.mipmap.short_barrier);
         this.shortBarrierBitmap = Bitmap.createScaledBitmap(this.shortBarrierBitmap,
-                (int) Constants.BARRIER_SHORT_SIZE, (int) Constants.BARRIER_HEIGHT, true);
+                (int) constants.BARRIER_SHORT_SIZE, (int) constants.BARRIER_HEIGHT, true);
 
         // Player & Coin Counter / Player & Barrier Counter / Player Walking & Winning Counters
         this.barrierBitmapCount = 0;
@@ -118,24 +119,24 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
         // Player Walking Bitmaps
         this.playerWalkingOne = BitmapFactory.decodeResource(context,R.mipmap.player_walking_1);
         this.playerWalkingOne = Bitmap.createScaledBitmap(this.playerWalkingOne,
-                (int) Constants.PLAYER_RADIUS * 2,
-                (int) Constants.PLAYER_RADIUS * 2,true);
+                (int) constants.PLAYER_RADIUS * 2,
+                (int) constants.PLAYER_RADIUS * 2,true);
         this.playerWalkingTwo = BitmapFactory.decodeResource(context,R.mipmap.player_walking_2);
         this.playerWalkingTwo = Bitmap.createScaledBitmap(this.playerWalkingTwo,
-                (int) Constants.PLAYER_RADIUS * 2,
-                (int) Constants.PLAYER_RADIUS * 2,true);
+                (int) constants.PLAYER_RADIUS * 2,
+                (int) constants.PLAYER_RADIUS * 2,true);
         this.playerWalkingThree = BitmapFactory.decodeResource(context,R.mipmap.player_walking_3);
         this.playerWalkingThree = Bitmap.createScaledBitmap(this.playerWalkingThree,
-                (int) Constants.PLAYER_RADIUS * 2,
-                (int) Constants.PLAYER_RADIUS * 2,true);
+                (int) constants.PLAYER_RADIUS * 2,
+                (int) constants.PLAYER_RADIUS * 2,true);
         this.playerWalkingFour = BitmapFactory.decodeResource(context,R.mipmap.player_walking_4);
         this.playerWalkingFour = Bitmap.createScaledBitmap(this.playerWalkingFour,
-                (int) Constants.PLAYER_RADIUS * 2,
-                (int) Constants.PLAYER_RADIUS * 2,true);
+                (int) constants.PLAYER_RADIUS * 2,
+                (int) constants.PLAYER_RADIUS * 2,true);
         this.playerWalkingFive = BitmapFactory.decodeResource(context,R.mipmap.player_walking_5);
         this.playerWalkingFive = Bitmap.createScaledBitmap(this.playerWalkingFive,
-                (int) Constants.PLAYER_RADIUS * 2,
-                (int) Constants.PLAYER_RADIUS * 2,true);
+                (int) constants.PLAYER_RADIUS * 2,
+                (int) constants.PLAYER_RADIUS * 2,true);
 
         // Setting up playerWalking Vector
         this.playerWalking = new Vector<>();
@@ -148,16 +149,16 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
         // Player Winning Bitmaps
         this.playerWinningOne = BitmapFactory.decodeResource(context,R.mipmap.player_win_1);
         this.playerWinningOne = Bitmap.createScaledBitmap(this.playerWinningOne,
-                (int) Constants.PLAYER_RADIUS * 2,
-                (int) Constants.PLAYER_RADIUS * 2,true);
+                (int) constants.PLAYER_RADIUS * 2,
+                (int) constants.PLAYER_RADIUS * 2,true);
         this.playerWinningTwo = BitmapFactory.decodeResource(context,R.mipmap.player_win_2);
         this.playerWinningTwo = Bitmap.createScaledBitmap(this.playerWinningTwo,
-                (int) Constants.PLAYER_RADIUS * 2,
-                (int) Constants.PLAYER_RADIUS * 2,true);
+                (int) constants.PLAYER_RADIUS * 2,
+                (int) constants.PLAYER_RADIUS * 2,true);
         this.playerWinningThree = BitmapFactory.decodeResource(context,R.mipmap.player_win_3);
         this.playerWinningThree = Bitmap.createScaledBitmap(this.playerWinningThree,
-                (int) Constants.PLAYER_RADIUS * 2,
-                (int) Constants.PLAYER_RADIUS * 2,true);
+                (int) constants.PLAYER_RADIUS * 2,
+                (int) constants.PLAYER_RADIUS * 2,true);
 
         // Setting up playerWinning Vector
         this.playerWinning = new Vector<>();
@@ -168,18 +169,18 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
         // Player Coin Interaction and Player Barrier Interaction Bitmap
         this.playerCoin = BitmapFactory.decodeResource(context,R.mipmap.player_coin);
         this.playerCoin = Bitmap.createScaledBitmap(this.playerCoin,
-                (int) Constants.PLAYER_RADIUS * 2,
-                (int) Constants.PLAYER_RADIUS * 2,true);
+                (int) constants.PLAYER_RADIUS * 2,
+                (int) constants.PLAYER_RADIUS * 2,true);
         this.playerBarrier = BitmapFactory.decodeResource(context,R.mipmap.player_barrier);
         this.playerBarrier = Bitmap.createScaledBitmap(this.playerBarrier,
-                (int) Constants.PLAYER_RADIUS * 2,
-                (int) Constants.PLAYER_RADIUS * 2,true);
+                (int) constants.PLAYER_RADIUS * 2,
+                (int) constants.PLAYER_RADIUS * 2,true);
 
         // Player Win
         this.playerWin = BitmapFactory.decodeResource(context,R.mipmap.player_win);
         this.playerWin = Bitmap.createScaledBitmap(this.playerWin,
-                (int) Constants.PLAYER_RADIUS * 2,
-                (int) Constants.PLAYER_RADIUS * 2,true);
+                (int) constants.PLAYER_RADIUS * 2,
+                (int) constants.PLAYER_RADIUS * 2,true);
 
 
         // Background Bitmap

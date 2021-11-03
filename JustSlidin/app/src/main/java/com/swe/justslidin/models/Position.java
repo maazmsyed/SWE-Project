@@ -6,7 +6,8 @@ public class Position {
      * of the element on the screen.
      */
 
-    private float x,y;
+    private float x;
+    private float y;
 
     /**
      * This method instantiates the position class when only one parameter is passed as input.

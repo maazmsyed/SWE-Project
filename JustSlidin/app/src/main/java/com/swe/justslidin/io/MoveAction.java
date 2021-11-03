@@ -18,8 +18,9 @@ import com.swe.justslidin.models.Universe;
 
 public class MoveAction implements ClickAction { // TODO: extends AppCompactActivity
     private static final String TAG = "MoveAction";
+    private static final Constants constants = new Constants();
     private final Universe universe;
-    private final float screenWidth = Constants.SCREEN_WIDTH;
+    private final float screenWidth = constants.SCREEN_WIDTH;
     public Context context = App.getInstance();
     public SharedPreferences preferences = context.getSharedPreferences("PREFS",0);
     private String playerName = preferences.getString("playerName", "");

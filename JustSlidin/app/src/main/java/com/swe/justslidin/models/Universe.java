@@ -18,11 +18,10 @@ public class Universe {
 
     private static final String TAG = "Universe";
     final static Motion DEFAULT_GRAVITY_MOTION = new Motion(0,10f); // Added after referring prof
-
+    private static final Constants constants = new Constants();
     public Motion getGravity() {
         return gravity;
     }
-
     Motion gravity;
     Character player;
     List<Elements> elements;
@@ -30,15 +29,15 @@ public class Universe {
     private float additionalMotionY;
     private int speedUpCounter;
     private int speedDownCounter;
-    FinishingLine finishingLine = new FinishingLine((Constants.SCREEN_WIDTH / 2),
-            Constants.SCREEN_HEIGHT * 20); // TODO: When to end game?
+    FinishingLine finishingLine = new FinishingLine((constants.SCREEN_WIDTH / 2),
+            constants.SCREEN_HEIGHT * 20); // TODO: When to end game?
     private volatile Boolean gameRunning;
     private SoundPlayer sound;
 
 
     public Universe () {
-        this (DEFAULT_GRAVITY_MOTION, new Character(Constants.SCREEN_WIDTH / 2,
-                Constants.SCREEN_HEIGHT / 4, Constants.PLAYER_RADIUS));
+        this (DEFAULT_GRAVITY_MOTION, new Character(constants.SCREEN_WIDTH / 2,
+                constants.SCREEN_HEIGHT / 4, constants.PLAYER_RADIUS));
     }
 
     public Universe (Motion g, Character pl) {
@@ -100,8 +99,8 @@ public class Universe {
      * This value defines the radius (size) of the new coin instance.
      */
     public void addCoin(float x, float y, float rad) {
-        System.out.println(Constants.SCREEN_WIDTH);
-        System.out.println(Constants.SCREEN_HEIGHT);
+        System.out.println(constants.SCREEN_WIDTH);
+        System.out.println(constants.SCREEN_HEIGHT);
         Coin newCoin = new Coin(x, y, rad);
         for (Elements elem : this.elements) {
             if (elem instanceof Barrier) {
@@ -110,12 +109,12 @@ public class Universe {
                 if (newCoin.getHitBox().collide(hb)) {
                     float bLeft = hb.getLeft();
                     float bRight = hb.getRight();
-                    if (bLeft <= Constants.SCREEN_WIDTH) {
-                        newCoin = new Coin(bRight + (Constants.SCREEN_WIDTH / 10), y, rad);
+                    if (bLeft <= constants.SCREEN_WIDTH) {
+                        newCoin = new Coin(bRight + (constants.SCREEN_WIDTH / 10), y, rad);
                         // newCoin.setPos(new Position(bRight + 100, y));
                     } else {
                         // newCoin.setPos(new Position(bLeft - 100, y));
-                        newCoin = new Coin(bLeft - (Constants.SCREEN_WIDTH / 10), y, rad);
+                        newCoin = new Coin(bLeft - (constants.SCREEN_WIDTH / 10), y, rad);
                     }
                 }
             }
