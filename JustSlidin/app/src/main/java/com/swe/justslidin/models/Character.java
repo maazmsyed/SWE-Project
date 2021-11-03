@@ -23,6 +23,8 @@ public class Character extends Elements {
     private boolean hitBarrier;
     private Position absolutePos;
     private static final String TAG = "Character";
+    private boolean hitCoinSound;
+    private boolean hitBarrierSound;
 
 
     /**
@@ -38,6 +40,7 @@ public class Character extends Elements {
         this.rad = rad;
         this.coinCount = 0;
         this.absolutePos = new Position(x, y);
+        this.hitCoin = false;
     }
 
     /**
@@ -59,6 +62,14 @@ public class Character extends Elements {
     public boolean ifHitCoin() {
         return this.hitCoin;
     }
+  
+    public void setHitCoinSound(boolean hitCoinSound) { this.hitCoinSound = hitCoinSound; }
+
+    public void setHitBarrierSound(boolean hitBarrierSound) { this.hitBarrierSound = hitBarrierSound; }
+
+    public boolean isHitCoinSound() {  return hitCoinSound; }
+
+    public boolean isHitBarrierSound() { return hitBarrierSound;}
 
     /**
      * Sets whether the character is in contact with a barrier or not.

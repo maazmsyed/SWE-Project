@@ -5,6 +5,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
@@ -184,8 +188,8 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
         this.universe.setBackgroundBitmap(this.bgBitmap);
 
         // FinishingLine Bitmap
-        System.out.println(this.universe.getFinishingLine().getHitBox().getLeft());
-        System.out.println(this.universe.getFinishingLine().getHitBox().getTop());
+        // System.out.println(this.universe.getFinishingLine().getHitBox().getLeft());
+        // System.out.println(this.universe.getFinishingLine().getHitBox().getTop());
         this.finishingLine = BitmapFactory.decodeResource(context, R.mipmap.finishing_line);
         this.finishingLine = Bitmap.createScaledBitmap(this.finishingLine,
                 screenWidth, (int) (this.universe.getFinishingLine().getHitBox().getBottom()
@@ -223,6 +227,8 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
         // Reset player's coin reaction bitmap to normal
         if (this.coinBitmapCount >= 20) {
             this.coinBitmapCount = 0;
+
+//rest of sounds goes here
             this.universe.getPlayer().setHitCoin(false);
         }
 

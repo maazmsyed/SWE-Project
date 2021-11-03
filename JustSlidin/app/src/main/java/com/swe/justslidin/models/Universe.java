@@ -5,6 +5,9 @@ import android.graphics.Bitmap;
 
 import com.swe.justslidin.constants.Constants;
 import com.swe.justslidin.view.GraphicsRenderer;
+import com.swe.justslidin.view.SoundPlayer;
+
+import android.media.SoundPool;
 import android.util.Log;
 
 
@@ -30,6 +33,7 @@ public class Universe {
     FinishingLine finishingLine = new FinishingLine((Constants.SCREEN_WIDTH / 2),
             Constants.SCREEN_HEIGHT * 20); // TODO: When to end game?
     private volatile Boolean gameRunning;
+    private SoundPlayer sound;
 
 
     public Universe () {
@@ -207,6 +211,8 @@ public class Universe {
                 if (this.player.getHitBox().collide(hb)) {
                     this.player.updateCoinCount();
                     this.player.setHitCoin(true);
+                    this.player.setHitCoinSound(true);
+                    // this.elements.remove(elem);
                     tempVec.add(elem);
                 }
             } else if (elem instanceof Barrier) {
@@ -216,6 +222,7 @@ public class Universe {
                     this.player.decrementCoinCount();
                     this.player.decrementCoinCount();
                     this.player.setHitBarrier(true);
+                    this.player.setHitBarrierSound(true);
                     tempVec.add(elem);
                     this.speedUpCounter = 0;
                     this.additionalMotionY = DEFAULT_GRAVITY_MOTION.getY() -
