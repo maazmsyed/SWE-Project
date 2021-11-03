@@ -40,20 +40,20 @@ public class MoveAction implements ClickAction { // TODO: extends AppCompactActi
         //universe.addChar(pos);
         this.playerRef = database.getReference("players/"+playerName);
 
-        if (pos.getX() <= screenWidth / 2){
+        if (pos.getX() <= screenWidth / 2 && this.universe.isGameRunning()){
             Log.i(TAG,"ON THE LEFT");
             // universe.moveCharLeft(10f);
-            this.universe.getPlayer().moveLeft(15);     // TODO; Check with Maaz
+            this.universe.getPlayer().moveLeft(25);     // TODO; Check with Maaz
             this.playerRef.child("pos").setValue(this.universe.getPlayer().getPosition());
             Log.i(TAG,"ON THE LEFT TO THE DB");
-
         }
-        else{
+        if (pos.getX() > screenWidth / 2 && this.universe.isGameRunning()) {
             Log.i(TAG,"ON THE RIGHT");
             // universe.moveCharRight(10f);
-            this.universe.getPlayer().moveRight(15);
+            this.universe.getPlayer().moveRight(25);
             this.playerRef.child("pos").setValue(this.universe.getPlayer().getPosition());
             Log.i(TAG,"ON THE RIGHT TO THE DB");
+
         }
 
     }
