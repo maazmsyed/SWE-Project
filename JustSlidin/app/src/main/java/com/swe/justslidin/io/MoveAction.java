@@ -20,16 +20,16 @@ public class MoveAction implements ClickAction {
     public void execute(Position pos) {
         Log.i(TAG, "MoveAction executed");
         //universe.addChar(pos);
-        // TODO: get screen width
-        if (pos.getX() <= screenWidth / 2){
+        // TODO: CHECK IF THE IF STATEMENTS ARE RIGHT WITH @MAAZ AND @DANNY
+        if (pos.getX() <= screenWidth / 2 && this.universe.isGameRunning()){
             Log.i(TAG,"ON THE LEFT");
             // universe.moveCharLeft(10f);
-            this.universe.getPlayer().moveLeft(15);     // TODO; Check with Maaz
+            this.universe.getPlayer().moveLeft(25);
         }
-        else{
+        if (pos.getX() > screenWidth / 2 && this.universe.isGameRunning()) {
             Log.i(TAG,"ON THE RIGHT");
             // universe.moveCharRight(10f);
-            this.universe.getPlayer().moveRight(15);
+            this.universe.getPlayer().moveRight(25);
         }
 
     }
