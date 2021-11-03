@@ -10,13 +10,13 @@ import java.util.Random;
  */
 public class Barrier extends Elements {
 
-    private final float height;
-    private final float length;
-    private final boolean isShort;
-    private final Position pos;
-    private final HitBox hitBox;
-    final static float DEFAULT_SHORT_SIZE = Constants.BARRIER_SHORT_SIZE;
-    final static float DEFAULT_LONG_SIZE = Constants.BARRIER_LONG_SIZE;
+    private float height;
+    private float length;
+    private boolean isShort;
+    private Position pos;
+    private HitBox hitBox;
+    private float DEFAULT_SHORT_SIZE; // = Constants.BARRIER_SHORT_SIZE;
+    private float DEFAULT_LONG_SIZE; // = Constants.BARRIER_LONG_SIZE;
     private static final String TAG = "Barrier";
 
     /**
@@ -33,6 +33,8 @@ public class Barrier extends Elements {
         super();
         this.pos = new Position(x,y);
         this.height = h;
+        this.DEFAULT_SHORT_SIZE = Constants.BARRIER_SHORT_SIZE;
+        this.DEFAULT_LONG_SIZE = Constants.BARRIER_LONG_SIZE;
         Random rd = new Random();
         this.isShort = rd.nextBoolean();
         if (this.isShort) {
