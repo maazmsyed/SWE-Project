@@ -42,40 +42,57 @@ public class MainMenu extends AppCompatActivity {
         // = FirebaseDatabase.getInstance().getReference();
 
         FirebaseDatabase database =
-                FirebaseDatabase.getInstance("https://just-slidin-default-rtdb.asia-southeast1.firebasedatabase.app/");
+                FirebaseDatabase.getInstance("https://justslidin-94ef6-default-rtdb.asia-southeast1.firebasedatabase.app/");
+        DatabaseReference ref = database.getReference().child("alreadyPlayerOne");
+
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                isAlreadyPlayerOne = snapshot.getValue(Boolean.class);
+                Log.i(TAG, isAlreadyPlayerOne != null ? isAlreadyPlayerOne.toString() : null);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d(TAG, "Read for already player one exists failed");
+            }
+        });
 
         playerOneButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
 
                 // DatabaseReference ref = database.getReference("alreadyPlayerOne");
-                DatabaseReference ref = database.getReference().child("alreadyPlayerOne");
-
-                ref.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                        isAlreadyPlayerOne = snapshot.getValue(Boolean.class);
-                        Log.i(TAG, isAlreadyPlayerOne != null ? isAlreadyPlayerOne.toString() : null);
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Log.d(TAG, "Read for already player one exists failed");
-                    }
-                });
-
-
-                database.getReference().child("PlayerOne").setValue(true);
-                database.getReference().child("alreadyPlayerOne").setValue(true); // TODO: remove later on, just for testing
-
                 if (isAlreadyPlayerOne) {
-                    playerTwoButton.setText(R.string.playerOneButtonAlreadySelected);
-                    playerTwoButton.setEnabled(false);
-
+                    playerOneButton.setText(R.string.playerOneButtonAlreadySelected);
+                    playerOneButton.setEnabled(false);
+                } else {
+                    database.getReference().child("PlayerOne").setValue(true);
+                    database.getReference().child("alreadyPlayerOne").setValue(true);// TODO: remove later on, just for testing
+                    playerOneButton.setText(R.string.buttonselected);
+                    playerOneButton.setEnabled(false);
                 }
             }
         });
 
+
+
+
+        DatabaseReference ref2 = database.getReference().child("alreadyPlayerTwo");
+        ref2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Boolean isAlreadyPlayerTwo_new = snapshot.getValue(Boolean.class);
+                isAlreadyPlayerTwo = isAlreadyPlayerTwo_new;
+                System.out.println(isAlreadyPlayerTwo);
+                Log.i(TAG, isAlreadyPlayerTwo != null ? isAlreadyPlayerTwo.toString() : null);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d(TAG, "Read for already player one exists failed");
+            }
+        });
         playerTwoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,20 +106,6 @@ public class MainMenu extends AppCompatActivity {
 //                playerTwoButton.setText(R.string.buttonselected);
 //                playerTwoButton.setEnabled(false);
 
-                DatabaseReference ref2 = database.getReference().child("alreadyPlayerTwo");
-                ref2.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        Boolean isAlreadyPlayerTwo_new = snapshot.getValue(Boolean.class);
-                        isAlreadyPlayerTwo = isAlreadyPlayerTwo_new;
-                        System.out.println(isAlreadyPlayerTwo);
-                        Log.i(TAG, isAlreadyPlayerTwo != null ? isAlreadyPlayerTwo.toString() : null);
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Log.d(TAG, "Read for already player one exists failed");
-                    }
-                });
                 if (isAlreadyPlayerTwo){
                     playerTwoButton.setText(R.string.playerTwoButtonAlreadySelected);
                     playerTwoButton.setEnabled(false);
