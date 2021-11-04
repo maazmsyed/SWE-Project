@@ -20,7 +20,7 @@ public class Constants {
     // Player
     public float PLAYER_RADIUS; // = SCREEN_WIDTH / 20f;
 
-    public Constants(){
+    public Constants() {
 
         try {
             SCREEN_HEIGHT = Resources.getSystem().getDisplayMetrics().heightPixels;

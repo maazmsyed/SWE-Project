@@ -16,7 +16,7 @@ import com.swe.justslidin.constants.Constants;
  */
 
 public class Character extends Elements {
-    private float rad;
+    private final float rad;
     private int coinCount;
     private Position pos;
     private HitBox hitBox;

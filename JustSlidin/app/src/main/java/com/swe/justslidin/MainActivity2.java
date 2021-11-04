@@ -69,7 +69,7 @@ public class MainActivity2 extends AppCompatActivity {
                     button.setEnabled(false);
                     _myRef = database.getReference("players/" + playerName);
                     addEventListener();
-                    Character player = new Character(constants.SCREEN_WIDTH/2, 400, 50f);
+                    Character player = new Character(constants.SCREEN_WIDTH/2,400, 50f);
                     _myRef.child("pos").setValue(player.getPosition());
                     _myRef.child("rad").setValue(player.getRadius());
                     // TODO: store the entire object to the db instead of separating it
