@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "290228381834",
+    "project_id": "just-slidin",
+    "storage_bucket": "just-slidin.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:290228381834:android:ae86dd7679a6e92a962573",
+        "android_client_info": {
+          "package_name": "com.swe.justslidin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "290228381834-nfvm3vqt67asgdlmaj55m68g6fdtfedh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-6wOFTIfqftJwBjXBOlHxiVksyu2LMS8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "290228381834-nfvm3vqt67asgdlmaj55m68g6fdtfedh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
