@@ -2,7 +2,10 @@ package com.swe.justslidin.models;
 
 import com.swe.justslidin.constants.Constants;
 
-
+/**
+ * This class represents the coin objects that will be
+ * placed on the slide.
+ */
 public class Coin extends Elements {
 
     private float rad;

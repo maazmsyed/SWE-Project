@@ -1,10 +1,10 @@
 package com.swe.justslidin.models;
 
+/**
+ * This class represents the position of an element. It carries the x- and y-coordinates
+ * of the element on the screen.
+ */
 public class Position {
-    /**
-     * This class represents the position of an element. It carries the x- and y-coordinates
-     * of the element on the screen.
-     */
 
     private float x;
     private float y;

@@ -1,8 +1,5 @@
 package com.swe.justslidin.models;
 
-/**
- * @author Ozair, Mustafa, Areeb, Maaz, Danny
- */
 
 public class HitBox {
 
@@ -20,8 +17,11 @@ public class HitBox {
 
     /**
      * this function checks if there is an overlap between the character class and the coin or the hurdle
-     * @param hb this is the hitbox of either a coin or a hurdle
+     * @param hb
+     * this is the hitbox of any of the elements in the game (including coins, barriers,
+     * finshing line, etc).
      * @return
+     * A boolean telling us whether there is a collision detected.
      */
     public boolean collide(HitBox hb){
         return !(this.top >= hb.bottom ||
@@ -31,8 +31,9 @@ public class HitBox {
     }
 
     /**
-     * returns the left side of the hitbox
+     * returns the left parameter of the hitbox
      * @return
+     * left parameter
      */
     public float getLeft() {
         return this.left;
@@ -44,8 +45,9 @@ public class HitBox {
 
     /**
      *
-     *returns the top side of the hitbox
+     *returns the top parameter of the hitbox
      * @return
+     * top parameter
      */
     public float getTop() {
         return this.top;
@@ -57,8 +59,9 @@ public class HitBox {
 
     /**
      *
-     * returns the bottom side of the hitbox
+     * returns the bottom parameter of the hitbox
      * @return
+     * bottom parameter
      */
     public float getBottom() {
         return this.bottom;
@@ -69,8 +72,9 @@ public class HitBox {
     }
 
     /**
-     * returns the right side of the hitbox
+     * returns the right parameter of the hitbox
      * @return
+     * right parameter
      */
     public float getRight() {
         return this.right;
@@ -81,13 +85,13 @@ public class HitBox {
     }
 
     /**
-     * this function updates the left side of the character's hitbox for when it moves left or right
+     * this function updates the left side of the element's hitbox for when it moves left or right
      * @param value pre-defined
      */
     public void updateLeft(float value) { this.setLeft(this.left + value); }
 
     /**
-     * this updates the right side of the character's hitbox for when the character moves left or right
+     * this updates the right side of the element's hitbox for when the character moves left or right
      * @param value pre-defined
      */
     public void updateRight(float value) {
@@ -95,12 +99,13 @@ public class HitBox {
     }
 
     /**
-     * this updates the top side of the coin or the hurdle's hitbox for when either of them move up
+     * this updates the top side of the element's hitbox for when either of them move up
      * @param value pre-defined
      */
     public void updateTop(float value) { this.setTop(this.top - value); }
+
     /**
-     * this updates the bottom side of the coin or the hurdle's hitbox for when either of them move up
+     * this updates the bottom side of the element's hitbox for when either of them move up
      * @param value pre-defined
      */
     public void updateBottom(float value) {

@@ -11,8 +11,6 @@ import com.swe.justslidin.constants.Constants;
 /**
 * Character class that handles everything related to the player character.
 *  This class deals with the player creation object, positioning with hitboxes, and movement.
-* @author
- * Danny and Maaz
  */
 
 public class Character extends Elements {

@@ -5,7 +5,7 @@ import com.swe.justslidin.constants.Constants;
 import java.util.Random;
 
 /**
- * This class represents the barrier objects that the player
+ * This class represents the barrier objects that
  * will be placed on the slide.
  */
 public class Barrier extends Elements {

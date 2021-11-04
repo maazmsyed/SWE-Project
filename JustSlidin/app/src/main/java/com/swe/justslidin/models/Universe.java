@@ -153,7 +153,8 @@ public class Universe {
 
     /**
      * Moves all the elements in the elements list up by the natural gravity. This is because
-     * all the coins and barriers in the game have a natural upward movement.
+     * all the coins, barriers, and other objects in the game have a
+     * natural upward movement.
      */
     public void step() {
         this.speedUpCounter += 1;
@@ -201,6 +202,12 @@ public class Universe {
         this.addBarrier(pos.getX(), pos.getY(),h);
     }
 
+    /**
+     * This method checks if there has been a collision between the player and another
+     * element (either coin or barrier). In the case of a collision, this method is
+     * also responsible for taking the required steps to make the necessary changes to
+     * the universe and the elements involved.
+     */
     public void checkPlayerCollision() {
         Vector<Elements> tempVec = new Vector<Elements>();
         for (Elements elem : this.elements) {
@@ -234,6 +241,12 @@ public class Universe {
     }
 
 
+    /**
+     * This method removes all the extra, used elements in the game. It checks for the
+     * elements that have already moved out of the screen (no longer being displayed)
+     * and removes all such elements. This helps increase efficiency and maintain
+     * space availability.
+     */
     public void removeExtraElements() {
         Vector<Elements> tempVec = new Vector<Elements>();
         for (Elements elem : this.elements) {
@@ -259,6 +272,11 @@ public class Universe {
         this.elements.removeAll(tempVec);
     }
 
+    /**
+     * This method is called at the end of the game (after the player crosses
+     * the finishing line). The method slows down the character until it is
+     * at a full rest to ensure a smooth and user-friendly stop to the game.
+     */
     public void stop() {
         this.speedDownCounter += 1;
         if (this.gravity.getY() > 0 && this.speedDownCounter % 5 == 0) {
@@ -275,12 +293,22 @@ public class Universe {
         castChanges();
     }
 
+    /**
+     * This method helps to move the character to the left of the screen.
+     * @param f
+     * The parameter (units) to move the character left by.
+     */
     public void moveCharLeft(float f) {
         //Log.i(TAG,"CHAR HAS MOVED LEFT.");
         player.moveLeft(f);
         System.out.println(player.getPosition());
     }
 
+    /**
+     * This method helps to move the character to the right of the screen.
+     * @param f
+     * The parameter (units) to move the character right by.
+     */
     public void moveCharRight(float f) {
         //Log.i(TAG,"CHAR HAS MOVED RIGHT.");
         player.moveRight(f);
