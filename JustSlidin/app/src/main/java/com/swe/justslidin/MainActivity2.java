@@ -27,6 +27,7 @@ import java.time.format.DateTimeFormatter;
 public class MainActivity2 extends AppCompatActivity {
 
     private static final Constants constants = new Constants();
+
     EditText editText;
     Button button;
 
