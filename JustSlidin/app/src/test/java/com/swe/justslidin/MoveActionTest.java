@@ -8,4 +8,5 @@ import android.view.WindowManager;
 
 public class MoveActionTest{
 // merge issue.
+    
 }
