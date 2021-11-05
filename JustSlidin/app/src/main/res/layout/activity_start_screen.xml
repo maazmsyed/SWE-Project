@@ -49,34 +49,10 @@
         tools:text="@string/app_name" />
 
     <Button
-        android:id="@+id/playerOneButton"
-        android:layout_width="120dp"
-        android:layout_height="60dp"
-        android:text="@string/playerOneButton"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5" />
-
-    <Button
-        android:id="@+id/playerTwoButton"
-        android:layout_width="120dp"
-        android:layout_height="60dp"
-        android:text="@string/playerTwoButton"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.8"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5" />
-
-    <Button
         android:id="@+id/letsSlideButton"
-        android:layout_width="120dp"
-        android:layout_height="60dp"
-        android:text="@string/playGame"
+        android:layout_width="181dp"
+        android:layout_height="59dp"
+        android:text="@string/startScreenButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

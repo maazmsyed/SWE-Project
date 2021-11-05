@@ -3,10 +3,18 @@ package com.swe.justslidin.models;
 
 import android.graphics.Bitmap;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.swe.justslidin.constants.Constants;
+import com.swe.justslidin.network.Firebase;
+import com.swe.justslidin.network.PlayerStats;
 import com.swe.justslidin.view.GraphicsRenderer;
 import android.util.Log;
 
+
+import androidx.annotation.NonNull;
 
 import java.util.List;
 import java.util.Vector;
@@ -27,6 +35,9 @@ public class Universe {
     private float additionalMotionY;
     private int speedUpCounter;
     private int speedDownCounter;
+
+    int otherPlayerPositionX;
+    int otherPlayerPositionY;
     FinishingLine finishingLine = new FinishingLine((Constants.SCREEN_WIDTH / 2),
             Constants.SCREEN_HEIGHT * 20); // TODO: When to end game?
     private volatile Boolean gameRunning;
@@ -72,6 +83,10 @@ public class Universe {
 
     public void setFinishingLineBitmap(Bitmap bitmap) {
         this.finishingLine.setFinishingBitmap(bitmap);
+    }
+
+    public Position getOtherPlayerPosition() {
+        return otherPlayerPosition;
     }
 
     public FinishingLine getFinishingLine() {
@@ -153,6 +168,7 @@ public class Universe {
      * all the coins and barriers in the game have a natural upward movement.
      */
     public void step() {
+        playerChecker();
         this.speedUpCounter += 1;
         if (this.additionalMotionY <= (DEFAULT_GRAVITY_MOTION.getY() * 2)
                 && this.speedUpCounter % 20 == 0) {
@@ -171,6 +187,40 @@ public class Universe {
         // if (this.finishingLine.getHitBox().collide())
         castChanges();
     }
+
+    public void playerChecker() {
+        if (PlayerStats.playerID == "playerOne"){
+
+            DatabaseReference refP2 = Firebase.getDatabase().getReference("playerTwoPos");
+            refP2.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    otherPlayerPositionX = snapshot.getValue(Integer.class);
+                    Log.i(TAG, otherPlayerPosition != null ? otherPlayerPosition.toString() : null);
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Log.d(TAG, "fetching other player's position failed");
+                }
+            });
+        } else{
+
+            DatabaseReference refP1 = Firebase.getDatabase().getReference("playerOnePos");
+            refP1.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    otherPlayerPosition = snapshot.getValue(Position.class);
+
+                    Log.i(TAG, otherPlayerPosition != null ? otherPlayerPosition.toString() : null);
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Log.d(TAG, "fetching other player's position failed");
+                }
+            });
+        }
+    }
+
 
     /**
      * This is just another way to access the addCoin method. If you want to pass an instance of

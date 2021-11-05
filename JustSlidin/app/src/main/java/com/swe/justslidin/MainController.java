@@ -13,6 +13,7 @@ import com.swe.justslidin.models.Motion;
 import com.swe.justslidin.io.MoveAction;
 import com.swe.justslidin.models.Position;
 import com.swe.justslidin.models.Universe;
+import com.swe.justslidin.network.PlayerStats;
 import com.swe.justslidin.view.GraphicsRenderer;
 
 import java.util.Random;
@@ -53,8 +54,11 @@ public class MainController extends Thread {
 
     @Override
     public void run() {
+        long startTime = System.currentTimeMillis();
+
         while (this.universe.isGameRunning()) {
             try {
+//                Thread.sleep(5);
                 this.universe.checkPlayerCollision();
                 this.universe.removeExtraElements();
                 this.universe.step();
@@ -83,10 +87,13 @@ public class MainController extends Thread {
                 e.printStackTrace();
             }
         }
+
+        long endTime = System.currentTimeMillis();
+        PlayerStats.elapsedTime = endTime - startTime;
+
         while (!this.universe.isGameRunning()) {
             try {
                 this.universe.stop();
-                // this.universe.waitingForOthers();
                 Thread.sleep(1000/fps);
             } catch (InterruptedException e) {
                 e.printStackTrace(); // TODO: Could add graceful shutdown from PCDP midterm

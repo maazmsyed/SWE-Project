@@ -219,6 +219,12 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
 
         Character player = this.universe.getPlayer();
         HitBox hbPlayer = player.getHitBox();
+        // TODO: place rendering in the right place and check if it is in the correct place now.
+        if (this.universe.getOtherPlayerPosition() != null){
+            canvas.drawBitmap(this.playerCoin, (int) this.universe.getOtherPlayerPosition().getX(),
+                    (int) this.universe.getOtherPlayerPosition().getY(), null);
+        }
+
 
         // Reset player's coin reaction bitmap to normal
         if (this.coinBitmapCount >= 20) {
