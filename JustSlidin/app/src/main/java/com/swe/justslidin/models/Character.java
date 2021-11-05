@@ -137,6 +137,7 @@ public class Character extends Elements {
      */
     public Position getPosition () {return this.pos;}
 
+    public Position getAbsolutePos() {return this.absolutePos;}
 
     /**
     * Returns HitBox of the Character. Composed of 4-coordinates to get height and width.

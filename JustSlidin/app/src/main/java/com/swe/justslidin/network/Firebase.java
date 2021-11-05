@@ -15,8 +15,7 @@ public class Firebase {
 
     private static final Constants constants = new Constants();
     private static final String TAG = "Firebase";
-    public static FirebaseDatabase database = FirebaseDatabase
-            .getInstance("https://justslidin-94ef6-default-rtdb.asia-southeast1.firebasedatabase.app/");
+    public static FirebaseDatabase database = null;
 
     public static FirebaseDatabase getDatabase() {
         if (database == null) {

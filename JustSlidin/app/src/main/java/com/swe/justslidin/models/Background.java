@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 
 import com.swe.justslidin.R;
+import com.swe.justslidin.constants.Constants;
 
 public class Background {
 
@@ -12,6 +13,7 @@ public class Background {
     private Bitmap backgroundBitmap;
     private int height = 0;
     private static final String TAG = "Background";
+    private static final Constants constants = new Constants();
 
     public Background() { }
 

@@ -28,6 +28,7 @@ public class Universe {
         return gravity;
     }
 
+    private static final Constants constants = new Constants();
     Motion gravity;
     Character player;
     List<Elements> elements;
@@ -35,20 +36,31 @@ public class Universe {
     private float additionalMotionY;
     private int speedUpCounter;
     private int speedDownCounter;
-
-    int otherPlayerPositionX;
-    int otherPlayerPositionY;
-    FinishingLine finishingLine = new FinishingLine((Constants.SCREEN_WIDTH / 2),
-            Constants.SCREEN_HEIGHT * 20); // TODO: When to end game?
+    FinishingLine finishingLine = new FinishingLine((constants.SCREEN_WIDTH / 2),
+            constants.SCREEN_HEIGHT * 20); // TODO: When to end game?
     private volatile Boolean gameRunning;
+    DatabaseReference refPlayerPos;
+
+    // Other Player's Position
+    private Position otherPlayerPos;
+    private String otherPlayerID;
+    DatabaseReference refOtherPlayerPos;
 
 
     public Universe () {
-        this (DEFAULT_GRAVITY_MOTION, new Character(Constants.SCREEN_WIDTH / 2,
-                Constants.SCREEN_HEIGHT / 4, Constants.PLAYER_RADIUS));
+        this (DEFAULT_GRAVITY_MOTION, new Character(constants.SCREEN_WIDTH / 2,
+                constants.SCREEN_HEIGHT / 4, constants.PLAYER_RADIUS));
     }
 
     public Universe (Motion g, Character pl) {
+
+        refPlayerPos = Firebase.getDatabase().getReference(PlayerStats.playerID + "Pos");
+        // Setting up other player's position
+        otherPlayerPos = new Position(constants.SCREEN_WIDTH / 2, constants.SCREEN_HEIGHT / 4);
+        if (PlayerStats.playerID.equals("playerOne")) { otherPlayerID = "playerTwo"; }
+        else {otherPlayerID = "playerOne"; }
+        refOtherPlayerPos = Firebase.getDatabase().getReference(otherPlayerID + "Pos");
+
         elements = new Vector<>();
         gravity = g;
         player = pl;
@@ -56,7 +68,6 @@ public class Universe {
         speedUpCounter = 0;
         speedDownCounter = 0;
         gameRunning = true;
-//        this.background = new Background();
     }
 
     public Boolean isGameRunning() {
@@ -67,16 +78,6 @@ public class Universe {
         this.gameRunning = gameRunning;
     }
 
-//    public void incrementGravity() {
-//        // this.gravity.setY(DEFAULT_GRAVITY_MOTION.getY() + additionalMotionY);
-//        this.gravity = new Motion(0, DEFAULT_GRAVITY_MOTION.getY() + additionalMotionY); // Also not working
-//        System.out.println((gravity.getY())); // TODO: This is not updating!
-//    }
-
-//    public void defaultGravity() {
-//        this.gravity = DEFAULT_GRAVITY_MOTION;
-//    }
-
     public void setBackgroundBitmap(Bitmap bitmap) {
         this.background.setBackgroundBitmap(bitmap);
     }
@@ -85,20 +86,17 @@ public class Universe {
         this.finishingLine.setFinishingBitmap(bitmap);
     }
 
-    public Position getOtherPlayerPosition() {
-        return otherPlayerPosition;
-    }
-
     public FinishingLine getFinishingLine() {
         return this.finishingLine;
     }
-
-//    public void setPlayerBitmap(Bitmap bitmap){ this.player.setPlayerBitmap(bitmap);}
 
     public Background getBackground() {
         return this.background;
     }
 
+    public Position getOtherPlayerPos() {
+        return otherPlayerPos;
+    }
 
     /**
      * This method adds an instantiation of a coin to the elements list.
@@ -111,8 +109,7 @@ public class Universe {
      * This value defines the radius (size) of the new coin instance.
      */
     public void addCoin(float x, float y, float rad) {
-        System.out.println(Constants.SCREEN_WIDTH);
-        System.out.println(Constants.SCREEN_HEIGHT);
+        Log.i(TAG, "Adding Coin");
         Coin newCoin = new Coin(x, y, rad);
         for (Elements elem : this.elements) {
             if (elem instanceof Barrier) {
@@ -121,12 +118,12 @@ public class Universe {
                 if (newCoin.getHitBox().collide(hb)) {
                     float bLeft = hb.getLeft();
                     float bRight = hb.getRight();
-                    if (bLeft <= Constants.SCREEN_WIDTH) {
-                        newCoin = new Coin(bRight + (Constants.SCREEN_WIDTH / 10), y, rad);
+                    if (bLeft <= constants.SCREEN_WIDTH) {
+                        newCoin = new Coin(bRight + (constants.SCREEN_WIDTH / 10), y, rad);
                         // newCoin.setPos(new Position(bRight + 100, y));
                     } else {
                         // newCoin.setPos(new Position(bLeft - 100, y));
-                        newCoin = new Coin(bLeft - (Constants.SCREEN_WIDTH / 10), y, rad);
+                        newCoin = new Coin(bLeft - (constants.SCREEN_WIDTH / 10), y, rad);
                     }
                 }
             }
@@ -150,6 +147,7 @@ public class Universe {
      * This value defines the height of the new barrier instance.
      */
     public void addBarrier(float x, float y, float h) {
+        Log.i(TAG, "Adding Barrier");
         elements.add(new Barrier (x,y,h));
         castChanges();
     }
@@ -168,7 +166,8 @@ public class Universe {
      * all the coins and barriers in the game have a natural upward movement.
      */
     public void step() {
-        playerChecker();
+        this.updateOtherPlayerPos();
+        this.setFirebasePlayerPos();
         this.speedUpCounter += 1;
         if (this.additionalMotionY <= (DEFAULT_GRAVITY_MOTION.getY() * 2)
                 && this.speedUpCounter % 20 == 0) {
@@ -184,41 +183,46 @@ public class Universe {
         if (this.player.getHitBox().collide(this.finishingLine.getHitBox())) {
             gameRunning = false;
         }
-        // if (this.finishingLine.getHitBox().collide())
         castChanges();
     }
 
-    public void playerChecker() {
-        if (PlayerStats.playerID == "playerOne"){
+    public void setFirebasePlayerPos() {
+        refPlayerPos.child("X").setValue(player.getAbsolutePos().getX());
+        Log.i(TAG, "Set main player's X position");
+        refPlayerPos.child("Y").setValue(player.getAbsolutePos().getY());
+        Log.i(TAG, "Set main player's Y position");
 
-            DatabaseReference refP2 = Firebase.getDatabase().getReference("playerTwoPos");
-            refP2.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    otherPlayerPositionX = snapshot.getValue(Integer.class);
-                    Log.i(TAG, otherPlayerPosition != null ? otherPlayerPosition.toString() : null);
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Log.d(TAG, "fetching other player's position failed");
-                }
-            });
-        } else{
+    }
 
-            DatabaseReference refP1 = Firebase.getDatabase().getReference("playerOnePos");
-            refP1.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    otherPlayerPosition = snapshot.getValue(Position.class);
+    public void updateOtherPlayerPos() {
 
-                    Log.i(TAG, otherPlayerPosition != null ? otherPlayerPosition.toString() : null);
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Log.d(TAG, "fetching other player's position failed");
-                }
-            });
-        }
+        refOtherPlayerPos.child("X").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // float tempX = snapshot.getValue(Integer.class);
+                otherPlayerPos.setX(snapshot.getValue(Float.class));
+                Log.i(TAG, "Get other player's X position");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.i(TAG, "Did not set other player's X position");
+            }
+        });
+
+        refOtherPlayerPos.child("Y").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                otherPlayerPos.setY(snapshot.getValue(Float.class));
+                Log.i(TAG, "Get other player's Y position");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.i(TAG, "Did not set other player's Y position");
+            }
+        });
+
     }
 
 

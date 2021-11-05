@@ -18,6 +18,8 @@ public class Barrier extends Elements {
     private float DEFAULT_SHORT_SIZE; // = Constants.BARRIER_SHORT_SIZE;
     private float DEFAULT_LONG_SIZE; // = Constants.BARRIER_LONG_SIZE;
     private static final String TAG = "Barrier";
+    private static final Constants constants = new Constants();
+
 
     /**
      * Barrier class constructor constructs a barrier object by
@@ -33,8 +35,8 @@ public class Barrier extends Elements {
         super();
         this.pos = new Position(x,y);
         this.height = h;
-        this.DEFAULT_SHORT_SIZE = Constants.BARRIER_SHORT_SIZE;
-        this.DEFAULT_LONG_SIZE = Constants.BARRIER_LONG_SIZE;
+        this.DEFAULT_SHORT_SIZE = constants.BARRIER_SHORT_SIZE;
+        this.DEFAULT_LONG_SIZE = constants.BARRIER_LONG_SIZE;
         Random rd = new Random();
         this.isShort = rd.nextBoolean();
         if (this.isShort) {

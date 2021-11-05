@@ -1,24 +1,23 @@
 package com.swe.justslidin.constants;
 
 import android.content.res.Resources;
-import com.swe.justslidin.models.Motion;
 
 
 public class Constants {
 
-    public static float SCREEN_WIDTH;
-    public static float SCREEN_HEIGHT;
+    public float SCREEN_WIDTH;
+    public float SCREEN_HEIGHT;
 
     // Coin
-    public static float COIN_RADIUS;
+    public float COIN_RADIUS;
 
     // Barrier
-    public static float BARRIER_SHORT_SIZE;
-    public static float BARRIER_LONG_SIZE;
-    public static float BARRIER_HEIGHT;
+    public float BARRIER_SHORT_SIZE;
+    public float BARRIER_LONG_SIZE;
+    public float BARRIER_HEIGHT;
 
     // Player
-    public static float PLAYER_RADIUS;
+    public float PLAYER_RADIUS;
 
     public Constants(){
 

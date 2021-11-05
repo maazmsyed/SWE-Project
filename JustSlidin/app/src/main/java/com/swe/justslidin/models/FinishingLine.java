@@ -10,11 +10,12 @@ public class FinishingLine {
     private Bitmap finishingBitmap;
     private HitBox hitBox;
     private Position pos;
+    private static final Constants constants = new Constants();
 
     public FinishingLine(float x, float y) {
         this.pos = new Position(x, y);
-        this.hitBox = new HitBox(0, Constants.SCREEN_WIDTH,
-                y + (Constants.SCREEN_HEIGHT * 0.05f), y - (Constants.SCREEN_HEIGHT * 0.05f));
+        this.hitBox = new HitBox(0, constants.SCREEN_WIDTH,
+                y + (constants.SCREEN_HEIGHT * 0.05f), y - (constants.SCREEN_HEIGHT * 0.05f));
     }
 
     public void setFinishingBitmap(Bitmap finishingBitmap) {

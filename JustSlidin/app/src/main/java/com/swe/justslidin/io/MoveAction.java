@@ -10,7 +10,8 @@ import com.swe.justslidin.models.Universe;
 public class MoveAction implements ClickAction {
     private static final String TAG = "MoveAction";
     private final Universe universe;
-    private final float screenWidth = Constants.SCREEN_WIDTH;
+    private static final Constants constants = new Constants();
+    private final float screenWidth = constants.SCREEN_WIDTH;
 
     public MoveAction(Universe universe) {
         this.universe = universe;

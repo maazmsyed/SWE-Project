@@ -16,6 +16,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.swe.justslidin.constants.Constants;
 import com.swe.justslidin.models.Position;
+import com.swe.justslidin.network.Firebase;
 import com.swe.justslidin.network.PlayerStats;
 
 public class MainMenu extends AppCompatActivity {
@@ -23,9 +24,12 @@ public class MainMenu extends AppCompatActivity {
     private static final Constants constants = new Constants();
     private static final String TAG = "MainMenu";
     private DatabaseReference dbRef;
+
+    // Buttons
     Button playerOneButton;
     Button playerTwoButton;
     Button playGame;
+
     Boolean isAlreadyPlayerOne = false;
     Boolean isAlreadyPlayerTwo = false;
     Boolean gameState = false;
@@ -40,10 +44,13 @@ public class MainMenu extends AppCompatActivity {
         playerTwoButton = findViewById(R.id.playerTwoButton);
         playGame = findViewById(R.id.letsSlideButton);
 
-        // = FirebaseDatabase.getInstance().getReference();
+        // Gets database
+        FirebaseDatabase database = Firebase.getDatabase();
+//        FirebaseDatabase database =
+//                FirebaseDatabase.getInstance
+//                ("https://justslidin-94ef6-default-rtdb.asia-southeast1.firebasedatabase.app/");
 
-        FirebaseDatabase database =
-                FirebaseDatabase.getInstance("https://justslidin-94ef6-default-rtdb.asia-southeast1.firebasedatabase.app/");
+
         DatabaseReference refP1 = database.getReference().child("alreadyPlayerOne");
 
         refP1.addValueEventListener(new ValueEventListener() {
@@ -59,30 +66,33 @@ public class MainMenu extends AppCompatActivity {
             }
         });
 
-//        isAlreadyPlayerOne = Firebase.getBoolean("alreadyPlayerOne");
-
+        // Button for Player 1
         playerOneButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
 
-                // DatabaseReference ref = database.getReference("alreadyPlayerOne");
                 if (isAlreadyPlayerOne) {
                     playerOneButton.setText(R.string.playerOneButtonAlreadySelected);
                     playerOneButton.setEnabled(false);
+
                 } else if (PlayerStats.playerID.equals("")) {
                     PlayerStats.playerID = "playerOne";
                     database.getReference().child("playerOne").setValue(true);
-                    Position positionP1 = new Position(Constants.SCREEN_WIDTH / 2, Constants.SCREEN_HEIGHT / 4);
-                    database.getReference().child(PlayerStats.playerID + "Pos").child("X").setValue(positionP1.getX());
-                    database.getReference().child(PlayerStats.playerID + "Pos").child("Y").setValue(positionP1.getY());
-                    database.getReference().child("alreadyPlayerOne").setValue(true);// TODO: remove later on, just for testing
+
+                    Position positionP1 =
+                            new Position(constants.SCREEN_WIDTH / 2, constants.SCREEN_HEIGHT / 4);
+                    database.getReference()
+                            .child(PlayerStats.playerID + "Pos").child("X").setValue(positionP1.getX());
+                    database.getReference()
+                            .child(PlayerStats.playerID + "Pos").child("Y").setValue(positionP1.getY());
+
+                    // TODO: remove later on, just for testing
+                    database.getReference().child("alreadyPlayerOne").setValue(true);
+
                     playerOneButton.setText(R.string.playerButtonSelected);
                     playerOneButton.setEnabled(false);
                 }
-//                if (isAlreadyPlayerTwo) {
-//                    startActivity(new Intent(MainMenu.this, MainActivity.class));
-//                }
             }
         });
 
@@ -92,8 +102,8 @@ public class MainMenu extends AppCompatActivity {
         refP2.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                isAlreadyPlayerTwo = snapshot.getValue(Boolean.class);
 
+                isAlreadyPlayerTwo = snapshot.getValue(Boolean.class);
                 Log.i(TAG, isAlreadyPlayerTwo != null ? isAlreadyPlayerTwo.toString() : null);
             }
             @Override
@@ -110,19 +120,22 @@ public class MainMenu extends AppCompatActivity {
                 if (isAlreadyPlayerTwo) {
                     playerTwoButton.setText(R.string.playerTwoButtonAlreadySelected);
                     playerTwoButton.setEnabled(false);
+
                 } else if (PlayerStats.playerID.equals("")) {
                     PlayerStats.playerID = "playerTwo";
                     database.getReference().child("playerTwo").setValue(true);
-                    Position positionP2 = new Position(Constants.SCREEN_WIDTH / 2, Constants.SCREEN_HEIGHT / 4);
-                    database.getReference().child(PlayerStats.playerID + "Pos").child("X").setValue(positionP2.getX());
-                    database.getReference().child(PlayerStats.playerID + "Pos").child("Y").setValue(positionP2.getY());
+
+                    Position positionP2 =
+                            new Position(constants.SCREEN_WIDTH / 2, constants.SCREEN_HEIGHT / 4);
+                    database.getReference()
+                            .child(PlayerStats.playerID + "Pos").child("X").setValue(positionP2.getX());
+                    database.getReference()
+                            .child(PlayerStats.playerID + "Pos").child("Y").setValue(positionP2.getY());
+
                     database.getReference().child("alreadyPlayerTwo").setValue(true);
                     playerTwoButton.setText(R.string.playerButtonSelected);
                     playerTwoButton.setEnabled(false);
                 }
-//                if (isAlreadyPlayerOne){
-//                    startActivity(new Intent(MainMenu.this, MainActivity.class));
-//                }
             }
         });
 
@@ -134,6 +147,11 @@ public class MainMenu extends AppCompatActivity {
             public void onClick(View view) {
                 if (isAlreadyPlayerOne && isAlreadyPlayerTwo) {
                     refGameState.setValue(true);
+//                    try {
+//                        Thread.sleep(100);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
                 }
             }
         });
@@ -145,10 +163,10 @@ public class MainMenu extends AppCompatActivity {
                 gameState = snapshot.getValue(Boolean.class);
                 Log.i(TAG, gameState != null ? gameState.toString() : null);
                 if (gameState) {
+                    // Thread.sleep(100);
                     startActivity(new Intent(MainMenu.this, MainActivity.class));
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.d(TAG, "Reading game state failed");

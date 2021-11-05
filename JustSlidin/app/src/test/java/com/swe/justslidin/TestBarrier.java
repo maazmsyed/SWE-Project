@@ -17,11 +17,11 @@ public class TestBarrier {
         System.out.println(b.isShort());
 
         if (b.isShort()) {
-            assert (b.getHitBox().getLeft() == 50.0f - (Constants.BARRIER_SHORT_SIZE/2));
-            assert (b.getHitBox().getRight() == 50.0f + (Constants.BARRIER_SHORT_SIZE/2));
+            assert (b.getHitBox().getLeft() == 50.0f - (constants.BARRIER_SHORT_SIZE/2));
+            assert (b.getHitBox().getRight() == 50.0f + (constants.BARRIER_SHORT_SIZE/2));
         } else {
-            assert (b.getHitBox().getLeft() == 50.0f - (Constants.BARRIER_LONG_SIZE/2));
-            assert (b.getHitBox().getRight() == 50.0f + (Constants.BARRIER_LONG_SIZE/2));
+            assert (b.getHitBox().getLeft() == 50.0f - (constants.BARRIER_LONG_SIZE/2));
+            assert (b.getHitBox().getRight() == 50.0f + (constants.BARRIER_LONG_SIZE/2));
         }
         assert (b.getHitBox().getBottom() == 105.0f);
         assert (b.getHitBox().getTop() == 95.0f);
@@ -36,11 +36,11 @@ public class TestBarrier {
         b.moveUp(new Motion(0, 10));
 
         if (b.isShort()) {
-            assert (b.getHitBox().getLeft() == 50.0f - (Constants.BARRIER_SHORT_SIZE/2));
-            assert (b.getHitBox().getRight() == 50.0f + (Constants.BARRIER_SHORT_SIZE/2));
+            assert (b.getHitBox().getLeft() == 50.0f - (constants.BARRIER_SHORT_SIZE/2));
+            assert (b.getHitBox().getRight() == 50.0f + (constants.BARRIER_SHORT_SIZE/2));
         } else {
-            assert (b.getHitBox().getLeft() == 50.0f - (Constants.BARRIER_LONG_SIZE/2));
-            assert (b.getHitBox().getRight() == 50.0f + (Constants.BARRIER_LONG_SIZE/2));
+            assert (b.getHitBox().getLeft() == 50.0f - (constants.BARRIER_LONG_SIZE/2));
+            assert (b.getHitBox().getRight() == 50.0f + (constants.BARRIER_LONG_SIZE/2));
         }
         assert (b.getHitBox().getBottom() == 85.0f);
         assert (b.getHitBox().getTop() == 75.0f);
@@ -52,11 +52,11 @@ public class TestBarrier {
 //        System.out.println(c.getHitBox().getLeft());
 //        System.out.println(c.getHitBox().getRight());
         if (b.isShort()) {
-            assert (b.getHitBox().getLeft() == 50.0f - (Constants.BARRIER_SHORT_SIZE/2) + 150);
-            assert (b.getHitBox().getRight() == 50.0f + (Constants.BARRIER_SHORT_SIZE/2) + 150);
+            assert (b.getHitBox().getLeft() == 50.0f - (constants.BARRIER_SHORT_SIZE/2) + 150);
+            assert (b.getHitBox().getRight() == 50.0f + (constants.BARRIER_SHORT_SIZE/2) + 150);
         } else {
-            assert (b.getHitBox().getLeft() == 50.0f - (Constants.BARRIER_LONG_SIZE/2) + 150);
-            assert (b.getHitBox().getRight() == 50.0f + (Constants.BARRIER_LONG_SIZE/2) + 150);
+            assert (b.getHitBox().getLeft() == 50.0f - (constants.BARRIER_LONG_SIZE/2) + 150);
+            assert (b.getHitBox().getRight() == 50.0f + (constants.BARRIER_LONG_SIZE/2) + 150);
         }
 //        assert (b.getHitBox().getLeft() == 175.0f);
 //        assert (b.getHitBox().getRight() == 225.0f);
@@ -83,9 +83,6 @@ public class TestBarrier {
 
         assert (b.getPosition().getX() == 60.0f);
         assert (b.getPosition().getY() == 90.0f);
-
-        // id test
-        assert (b.getId() == 'b');
 
     }
 
