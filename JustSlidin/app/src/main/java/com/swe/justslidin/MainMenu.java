@@ -30,8 +30,8 @@ public class MainMenu extends AppCompatActivity {
     Button playerTwoButton;
     Button playGame;
 
-    Boolean isAlreadyPlayerOne = false;
-    Boolean isAlreadyPlayerTwo = false;
+    Boolean playerOneAlready = false;
+    Boolean playerTwoAlready = false;
     Boolean gameState = false;
 
 
@@ -46,19 +46,16 @@ public class MainMenu extends AppCompatActivity {
 
         // Gets database
         FirebaseDatabase database = Firebase.getDatabase();
-//        FirebaseDatabase database =
-//                FirebaseDatabase.getInstance
-//                ("https://justslidin-94ef6-default-rtdb.asia-southeast1.firebasedatabase.app/");
 
 
-        DatabaseReference refP1 = database.getReference().child("alreadyPlayerOne");
+        DatabaseReference refP1 = database.getReference().child("playerOne").child("Already");
 
         refP1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                isAlreadyPlayerOne = snapshot.getValue(Boolean.class);
-                Log.i(TAG, isAlreadyPlayerOne != null ? isAlreadyPlayerOne.toString() : null);
+                playerOneAlready = snapshot.getValue(Boolean.class);
+                Log.i(TAG, playerOneAlready != null ? playerOneAlready.toString() : null);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -72,23 +69,24 @@ public class MainMenu extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if (isAlreadyPlayerOne) {
+                if (playerOneAlready) {
                     playerOneButton.setText(R.string.playerOneButtonAlreadySelected);
                     playerOneButton.setEnabled(false);
 
                 } else if (PlayerStats.playerID.equals("")) {
                     PlayerStats.playerID = "playerOne";
-                    database.getReference().child("playerOne").setValue(true);
+                    database.getReference().child("playerOne").child("Already").setValue(true);
+                    database.getReference().child("playerOne").child("Exists").setValue(true);
 
+                    // Temp position to avoid null value
                     Position positionP1 =
                             new Position(constants.SCREEN_WIDTH / 2, constants.SCREEN_HEIGHT / 4);
-                    database.getReference()
-                            .child(PlayerStats.playerID + "Pos").child("X").setValue(positionP1.getX());
-                    database.getReference()
-                            .child(PlayerStats.playerID + "Pos").child("Y").setValue(positionP1.getY());
+                    database.getReference().child(PlayerStats.playerID)
+                            .child("Pos").child("X").setValue(positionP1.getX());
+                    database.getReference().child(PlayerStats.playerID)
+                            .child("Pos").child("Y").setValue(positionP1.getY());
 
-                    // TODO: remove later on, just for testing
-                    database.getReference().child("alreadyPlayerOne").setValue(true);
+                    // database.getReference().child("alreadyPlayerOne").setValue(true);
 
                     playerOneButton.setText(R.string.playerButtonSelected);
                     playerOneButton.setEnabled(false);
@@ -103,8 +101,8 @@ public class MainMenu extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                isAlreadyPlayerTwo = snapshot.getValue(Boolean.class);
-                Log.i(TAG, isAlreadyPlayerTwo != null ? isAlreadyPlayerTwo.toString() : null);
+                playerTwoAlready = snapshot.getValue(Boolean.class);
+                Log.i(TAG, playerTwoAlready != null ? playerTwoAlready.toString() : null);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -117,22 +115,24 @@ public class MainMenu extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if (isAlreadyPlayerTwo) {
+                if (playerTwoAlready) {
                     playerTwoButton.setText(R.string.playerTwoButtonAlreadySelected);
                     playerTwoButton.setEnabled(false);
 
                 } else if (PlayerStats.playerID.equals("")) {
                     PlayerStats.playerID = "playerTwo";
-                    database.getReference().child("playerTwo").setValue(true);
+                    database.getReference().child("playerTwo").child("Already").setValue(true);
+                    database.getReference().child("playerTwo").child("Exists").setValue(true);
 
+                    // Temp position to avoid null value
                     Position positionP2 =
                             new Position(constants.SCREEN_WIDTH / 2, constants.SCREEN_HEIGHT / 4);
-                    database.getReference()
-                            .child(PlayerStats.playerID + "Pos").child("X").setValue(positionP2.getX());
-                    database.getReference()
-                            .child(PlayerStats.playerID + "Pos").child("Y").setValue(positionP2.getY());
+                    database.getReference().child(PlayerStats.playerID)
+                            .child("Pos").child("X").setValue(positionP2.getX());
+                    database.getReference().child(PlayerStats.playerID)
+                            .child("Pos").child("Y").setValue(positionP2.getY());
 
-                    database.getReference().child("alreadyPlayerTwo").setValue(true);
+                    // database.getReference().child("alreadyPlayerTwo").setValue(true);
                     playerTwoButton.setText(R.string.playerButtonSelected);
                     playerTwoButton.setEnabled(false);
                 }
@@ -145,13 +145,8 @@ public class MainMenu extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                if (isAlreadyPlayerOne && isAlreadyPlayerTwo) {
+                if (playerOneAlready && playerTwoAlready) {
                     refGameState.setValue(true);
-//                    try {
-//                        Thread.sleep(100);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
                 }
             }
         });

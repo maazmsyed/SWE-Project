@@ -20,7 +20,7 @@ public class Firebase {
     public static FirebaseDatabase getDatabase() {
         if (database == null) {
             database = FirebaseDatabase
-                    .getInstance("https://justslidin-94ef6-default-rtdb.asia-southeast1.firebasedatabase.app/");
+                    .getInstance("https://just-slidin-default-rtdb.asia-southeast1.firebasedatabase.app/");
         }
         return database;
     }
@@ -29,7 +29,7 @@ public class Firebase {
 //
 //        if (database == null) {
 //            database = FirebaseDatabase
-//                    .getInstance("https://justslidin-94ef6-default-rtdb.asia-southeast1.firebasedatabase.app/");
+//                    .getInstance("https://just-slidin-default-rtdb.asia-southeast1.firebasedatabase.app/");
 //        }
 //
 //        DatabaseReference reference = database.getReference().child(node);
