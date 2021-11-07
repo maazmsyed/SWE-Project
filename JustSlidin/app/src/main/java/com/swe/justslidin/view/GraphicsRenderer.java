@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.nfc.Tag;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
@@ -20,6 +21,7 @@ import com.swe.justslidin.models.Elements;
 import com.swe.justslidin.models.HitBox;
 import com.swe.justslidin.models.Position;
 import com.swe.justslidin.models.Universe;
+import com.swe.justslidin.network.PlayerStats;
 
 import java.util.Vector;
 
@@ -82,11 +84,15 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
 
 
     public GraphicsRenderer(Universe u, Resources context) {
+        Log.i(TAG, "Is it entering GraphicsRenderer or not");
         this.universe = u;
         this.universe.setCallBack(this);
         this.context = context;
         this.screenWidth = (int) constants.SCREEN_WIDTH;
         this.screenHeight = (int) constants.SCREEN_HEIGHT;
+//        this.universe.setOtherPlayerScreenDim();
+
+        Log.i(TAG, "Is it processing setOtherPlayerScreenDim?");
 
         // Coin Bitmap
         this.coinBitmap = BitmapFactory.decodeResource(context, R.mipmap.coin);
@@ -220,6 +226,7 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
 
     private void draw(Canvas canvas) {
         if (canvas != null) { // TODO: Double check this (needed or not?)
+            Log.i(TAG, "Is it going to draw?");
             // canvas.drawARGB(150, 100, 100, 100);
             Paint paint = new Paint();
             paint.setStyle(Paint.Style.FILL_AND_STROKE);
@@ -281,6 +288,7 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
                         this.playerWalkingCount = 0;
                     }
                 }
+
             } else if (!this.universe.isGameRunning()) {
                 canvas.drawBitmap(this.playerWinning.get(this.playerWinningCount),
                         (int) hbPlayer.getLeft(), (int) hbPlayer.getTop(), null);
@@ -290,11 +298,25 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
                 }
             }
 
+            Log.i(TAG, "But is it rendering its own?");
             if (this.universe.getOtherPlayerPos() != null) {
-                float hbOtherPlayerTop =
-                        this.universe.getOtherPlayerPos().getY() - constants.PLAYER_RADIUS;
-                float hbOtherPlayerLeft =
-                        this.universe.getOtherPlayerPos().getX() - constants.PLAYER_RADIUS;
+                Log.i(TAG, "Is it getting the other player's position?");
+
+                float otherPlayerPosY = (
+                        ((((float) screenHeight) / PlayerStats.otherPlayerScreenHeight) *
+                        this.universe.getOtherPlayerPos().getY())- player.getAbsolutePos().getY());
+                Log.i(TAG, "The other player's screen height is" + PlayerStats.otherPlayerScreenHeight);
+
+                float otherPlayerPosX = (this.universe.getOtherPlayerPos().getX() *
+                        ((((float) screenWidth) / PlayerStats.otherPlayerScreenWidth)));
+
+//                float otherPlayerPosX = (player.getAbsolutePos().getX() - (
+//                        (((float) screenWidth) / PlayerStats.otherPlayerScreenWidth) *
+//                                this.universe.getOtherPlayerPos().getX()));
+                Log.i(TAG, "The other player's screen width is " + PlayerStats.otherPlayerScreenWidth);
+                float hbOtherPlayerTop = otherPlayerPosY - constants.PLAYER_RADIUS;
+                float hbOtherPlayerLeft = otherPlayerPosX - constants.PLAYER_RADIUS;
+
             canvas.drawBitmap(this.playerWalking.get(this.playerWalkingCount),
                     (int) hbOtherPlayerLeft, hbOtherPlayerTop, paint);
                 this.otherPlayerWalkingCount += 1;

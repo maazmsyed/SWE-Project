@@ -34,6 +34,9 @@ public class MainMenu extends AppCompatActivity {
     Boolean playerTwoAlready = false;
     Boolean gameState = false;
 
+    Integer otherPlayerScreenHeight;
+    Integer otherPlayerScreenWidth;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +50,6 @@ public class MainMenu extends AppCompatActivity {
         // Gets database
         FirebaseDatabase database = Firebase.getDatabase();
 
-
         DatabaseReference refP1 = database.getReference().child("playerOne").child("Already");
 
         refP1.addValueEventListener(new ValueEventListener() {
@@ -55,7 +57,7 @@ public class MainMenu extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 playerOneAlready = snapshot.getValue(Boolean.class);
-                Log.i(TAG, playerOneAlready != null ? playerOneAlready.toString() : null);
+                // Log.i(TAG, playerOneAlready != null ? playerOneAlready.toString() : null);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -75,8 +77,12 @@ public class MainMenu extends AppCompatActivity {
 
                 } else if (PlayerStats.playerID.equals("")) {
                     PlayerStats.playerID = "playerOne";
-                    database.getReference().child("playerOne").child("Already").setValue(true);
-                    database.getReference().child("playerOne").child("Exists").setValue(true);
+
+                    DatabaseReference p1Ref = database.getReference().child("playerOne");
+                    p1Ref.child("Already").setValue(true);
+                    p1Ref.child("Exists").setValue(true);
+                    p1Ref.child("Screen").child("Width").setValue(constants.SCREEN_WIDTH);
+                    p1Ref.child("Screen").child("Height").setValue(constants.SCREEN_HEIGHT);
 
                     // Temp position to avoid null value
                     Position positionP1 =
@@ -95,14 +101,14 @@ public class MainMenu extends AppCompatActivity {
         });
 
 
-        DatabaseReference refP2 = database.getReference().child("alreadyPlayerTwo");
+        DatabaseReference refP2 = database.getReference().child("playerTwo").child("Already");
 
         refP2.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 playerTwoAlready = snapshot.getValue(Boolean.class);
-                Log.i(TAG, playerTwoAlready != null ? playerTwoAlready.toString() : null);
+                // Log.i(TAG, playerTwoAlready != null ? playerTwoAlready.toString() : null);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -121,8 +127,12 @@ public class MainMenu extends AppCompatActivity {
 
                 } else if (PlayerStats.playerID.equals("")) {
                     PlayerStats.playerID = "playerTwo";
-                    database.getReference().child("playerTwo").child("Already").setValue(true);
-                    database.getReference().child("playerTwo").child("Exists").setValue(true);
+
+                    DatabaseReference p2Ref = database.getReference().child("playerTwo");
+                    p2Ref.child("Already").setValue(true);
+                    p2Ref.child("Exists").setValue(true);
+                    p2Ref.child("Screen").child("Width").setValue(constants.SCREEN_WIDTH);
+                    p2Ref.child("Screen").child("Height").setValue(constants.SCREEN_HEIGHT);
 
                     // Temp position to avoid null value
                     Position positionP2 =
@@ -145,10 +155,11 @@ public class MainMenu extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                if (playerOneAlready && playerTwoAlready) {
+                if (playerOneAlready != null && playerTwoAlready != null && playerOneAlready && playerTwoAlready) {
                     refGameState.setValue(true);
                 }
             }
+
         });
 
         refGameState.addValueEventListener(new ValueEventListener() {
@@ -156,9 +167,45 @@ public class MainMenu extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 gameState = snapshot.getValue(Boolean.class);
-                Log.i(TAG, gameState != null ? gameState.toString() : null);
+                // Log.i(TAG, gameState != null ? gameState.toString() : null);
                 if (gameState) {
                     // Thread.sleep(100);
+                    database.getReference(PlayerStats.playerID).child("gameRunning").setValue(true);
+
+                    // Recently added.
+//                    Firebase.getDatabase().getReference(PlayerStats.otherPlayerID)
+//                            .child("Screen").child("Height").addValueEventListener(new ValueEventListener() {
+//                        @Override
+//                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                            PlayerStats.otherPlayerScreenHeight = snapshot.getValue(Float.class);
+//                            Log.i(TAG, "Get other player's Screen Height");
+//                        }
+//
+//                        @Override
+//                        public void onCancelled(@NonNull DatabaseError error) {
+//                            Log.i(TAG, "Did not get other player's Screen Height");
+//                        }
+//                    });
+//
+//                    Firebase.getDatabase().getReference(PlayerStats.otherPlayerID)
+//                            .child("Screen").child("Width").addValueEventListener(new ValueEventListener() {
+//                        @Override
+//                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                            PlayerStats.otherPlayerScreenWidth = snapshot.getValue(Integer.class);
+//                            Log.i(TAG, "Get other player's Screen Width");
+//                        }
+//
+//                        @Override
+//                        public void onCancelled(@NonNull DatabaseError error) {
+//                            Log.i(TAG, "Did not get other player's Screen Width");
+//                        }
+//                    });
+
+
+
+
+
+
                     startActivity(new Intent(MainMenu.this, MainActivity.class));
                 }
             }
@@ -167,6 +214,16 @@ public class MainMenu extends AppCompatActivity {
                 Log.d(TAG, "Reading game state failed");
             }
         });
+
+
+
+
+
+
+
+
+
+
 
     }
 }

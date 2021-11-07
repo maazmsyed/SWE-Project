@@ -18,6 +18,9 @@ public class Constants {
 
     // Player
     public float PLAYER_RADIUS;
+    public float PLAYER_MOVE_LEFT;
+    public float PLAYER_MOVE_RIGHT;
+    public float PLAYER_GRAVITY;
 
     public Constants(){
 
@@ -39,6 +42,9 @@ public class Constants {
 
         // Player
         PLAYER_RADIUS = SCREEN_WIDTH / 20f;
+        PLAYER_MOVE_LEFT = SCREEN_WIDTH / 25f;
+        PLAYER_MOVE_RIGHT = SCREEN_WIDTH / 25f;
+        PLAYER_GRAVITY = 10f;
 
     }
 

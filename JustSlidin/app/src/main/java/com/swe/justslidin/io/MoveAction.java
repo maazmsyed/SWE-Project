@@ -11,7 +11,8 @@ public class MoveAction implements ClickAction {
     private static final String TAG = "MoveAction";
     private final Universe universe;
     private static final Constants constants = new Constants();
-    private final float screenWidth = constants.SCREEN_WIDTH;
+    private final static float screenWidth = constants.SCREEN_WIDTH;
+    private final static float moveLeftValue = screenWidth / 40;
 
     public MoveAction(Universe universe) {
         this.universe = universe;
@@ -22,6 +23,7 @@ public class MoveAction implements ClickAction {
         Log.i(TAG, "MoveAction executed");
         //universe.addChar(pos);
         // TODO: CHECK IF THE IF STATEMENTS ARE RIGHT WITH @MAAZ AND @DANNY
+
         if (pos.getX() <= screenWidth / 2 && this.universe.isGameRunning()){
             Log.i(TAG,"ON THE LEFT");
             // universe.moveCharLeft(10f);

@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.swe.justslidin.constants.Constants;
 import com.swe.justslidin.network.Firebase;
@@ -21,20 +22,23 @@ import java.util.Vector;
 
 public class Universe {
 
+    private static final Constants constants = new Constants();
     private static final String TAG = "Universe";
-    final static Motion DEFAULT_GRAVITY_MOTION = new Motion(0,10f); // Added after referring prof
+    final static Motion DEFAULT_GRAVITY_MOTION = new Motion(0, constants.PLAYER_GRAVITY); // Added after referring prof
+//    public static Boolean comingToStop;
 
     public Motion getGravity() {
         return gravity;
     }
 
-    private static final Constants constants = new Constants();
     Motion gravity;
     Character player;
     List<Elements> elements;
     Background background = new Background();
+
     private float additionalMotionY;
     private int speedUpCounter;
+
     private int speedDownCounter;
     FinishingLine finishingLine = new FinishingLine((constants.SCREEN_WIDTH / 2),
             constants.SCREEN_HEIGHT * 20); // TODO: When to end game?
@@ -44,6 +48,8 @@ public class Universe {
     // Other Player's Position
     private Position otherPlayerPos;
     private String otherPlayerID;
+    private float otherPlayerScreenHeight; ////
+    private float otherPlayerScreenWidth; ////
     DatabaseReference refOtherPlayerPos;
 
 
@@ -54,17 +60,24 @@ public class Universe {
 
     public Universe (Motion g, Character pl) {
 
-        refPlayerPos = Firebase.getDatabase().getReference(PlayerStats.playerID + "Pos");
+//        comingToStop = false;
+        otherPlayerScreenHeight = constants.SCREEN_HEIGHT;
+        otherPlayerScreenWidth = constants.SCREEN_WIDTH;
+
+        refPlayerPos = Firebase.getDatabase().getReference(PlayerStats.playerID).child("Pos");
         // Setting up other player's position
         otherPlayerPos = new Position(constants.SCREEN_WIDTH / 2, constants.SCREEN_HEIGHT / 4);
-        if (PlayerStats.playerID.equals("playerOne")) { otherPlayerID = "playerTwo"; }
+
+        if (PlayerStats.playerID.equals("playerOne")) {otherPlayerID = "playerTwo"; }
         else {otherPlayerID = "playerOne"; }
-        refOtherPlayerPos = Firebase.getDatabase().getReference(otherPlayerID + "Pos");
+        PlayerStats.otherPlayerID = otherPlayerID;
+
+        refOtherPlayerPos = Firebase.getDatabase().getReference(otherPlayerID).child("Pos");
 
         elements = new Vector<>();
         gravity = g;
         player = pl;
-        additionalMotionY = DEFAULT_GRAVITY_MOTION.getY();
+        additionalMotionY = constants.PLAYER_GRAVITY;
         speedUpCounter = 0;
         speedDownCounter = 0;
         gameRunning = true;
@@ -168,11 +181,16 @@ public class Universe {
     public void step() {
         this.updateOtherPlayerPos();
         this.setFirebasePlayerPos();
+
         this.speedUpCounter += 1;
-        if (this.additionalMotionY <= (DEFAULT_GRAVITY_MOTION.getY() * 2)
+        if (this.additionalMotionY <= (constants.PLAYER_GRAVITY * 2)
                 && this.speedUpCounter % 20 == 0) {
-            this.additionalMotionY += 0.75;
+            this.additionalMotionY += (constants.PLAYER_GRAVITY / 12f);
             this.gravity.setY(additionalMotionY);
+//            Log.i(TAG, "Additional Motion Y is " + this.additionalMotionY);
+//            Log.i(TAG, "Default gravity is " + DEFAULT_GRAVITY_MOTION);
+//            Log.i(TAG, "Gravity is " + this.gravity);
+//            Log.i(TAG, "Constant gravity is " + constants.PLAYER_GRAVITY);
         }
         finishingLine.moveUp(this.gravity);
         background.moveUp(this.gravity);
@@ -181,6 +199,7 @@ public class Universe {
         }
         this.player.updateAbsPosY(this.gravity);
         if (this.player.getHitBox().collide(this.finishingLine.getHitBox())) {
+//            comingToStop = true;
             gameRunning = false;
         }
         castChanges();
@@ -188,10 +207,49 @@ public class Universe {
 
     public void setFirebasePlayerPos() {
         refPlayerPos.child("X").setValue(player.getAbsolutePos().getX());
-        Log.i(TAG, "Set main player's X position");
+//        Log.i(TAG, "Set main player's X position");
         refPlayerPos.child("Y").setValue(player.getAbsolutePos().getY());
-        Log.i(TAG, "Set main player's Y position");
+//        Log.i(TAG, "Set main player's Y position");
 
+    }
+
+//    public void setOtherPlayerScreenDim() {
+//
+//        Firebase.getDatabase().getReference(otherPlayerID)
+//                .child("Screen").child("Height").addValueEventListener(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                        otherPlayerScreenHeight = snapshot.getValue(Float.class);
+//                        Log.i(TAG, "Get other player's Screen Height");
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError error) {
+//                        Log.i(TAG, "Did not get other player's Screen Height");
+//                    }
+//                });
+//
+//        Firebase.getDatabase().getReference(otherPlayerID)
+//                .child("Screen").child("Width").addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                otherPlayerScreenWidth = snapshot.getValue(Float.class);
+//                Log.i(TAG, "Get other player's Screen Width");
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                Log.i(TAG, "Did not get other player's Screen Width");
+//            }
+//        });
+//    }
+
+    public float getOtherPlayerScreenHeight() {
+        return this.otherPlayerScreenHeight;
+    }
+
+    public float getOtherPlayerScreenWidth() {
+        return this.otherPlayerScreenWidth;
     }
 
     public void updateOtherPlayerPos() {
@@ -201,12 +259,12 @@ public class Universe {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 // float tempX = snapshot.getValue(Integer.class);
                 otherPlayerPos.setX(snapshot.getValue(Float.class));
-                Log.i(TAG, "Get other player's X position");
+//                Log.i(TAG, "Get other player's X position");
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.i(TAG, "Did not set other player's X position");
+//                Log.i(TAG, "Did not set other player's X position");
             }
         });
 
@@ -214,12 +272,12 @@ public class Universe {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 otherPlayerPos.setY(snapshot.getValue(Float.class));
-                Log.i(TAG, "Get other player's Y position");
+//                Log.i(TAG, "Get other player's Y position");
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.i(TAG, "Did not set other player's Y position");
+//                Log.i(TAG, "Did not set other player's Y position");
             }
         });
 
@@ -268,13 +326,12 @@ public class Universe {
                 HitBox hb = b.getHitBox();
                 if (this.player.getHitBox().collide(hb)) {
                     this.player.decrementCoinCount();
-                    this.player.decrementCoinCount();
                     this.player.setHitBarrier(true);
                     tempVec.add(elem);
                     this.speedUpCounter = 0;
-                    this.additionalMotionY = DEFAULT_GRAVITY_MOTION.getY() -
-                            (DEFAULT_GRAVITY_MOTION.getY() / 4);
-                    this.gravity = DEFAULT_GRAVITY_MOTION;
+                    this.additionalMotionY = constants.PLAYER_GRAVITY -
+                            (constants.PLAYER_GRAVITY / 4f);
+                    this.gravity.setY(DEFAULT_GRAVITY_MOTION.getY());
                 }
             }
         }
@@ -310,7 +367,7 @@ public class Universe {
     public void stop() {
         this.speedDownCounter += 1;
         if (this.gravity.getY() > 0 && this.speedDownCounter % 5 == 0) {
-            this.gravity.setY(this.gravity.getY() - 2.5f);
+            this.gravity.setY(this.gravity.getY() - (constants.PLAYER_GRAVITY / 4f));
         }
         if (this.gravity.getY() < 0) {
             this.gravity.setY(0f);

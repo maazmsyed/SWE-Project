@@ -2,8 +2,14 @@ package com.swe.justslidin;
 
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.SurfaceView;
 
+import androidx.annotation.NonNull;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.swe.justslidin.constants.Constants;
 import com.swe.justslidin.io.AddAction;
 import com.swe.justslidin.io.InputHandler;
@@ -13,6 +19,7 @@ import com.swe.justslidin.models.Motion;
 import com.swe.justslidin.io.MoveAction;
 import com.swe.justslidin.models.Position;
 import com.swe.justslidin.models.Universe;
+import com.swe.justslidin.network.Firebase;
 import com.swe.justslidin.network.PlayerStats;
 import com.swe.justslidin.view.GraphicsRenderer;
 
@@ -27,9 +34,14 @@ public class MainController extends Thread {
     private int counter;
     private Random generator;
     private static final Constants constants = new Constants();
+    public Boolean globalGameRunning;
+    public Boolean otherPlayerGameRunning;
+    private static final String TAG = "MainController";
 
 
     public MainController(SurfaceView sv, Resources context) {
+        this.otherPlayerGameRunning = true;
+        this.globalGameRunning = false;
         this.sv = sv;
         this.universe = new Universe();
         this.counter = 0;
@@ -56,6 +68,7 @@ public class MainController extends Thread {
         long startTime = System.currentTimeMillis();
 
         while (this.universe.isGameRunning()) {
+
             try {
                 this.universe.checkPlayerCollision();
                 this.universe.removeExtraElements();
@@ -86,8 +99,29 @@ public class MainController extends Thread {
 
         long endTime = System.currentTimeMillis();
         PlayerStats.elapsedTime = endTime - startTime;
+        PlayerStats.coinCounter = this.universe.getPlayer().getCoinCount();
 
-        while (!this.universe.isGameRunning()) {
+        Firebase.getDatabase().getReference(PlayerStats.playerID)
+                .child("CoinCount").setValue(PlayerStats.coinCounter);
+        Firebase.getDatabase().getReference(PlayerStats.playerID)
+                .child("ElapsedTime").setValue(PlayerStats.elapsedTime);
+
+        Firebase.getDatabase().getReference(PlayerStats.playerID).child("gameRunning").setValue(false);
+
+        Firebase.getDatabase().getReference(PlayerStats.otherPlayerID)
+                .child("gameRunning").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                otherPlayerGameRunning = snapshot.getValue(Boolean.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.i(TAG, "Couldn't get other player's game running state");
+            }
+        });
+
+        while (otherPlayerGameRunning) {
             try {
                 this.universe.stop();
                 Thread.sleep(1000/fps);
@@ -97,6 +131,34 @@ public class MainController extends Thread {
 
         }
 
+        Firebase.getDatabase().getReference(PlayerStats.otherPlayerID)
+                .child("CoinCount").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                PlayerStats.otherCoinCounter = snapshot.getValue(Integer.class);
+                Log.i(TAG, "Got other player's coin counter");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.i(TAG, "Did not get other player's coin counter");
+
+            }
+        });
+
+        Firebase.getDatabase().getReference(PlayerStats.otherPlayerID)
+                .child("ElapsedTime").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                PlayerStats.otherElapsedTime = snapshot.getValue(Long.class);
+                Log.i(TAG, "Got other player's elapsed time");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.i(TAG, "Did not get other player's elapsed time");
+            }
+        });
 
     }
 }
