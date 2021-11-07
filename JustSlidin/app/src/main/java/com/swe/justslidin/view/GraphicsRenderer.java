@@ -372,12 +372,10 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
         drawSurfaceView();
     }
 
-
     @Override
     public void surfaceDestroyed(@NonNull SurfaceHolder surfaceHolder) {
         this.holder = null;
     }
-
 
     @Override
     public void universeChanged(Universe u) {
