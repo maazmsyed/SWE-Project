@@ -10,6 +10,7 @@ public class PlayerStats {
     public static long otherElapsedTime;
     public static float otherPlayerScreenHeight = 1794;
     public static float otherPlayerScreenWidth = 1080;
+    public static Boolean gameEnded = false;
 
 
 //    long elapsedTime = System.currentTimeMillis() - startTime;

@@ -1,5 +1,9 @@
 package com.swe.justslidin;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
+import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.util.Log;
@@ -152,6 +156,8 @@ public class MainController extends Thread {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 PlayerStats.otherElapsedTime = snapshot.getValue(Long.class);
                 Log.i(TAG, "Got other player's elapsed time");
+                currentThread().interrupt();
+
             }
 
             @Override
@@ -159,6 +165,10 @@ public class MainController extends Thread {
                 Log.i(TAG, "Did not get other player's elapsed time");
             }
         });
+
+        Log.i(TAG, "Is it raising the flag?");
+
+        PlayerStats.gameEnded = true;
 
     }
 }

@@ -3,6 +3,7 @@ package com.swe.justslidin;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,8 +27,8 @@ public class MainActivity extends AppCompatActivity {
         SurfaceView sv = findViewById(R.id.surfaceView);
         MainController mc = new MainController(sv, getResources());
         DatabaseReference dataBase = Firebase.getDatabase().getReference();
-        final Boolean[] playerOneRunning = {false};
-        final Boolean[] playerTwoRunning = {false};
+        final Boolean[] playerOneRunning = {true};
+        final Boolean[] playerTwoRunning = {true};
 //        FirebaseDatabase database = Firebase.getDatabase();
 //        Boolean playerGameRunning;
 //        Boolean otherPlayerGameRunning;
@@ -35,11 +36,25 @@ public class MainActivity extends AppCompatActivity {
 
 
         mc.start();
+//        try {
+//            mc.join(3000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+
 
         dataBase.child("playerOne").child("gameRunning").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 playerOneRunning[0] = snapshot.getValue(Boolean.class);
+                if (!playerOneRunning[0] && !playerTwoRunning[0]) {
+//                    try {
+//                        mc.join();
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+                    startActivity(new Intent(MainActivity.this, EndScreen.class));
+                }
             }
 
             @Override
@@ -52,6 +67,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 playerTwoRunning[0] = snapshot.getValue(Boolean.class);
+                if (!playerOneRunning[0] && !playerTwoRunning[0]) {
+//                    try {
+//                        mc.join();
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+                    startActivity(new Intent(MainActivity.this, EndScreen.class));
+                }
                 Log.i(TAG, "Fetched player one game running value");
             }
 
@@ -61,19 +84,28 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        while (playerOneRunning[0] && playerTwoRunning[0]){
-//
+
+//        if (  !(playerOneRunning[0] && playerTwoRunning[0])  ) {
+//            try {
+//                mc.join();
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
 //        }
 
-//        try {
-//            mc.join();
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
+        if (PlayerStats.gameEnded){
+            try {
+                Log.i(TAG, "Is it joining?");
+                mc.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            startActivity(new Intent(MainActivity.this, EndScreen.class));
+        }
 
 
 
-        //startActivity(new Intent(MainActivity.this, EndScreen.class));
+
 
     }
 

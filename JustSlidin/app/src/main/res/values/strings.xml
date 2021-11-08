@@ -7,4 +7,5 @@
     <string name="playerTwoButtonAlreadySelected">Unavailable!</string>
     <string name="playGame">Play!</string>
     <string name="startScreenButton">Let\'s Slide!</string>
+    <string name="result_text"></string>
 </resources>
