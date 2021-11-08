@@ -4,11 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.swe.justslidin.App;
 import com.swe.justslidin.constants.Constants;
 import com.swe.justslidin.models.Position;
 import com.swe.justslidin.models.Universe;
