@@ -141,6 +141,8 @@ public class Character extends Elements {
         }
     }
 
+    public Position getAbsolutePos() {return this.absolutePos;}
+
     /**
     * Returns the Position of the Character. Composed of x- and y-coordinate.
     * @return
