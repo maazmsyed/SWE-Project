@@ -8,4 +8,7 @@
     <string name="playGame">Play!</string>
     <string name="startScreenButton">Let\'s Slide!</string>
     <string name="result_text"></string>
+    <string name="playerOneWon">Player 1 Won!</string>
+    <string name="playerTwoWon">Player 2 Won!</string>
+    <string name="tie">Both are tied!</string>
 </resources>

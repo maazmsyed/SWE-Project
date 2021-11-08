@@ -304,7 +304,7 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
 
                 float otherPlayerPosY = (PlayerStats.otherPlayerScreenHeight / 4) + (
                         ((((float) screenHeight) / PlayerStats.otherPlayerScreenHeight) *
-                        this.universe.getOtherPlayerPos().getY())- player.getAbsolutePos().getY());
+                        this.universe.getOtherPlayerPos().getY()) - player.getAbsolutePos().getY());
                 Log.i(TAG, "The other player's screen height is" + PlayerStats.otherPlayerScreenHeight);
 
                 float otherPlayerPosX = (this.universe.getOtherPlayerPos().getX() *

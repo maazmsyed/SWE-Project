@@ -3,6 +3,7 @@ package com.swe.justslidin;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.google.firebase.database.DatabaseReference;
@@ -16,23 +17,42 @@ public class EndScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_end_screen);
 
+        final String TAG = "Universe";
+
         TextView resultBox = findViewById(R.id.result_text);
 
-        DatabaseReference dataBase = Firebase.getDatabase().getReference();
+        DatabaseReference database = Firebase.getDatabase().getReference();
 
-        dataBase.child("playerOne").child("Already").setValue(false);
-        dataBase.child("playerOne").child("gameRunning").setValue(false);
+        database.child(PlayerStats.playerID).child("Already").setValue(false);
+        database.child(PlayerStats.playerID).child("gameRunning").setValue(false);
 
-        dataBase.child("playerTwo").child("Already").setValue(false);
-        dataBase.child("playerTwo").child("gameRunning").setValue(false);
+//        database.child("playerOne").child("Already").setValue(false);
+//        database.child("playerOne").child("gameRunning").setValue(false);
+//
+//        database.child("playerTwo").child("Already").setValue(false);
+//        database.child("playerTwo").child("gameRunning").setValue(false);
 
-        dataBase.child("gameState").setValue(false);
+        database.child("gameState").setValue(false);
 
         int resPlayer = PlayerStats.coinCounter + ((int) (5000000 / PlayerStats.elapsedTime));
         int resOtherPlayer = PlayerStats.otherCoinCounter + ((int) (5000000 / PlayerStats.otherElapsedTime));
 
         if (resPlayer > resOtherPlayer) {
-
+            Log.i(TAG, "is res player > other player?");
+            if (PlayerStats.playerID.equals("playerOne")) {
+                resultBox.setText(R.string.playerOneWon);
+            } else if (PlayerStats.otherPlayerID.equals("playerTwo")) {
+                resultBox.setText(R.string.playerTwoWon);
+            }
+        } else if (resPlayer < resOtherPlayer) {
+            Log.i(TAG, "is res player < other player?");
+            if (PlayerStats.playerID.equals("playerOne")) {
+                resultBox.setText(R.string.playerTwoWon);
+            } else if (PlayerStats.otherPlayerID.equals("playerTwo")) {
+                resultBox.setText(R.string.playerOneWon);
+            }
+        } else {
+            resultBox.setText(R.string.tie);
         }
 
     }

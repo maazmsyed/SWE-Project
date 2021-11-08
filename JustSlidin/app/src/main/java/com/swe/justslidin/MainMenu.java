@@ -173,38 +173,39 @@ public class MainMenu extends AppCompatActivity {
                     database.getReference(PlayerStats.playerID).child("gameRunning").setValue(true);
 
                     // Recently added.
-//                    Firebase.getDatabase().getReference(PlayerStats.otherPlayerID)
-//                            .child("Screen").child("Height").addValueEventListener(new ValueEventListener() {
-//                        @Override
-//                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                            PlayerStats.otherPlayerScreenHeight = snapshot.getValue(Float.class);
-//                            Log.i(TAG, "Get other player's Screen Height");
-//                        }
-//
-//                        @Override
-//                        public void onCancelled(@NonNull DatabaseError error) {
-//                            Log.i(TAG, "Did not get other player's Screen Height");
-//                        }
-//                    });
-//
-//                    Firebase.getDatabase().getReference(PlayerStats.otherPlayerID)
-//                            .child("Screen").child("Width").addValueEventListener(new ValueEventListener() {
-//                        @Override
-//                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                            PlayerStats.otherPlayerScreenWidth = snapshot.getValue(Integer.class);
-//                            Log.i(TAG, "Get other player's Screen Width");
-//                        }
-//
-//                        @Override
-//                        public void onCancelled(@NonNull DatabaseError error) {
-//                            Log.i(TAG, "Did not get other player's Screen Width");
-//                        }
-//                    });
+                    Firebase.getDatabase().getReference(PlayerStats.otherPlayerID)
+                            .child("Screen").child("Height").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            PlayerStats.otherPlayerScreenHeight = snapshot.getValue(Float.class);
+                            Log.i(TAG, "Get other player's Screen Height");
+                        }
 
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Log.i(TAG, "Did not get other player's Screen Height");
+                        }
+                    });
 
+                    Firebase.getDatabase().getReference(PlayerStats.otherPlayerID)
+                            .child("Screen").child("Width").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            PlayerStats.otherPlayerScreenWidth = snapshot.getValue(Integer.class);
+                            Log.i(TAG, "Get other player's Screen Width");
+                        }
 
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Log.i(TAG, "Did not get other player's Screen Width");
+                        }
+                    });
 
-
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
 
                     startActivity(new Intent(MainMenu.this, MainActivity.class));
                 }

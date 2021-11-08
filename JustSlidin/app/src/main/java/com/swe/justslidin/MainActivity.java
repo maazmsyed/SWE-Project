@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
                 playerOneRunning[0] = snapshot.getValue(Boolean.class);
                 if (!playerOneRunning[0] && !playerTwoRunning[0]) {
 //                    try {
-//                        mc.join();
+//                        Thread.sleep(2000);
 //                    } catch (InterruptedException e) {
 //                        e.printStackTrace();
 //                    }
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
                 playerTwoRunning[0] = snapshot.getValue(Boolean.class);
                 if (!playerOneRunning[0] && !playerTwoRunning[0]) {
 //                    try {
-//                        mc.join();
+//                        Thread.sleep(2000);
 //                    } catch (InterruptedException e) {
 //                        e.printStackTrace();
 //                    }
@@ -93,15 +93,15 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        }
 
-        if (PlayerStats.gameEnded){
-            try {
-                Log.i(TAG, "Is it joining?");
-                mc.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            startActivity(new Intent(MainActivity.this, EndScreen.class));
-        }
+//        if (PlayerStats.gameEnded){
+//            try {
+//                Log.i(TAG, "Is it joining?");
+//                mc.join();
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            startActivity(new Intent(MainActivity.this, EndScreen.class));
+//        }
 
 
 
