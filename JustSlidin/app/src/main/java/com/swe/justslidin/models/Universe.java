@@ -3,36 +3,54 @@ package com.swe.justslidin.models;
 
 import android.graphics.Bitmap;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.swe.justslidin.constants.Constants;
+import com.swe.justslidin.network.Firebase;
+import com.swe.justslidin.network.PlayerStats;
 import com.swe.justslidin.view.GraphicsRenderer;
-import com.swe.justslidin.view.SoundPlayer;
-
-import android.media.SoundPool;
 import android.util.Log;
 
+
+import androidx.annotation.NonNull;
 
 import java.util.List;
 import java.util.Vector;
 
 public class Universe {
 
-    private static final String TAG = "Universe";
-    final static Motion DEFAULT_GRAVITY_MOTION = new Motion(0,10f); // Added after referring prof
     private static final Constants constants = new Constants();
+    private static final String TAG = "Universe";
+    final static Motion DEFAULT_GRAVITY_MOTION = new Motion(0, constants.PLAYER_GRAVITY); // Added after referring prof
+//    public static Boolean comingToStop;
+
     public Motion getGravity() {
         return gravity;
     }
+
     Motion gravity;
     Character player;
     List<Elements> elements;
     Background background = new Background();
+
     private float additionalMotionY;
     private int speedUpCounter;
+
     private int speedDownCounter;
     FinishingLine finishingLine = new FinishingLine((constants.SCREEN_WIDTH / 2),
-            constants.SCREEN_HEIGHT * 20); // TODO: When to end game?
+            constants.SCREEN_HEIGHT * 5); // TODO: When to end game?
     private volatile Boolean gameRunning;
-    private SoundPlayer sound;
+    DatabaseReference refPlayerPos;
+
+    // Other Player's Position
+    private Position otherPlayerPos;
+    private String otherPlayerID;
+    private float otherPlayerScreenHeight; ////
+    private float otherPlayerScreenWidth; ////
+    DatabaseReference refOtherPlayerPos;
 
 
     public Universe () {
@@ -41,14 +59,28 @@ public class Universe {
     }
 
     public Universe (Motion g, Character pl) {
+
+//        comingToStop = false;
+        otherPlayerScreenHeight = constants.SCREEN_HEIGHT;
+        otherPlayerScreenWidth = constants.SCREEN_WIDTH;
+
+        refPlayerPos = Firebase.getDatabase().getReference(PlayerStats.playerID).child("Pos");
+        // Setting up other player's position
+        otherPlayerPos = new Position(constants.SCREEN_WIDTH / 2, constants.SCREEN_HEIGHT / 4);
+
+        if (PlayerStats.playerID.equals("playerOne")) {otherPlayerID = "playerTwo"; }
+        else {otherPlayerID = "playerOne"; }
+        PlayerStats.otherPlayerID = otherPlayerID;
+
+        refOtherPlayerPos = Firebase.getDatabase().getReference(otherPlayerID).child("Pos");
+
         elements = new Vector<>();
         gravity = g;
         player = pl;
-        additionalMotionY = DEFAULT_GRAVITY_MOTION.getY();
+        additionalMotionY = constants.PLAYER_GRAVITY;
         speedUpCounter = 0;
         speedDownCounter = 0;
         gameRunning = true;
-//        this.background = new Background();
     }
 
     public Boolean isGameRunning() {
@@ -58,16 +90,6 @@ public class Universe {
     public void setGameRunning(Boolean gameRunning) {
         this.gameRunning = gameRunning;
     }
-
-//    public void incrementGravity() {
-//        // this.gravity.setY(DEFAULT_GRAVITY_MOTION.getY() + additionalMotionY);
-//        this.gravity = new Motion(0, DEFAULT_GRAVITY_MOTION.getY() + additionalMotionY); // Also not working
-//        System.out.println((gravity.getY())); // TODO: This is not updating!
-//    }
-
-//    public void defaultGravity() {
-//        this.gravity = DEFAULT_GRAVITY_MOTION;
-//    }
 
     public void setBackgroundBitmap(Bitmap bitmap) {
         this.background.setBackgroundBitmap(bitmap);
@@ -81,12 +103,13 @@ public class Universe {
         return this.finishingLine;
     }
 
-//    public void setPlayerBitmap(Bitmap bitmap){ this.player.setPlayerBitmap(bitmap);}
-
     public Background getBackground() {
         return this.background;
     }
 
+    public Position getOtherPlayerPos() {
+        return otherPlayerPos;
+    }
 
     /**
      * This method adds an instantiation of a coin to the elements list.
@@ -99,8 +122,7 @@ public class Universe {
      * This value defines the radius (size) of the new coin instance.
      */
     public void addCoin(float x, float y, float rad) {
-        System.out.println(constants.SCREEN_WIDTH);
-        System.out.println(constants.SCREEN_HEIGHT);
+        Log.i(TAG, "Adding Coin");
         Coin newCoin = new Coin(x, y, rad);
         for (Elements elem : this.elements) {
             if (elem instanceof Barrier) {
@@ -138,6 +160,7 @@ public class Universe {
      * This value defines the height of the new barrier instance.
      */
     public void addBarrier(float x, float y, float h) {
+        Log.i(TAG, "Adding Barrier");
         elements.add(new Barrier (x,y,h));
         castChanges();
     }
@@ -153,15 +176,21 @@ public class Universe {
 
     /**
      * Moves all the elements in the elements list up by the natural gravity. This is because
-     * all the coins, barriers, and other objects in the game have a
-     * natural upward movement.
+     * all the coins and barriers in the game have a natural upward movement.
      */
     public void step() {
+        this.updateOtherPlayerPos();
+        this.setFirebasePlayerPos();
+
         this.speedUpCounter += 1;
-        if (this.additionalMotionY <= (DEFAULT_GRAVITY_MOTION.getY() * 2)
+        if (this.additionalMotionY <= (constants.PLAYER_GRAVITY * 2)
                 && this.speedUpCounter % 20 == 0) {
-            this.additionalMotionY += 0.75;
+            this.additionalMotionY += (constants.PLAYER_GRAVITY / 12f);
             this.gravity.setY(additionalMotionY);
+//            Log.i(TAG, "Additional Motion Y is " + this.additionalMotionY);
+//            Log.i(TAG, "Default gravity is " + DEFAULT_GRAVITY_MOTION);
+//            Log.i(TAG, "Gravity is " + this.gravity);
+//            Log.i(TAG, "Constant gravity is " + constants.PLAYER_GRAVITY);
         }
         finishingLine.moveUp(this.gravity);
         background.moveUp(this.gravity);
@@ -170,11 +199,90 @@ public class Universe {
         }
         this.player.updateAbsPosY(this.gravity);
         if (this.player.getHitBox().collide(this.finishingLine.getHitBox())) {
+//            comingToStop = true;
             gameRunning = false;
         }
-        // if (this.finishingLine.getHitBox().collide())
         castChanges();
     }
+
+    public void setFirebasePlayerPos() {
+        refPlayerPos.child("X").setValue(player.getAbsolutePos().getX());
+//        Log.i(TAG, "Set main player's X position");
+        refPlayerPos.child("Y").setValue(player.getAbsolutePos().getY());
+//        Log.i(TAG, "Set main player's Y position");
+
+    }
+
+//    public void setOtherPlayerScreenDim() {
+//
+//        Firebase.getDatabase().getReference(otherPlayerID)
+//                .child("Screen").child("Height").addValueEventListener(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                        otherPlayerScreenHeight = snapshot.getValue(Float.class);
+//                        Log.i(TAG, "Get other player's Screen Height");
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError error) {
+//                        Log.i(TAG, "Did not get other player's Screen Height");
+//                    }
+//                });
+//
+//        Firebase.getDatabase().getReference(otherPlayerID)
+//                .child("Screen").child("Width").addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                otherPlayerScreenWidth = snapshot.getValue(Float.class);
+//                Log.i(TAG, "Get other player's Screen Width");
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                Log.i(TAG, "Did not get other player's Screen Width");
+//            }
+//        });
+//    }
+
+    public float getOtherPlayerScreenHeight() {
+        return this.otherPlayerScreenHeight;
+    }
+
+    public float getOtherPlayerScreenWidth() {
+        return this.otherPlayerScreenWidth;
+    }
+
+    public void updateOtherPlayerPos() {
+
+        refOtherPlayerPos.child("X").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // float tempX = snapshot.getValue(Integer.class);
+                otherPlayerPos.setX(snapshot.getValue(Float.class));
+//                Log.i(TAG, "Get other player's X position");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+//                Log.i(TAG, "Did not set other player's X position");
+            }
+        });
+
+        refOtherPlayerPos.child("Y").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                otherPlayerPos.setY(snapshot.getValue(Float.class));
+//                Log.i(TAG, "Get other player's Y position");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+//                Log.i(TAG, "Did not set other player's Y position");
+            }
+        });
+
+    }
+
 
     /**
      * This is just another way to access the addCoin method. If you want to pass an instance of
@@ -202,12 +310,6 @@ public class Universe {
         this.addBarrier(pos.getX(), pos.getY(),h);
     }
 
-    /**
-     * This method checks if there has been a collision between the player and another
-     * element (either coin or barrier). In the case of a collision, this method is
-     * also responsible for taking the required steps to make the necessary changes to
-     * the universe and the elements involved.
-     */
     public void checkPlayerCollision() {
         Vector<Elements> tempVec = new Vector<Elements>();
         for (Elements elem : this.elements) {
@@ -217,8 +319,6 @@ public class Universe {
                 if (this.player.getHitBox().collide(hb)) {
                     this.player.updateCoinCount();
                     this.player.setHitCoin(true);
-                    this.player.setHitCoinSound(true);
-                    // this.elements.remove(elem);
                     tempVec.add(elem);
                 }
             } else if (elem instanceof Barrier) {
@@ -226,14 +326,12 @@ public class Universe {
                 HitBox hb = b.getHitBox();
                 if (this.player.getHitBox().collide(hb)) {
                     this.player.decrementCoinCount();
-                    this.player.decrementCoinCount();
                     this.player.setHitBarrier(true);
-                    this.player.setHitBarrierSound(true);
                     tempVec.add(elem);
                     this.speedUpCounter = 0;
-                    this.additionalMotionY = DEFAULT_GRAVITY_MOTION.getY() -
-                            (DEFAULT_GRAVITY_MOTION.getY() / 4);
-                    this.gravity = DEFAULT_GRAVITY_MOTION;
+                    this.additionalMotionY = constants.PLAYER_GRAVITY -
+                            (constants.PLAYER_GRAVITY / 4f);
+                    this.gravity.setY(DEFAULT_GRAVITY_MOTION.getY());
                 }
             }
         }
@@ -241,12 +339,6 @@ public class Universe {
     }
 
 
-    /**
-     * This method removes all the extra, used elements in the game. It checks for the
-     * elements that have already moved out of the screen (no longer being displayed)
-     * and removes all such elements. This helps increase efficiency and maintain
-     * space availability.
-     */
     public void removeExtraElements() {
         Vector<Elements> tempVec = new Vector<Elements>();
         for (Elements elem : this.elements) {
@@ -272,15 +364,10 @@ public class Universe {
         this.elements.removeAll(tempVec);
     }
 
-    /**
-     * This method is called at the end of the game (after the player crosses
-     * the finishing line). The method slows down the character until it is
-     * at a full rest to ensure a smooth and user-friendly stop to the game.
-     */
     public void stop() {
         this.speedDownCounter += 1;
         if (this.gravity.getY() > 0 && this.speedDownCounter % 5 == 0) {
-            this.gravity.setY(this.gravity.getY() - 2.5f);
+            this.gravity.setY(this.gravity.getY() - (constants.PLAYER_GRAVITY / 4f));
         }
         if (this.gravity.getY() < 0) {
             this.gravity.setY(0f);
@@ -293,22 +380,12 @@ public class Universe {
         castChanges();
     }
 
-    /**
-     * This method helps to move the character to the left of the screen.
-     * @param f
-     * The parameter (units) to move the character left by.
-     */
     public void moveCharLeft(float f) {
         //Log.i(TAG,"CHAR HAS MOVED LEFT.");
         player.moveLeft(f);
         System.out.println(player.getPosition());
     }
 
-    /**
-     * This method helps to move the character to the right of the screen.
-     * @param f
-     * The parameter (units) to move the character right by.
-     */
     public void moveCharRight(float f) {
         //Log.i(TAG,"CHAR HAS MOVED RIGHT.");
         player.moveRight(f);
