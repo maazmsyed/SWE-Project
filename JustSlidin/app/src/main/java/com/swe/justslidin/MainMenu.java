@@ -77,10 +77,11 @@ public class MainMenu extends AppCompatActivity {
 
                 } else if (PlayerStats.playerID.equals("")) {
                     PlayerStats.playerID = "playerOne";
+                    //PlayerStats.otherPlayerID = "playerTwo";
 
                     DatabaseReference p1Ref = database.getReference().child("playerOne");
                     p1Ref.child("Already").setValue(true);
-                    p1Ref.child("Exists").setValue(true);
+                    // p1Ref.child("Exists").setValue(true);
                     p1Ref.child("Screen").child("Width").setValue(constants.SCREEN_WIDTH);
                     p1Ref.child("Screen").child("Height").setValue(constants.SCREEN_HEIGHT);
 
@@ -127,10 +128,11 @@ public class MainMenu extends AppCompatActivity {
 
                 } else if (PlayerStats.playerID.equals("")) {
                     PlayerStats.playerID = "playerTwo";
+                    //PlayerStats.otherPlayerID = "playerOne";
 
                     DatabaseReference p2Ref = database.getReference().child("playerTwo");
                     p2Ref.child("Already").setValue(true);
-                    p2Ref.child("Exists").setValue(true);
+                    // p2Ref.child("Exists").setValue(true);
                     p2Ref.child("Screen").child("Width").setValue(constants.SCREEN_WIDTH);
                     p2Ref.child("Screen").child("Height").setValue(constants.SCREEN_HEIGHT);
 
@@ -157,10 +159,42 @@ public class MainMenu extends AppCompatActivity {
             public void onClick(View view) {
                 if (playerOneAlready != null && playerTwoAlready != null && playerOneAlready && playerTwoAlready) {
                     refGameState.setValue(true);
+
+
+                    // TODO: This was partially working
+//                    Firebase.getDatabase().getReference(PlayerStats.otherPlayerID)
+//                            .child("Screen").child("Height").addValueEventListener(new ValueEventListener() {
+//                        @Override
+//                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                            PlayerStats.otherPlayerScreenHeight = snapshot.getValue(Float.class);
+//                            Log.i(TAG, "Get other player's Screen Height");
+//                        }
+//
+//                        @Override
+//                        public void onCancelled(@NonNull DatabaseError error) {
+//                            Log.i(TAG, "Did not get other player's Screen Height");
+//                        }
+//                    });
+//
+//                    Firebase.getDatabase().getReference(PlayerStats.otherPlayerID)
+//                            .child("Screen").child("Width").addValueEventListener(new ValueEventListener() {
+//                        @Override
+//                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                            PlayerStats.otherPlayerScreenWidth = snapshot.getValue(Integer.class);
+//                            Log.i(TAG, "Get other player's Screen Width");
+//                        }
+//
+//                        @Override
+//                        public void onCancelled(@NonNull DatabaseError error) {
+//                            Log.i(TAG, "Did not get other player's Screen Width");
+//                        }
+//                    });
+
                 }
             }
 
         });
+
 
         refGameState.addValueEventListener(new ValueEventListener() {
 
@@ -200,11 +234,6 @@ public class MainMenu extends AppCompatActivity {
 //                            Log.i(TAG, "Did not get other player's Screen Width");
 //                        }
 //                    });
-
-
-
-
-
 
                     startActivity(new Intent(MainMenu.this, MainActivity.class));
                 }

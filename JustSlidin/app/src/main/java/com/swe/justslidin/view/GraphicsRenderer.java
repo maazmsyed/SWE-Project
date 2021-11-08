@@ -324,7 +324,7 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
                 float otherPlayerPosY = (PlayerStats.otherPlayerScreenHeight / 4) + (
                         ((((float) screenHeight) / PlayerStats.otherPlayerScreenHeight) *
                                 this.universe.getOtherPlayerPos().getY()) - player.getAbsolutePos().getY());
-                Log.i(TAG, "The other player's screen height is" + PlayerStats.otherPlayerScreenHeight);
+                Log.i(TAG, "The other player's screen height is " + PlayerStats.otherPlayerScreenHeight);
 
                 float otherPlayerPosX = (this.universe.getOtherPlayerPos().getX() *
                         ((((float) screenWidth) / PlayerStats.otherPlayerScreenWidth)));
@@ -362,7 +362,8 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
 
             canvas.drawBitmap(this.coinIconBitmap, constants.COIN_RADIUS,
                     constants.COIN_RADIUS / 2, paint);
-            canvas.drawText("" + this.universe.getPlayer().getCoinCount(), 150f, 75f, paint);
+            canvas.drawText("" + this.universe.getPlayer().getCoinCount(),
+                    constants.COIN_RADIUS * 3.5f, constants.COIN_RADIUS * 2f, paint);
 
 //         TODO: Implement for the other player(s)
 //         canvas.drawBitmap(this.coinIconBitmap, 50f, 100f, null);

@@ -2,8 +2,11 @@ package com.swe.justslidin;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.database.DatabaseReference;
@@ -18,6 +21,8 @@ public class EndScreen extends AppCompatActivity {
         setContentView(R.layout.activity_end_screen);
 
         final String TAG = "Universe";
+        Button mainMenu = findViewById(R.id.main_menu_end_screen);
+        mainMenu.setText(R.string.main_menu);
 
         TextView resultBox = findViewById(R.id.result_text);
 
@@ -40,20 +45,32 @@ public class EndScreen extends AppCompatActivity {
         if (resPlayer > resOtherPlayer) {
             Log.i(TAG, "is res player > other player?");
             if (PlayerStats.playerID.equals("playerOne")) {
+                Log.i(TAG, "does it enter playerOne?");
                 resultBox.setText(R.string.playerOneWon);
-            } else if (PlayerStats.otherPlayerID.equals("playerTwo")) {
+            } else {
+                Log.i(TAG, "does it enter playerTwo?");
                 resultBox.setText(R.string.playerTwoWon);
             }
         } else if (resPlayer < resOtherPlayer) {
             Log.i(TAG, "is res player < other player?");
             if (PlayerStats.playerID.equals("playerOne")) {
+                Log.i(TAG, "does it enter playerOne?");
                 resultBox.setText(R.string.playerTwoWon);
-            } else if (PlayerStats.otherPlayerID.equals("playerTwo")) {
+            } else {
+                Log.i(TAG, "does it enter playerTwo?");
                 resultBox.setText(R.string.playerOneWon);
             }
         } else {
             resultBox.setText(R.string.tie);
         }
 
+        mainMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(EndScreen.this, MainMenu.class));
+            }
+        });
+
     }
+
 }

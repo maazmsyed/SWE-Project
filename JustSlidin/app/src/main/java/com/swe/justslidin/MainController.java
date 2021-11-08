@@ -45,6 +45,7 @@ public class MainController extends Thread {
     public Boolean globalGameRunning;
     public Boolean otherPlayerGameRunning;
     private static final String TAG = "MainController";
+    private Boolean gameStop = true;
 
 
     public MainController(SurfaceView sv, Resources context, Context applicationContext) {
@@ -82,7 +83,7 @@ public class MainController extends Thread {
                 if (this.universe.getPlayer().isHitCoinSound()){
 
                     sound.PlayCoinSound();
-                    this.universe.getPlayer().setHitCoin(false);
+                    this.universe.getPlayer().setHitCoinSound(false);
 
                 } else if (this.universe.getPlayer().isHitBarrierSound()) {
                     sound.PlayBarrierSound();
@@ -126,8 +127,6 @@ public class MainController extends Thread {
         Firebase.getDatabase().getReference(PlayerStats.playerID)
                 .child("ElapsedTime").setValue(PlayerStats.elapsedTime);
 
-        Firebase.getDatabase().getReference(PlayerStats.playerID).child("gameRunning").setValue(false);
-
         Firebase.getDatabase().getReference(PlayerStats.otherPlayerID)
                 .child("gameRunning").addValueEventListener(new ValueEventListener() {
             @Override
@@ -141,9 +140,13 @@ public class MainController extends Thread {
             }
         });
 
-        while (otherPlayerGameRunning) {
+        while (gameStop) {
             try {
                 this.universe.stop();
+
+                if (this.universe.getGravity().getY() == 0) {
+                    gameStop = false;
+                }
                 Thread.sleep(1000/fps);
             } catch (InterruptedException e) {
                 e.printStackTrace(); // TODO: Could add graceful shutdown from PCDP midterm
@@ -172,8 +175,6 @@ public class MainController extends Thread {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 PlayerStats.otherElapsedTime = snapshot.getValue(Long.class);
                 Log.i(TAG, "Got other player's elapsed time");
-                currentThread().interrupt();
-
             }
 
             @Override
@@ -183,7 +184,7 @@ public class MainController extends Thread {
         });
 
         Log.i(TAG, "Is it raising the flag?");
-
+        Firebase.getDatabase().getReference(PlayerStats.playerID).child("gameRunning").setValue(false);
         PlayerStats.gameEnded = true;
 
     }

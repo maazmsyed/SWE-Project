@@ -51,8 +51,8 @@ public class Universe {
     // Other Player's Position
     private Position otherPlayerPos;
     private String otherPlayerID;
-    private float otherPlayerScreenHeight; ////
-    private float otherPlayerScreenWidth; ////
+    private final float otherPlayerScreenHeight; ////
+    private final float otherPlayerScreenWidth; ////
     DatabaseReference refOtherPlayerPos;
 
 
@@ -64,8 +64,8 @@ public class Universe {
     public Universe (Motion g, Character pl) {
 
 //        comingToStop = false;
-        otherPlayerScreenHeight = constants.SCREEN_HEIGHT;
-        otherPlayerScreenWidth = constants.SCREEN_WIDTH;
+        otherPlayerScreenHeight = PlayerStats.otherPlayerScreenHeight;
+        otherPlayerScreenWidth = PlayerStats.otherPlayerScreenWidth;
 
         refPlayerPos = Firebase.getDatabase().getReference(PlayerStats.playerID).child("Pos");
         // Setting up other player's position

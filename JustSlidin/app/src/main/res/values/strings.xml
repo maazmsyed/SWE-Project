@@ -11,4 +11,5 @@
     <string name="playerOneWon">Player 1 Won!</string>
     <string name="playerTwoWon">Player 2 Won!</string>
     <string name="tie">Both are tied!</string>
+    <string name="main_menu">Main Menu</string>
 </resources>
