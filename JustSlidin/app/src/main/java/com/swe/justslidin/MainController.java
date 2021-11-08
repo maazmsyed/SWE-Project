@@ -1,12 +1,19 @@
 package com.swe.justslidin;
 
-import android.app.Application;
-import android.content.Context;
+import static androidx.core.content.ContextCompat.startActivity;
+
+import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
-import android.media.MediaPlayer;
+import android.util.Log;
 import android.view.SurfaceView;
 
+import androidx.annotation.NonNull;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.swe.justslidin.constants.Constants;
 import com.swe.justslidin.io.AddAction;
 import com.swe.justslidin.io.InputHandler;
@@ -16,8 +23,9 @@ import com.swe.justslidin.models.Motion;
 import com.swe.justslidin.io.MoveAction;
 import com.swe.justslidin.models.Position;
 import com.swe.justslidin.models.Universe;
+import com.swe.justslidin.network.Firebase;
+import com.swe.justslidin.network.PlayerStats;
 import com.swe.justslidin.view.GraphicsRenderer;
-import com.swe.justslidin.view.SoundPlayer;
 
 import java.util.Random;
 
@@ -29,26 +37,25 @@ public class MainController extends Thread {
     private final long fps = 50;
     private int counter;
     private Random generator;
-    private Boolean running;
-    private SoundPlayer sound;
-    private final Constants constants = new Constants();
+    private static final Constants constants = new Constants();
+    public Boolean globalGameRunning;
+    public Boolean otherPlayerGameRunning;
+    private static final String TAG = "MainController";
 
 
-
-    public MainController(SurfaceView sv, Resources context, Context applicationContext) {
+    public MainController(SurfaceView sv, Resources context) {
+        this.otherPlayerGameRunning = true;
+        this.globalGameRunning = false;
         this.sv = sv;
         this.universe = new Universe();
-        this.running = true;
         this.counter = 0;
         this.generator = new Random(100); // TODO: Input seed here
 
         this.graphicsRenderer = new GraphicsRenderer(this.universe, context);
-        this.sound = new SoundPlayer(applicationContext);
         this.universe.setCallBack(this.graphicsRenderer);
         this.sv.setWillNotDraw(false);
         this.sv.getHolder().addCallback(this.graphicsRenderer); //triggers graphics renderer BAD DESIGN TODO: MC TRIGGERED BY RENDERER & THEN TRIGGERS ITSELF
-//        MediaPlayer mp = MediaPlayer.create(context, R.raw.coin);
-//        mp.start();
+
         InputListener inputListener = new InputListener();
         this.sv.setOnTouchListener(inputListener);
 
@@ -62,16 +69,11 @@ public class MainController extends Thread {
 
     @Override
     public void run() {
+        long startTime = System.currentTimeMillis();
+
         while (this.universe.isGameRunning()) {
+
             try {
-                if (this.universe.getPlayer().isHitCoinSound()){
-                    sound.PlayCoinSound();
-                    this.universe.getPlayer().setHitCoinSound(false);
-                    //this.universe.getPlayer().setHitCoin(false);
-                } else if (this.universe.getPlayer().isHitBarrierSound()){
-                    sound.PlayBarrierSound();
-                    this.universe.getPlayer().setHitBarrierSound(false);
-                }
                 this.universe.checkPlayerCollision();
                 this.universe.removeExtraElements();
                 this.universe.step();
@@ -84,7 +86,6 @@ public class MainController extends Thread {
                                         (constants.SCREEN_WIDTH - (constants.COIN_RADIUS * 4)),
                                         constants.SCREEN_HEIGHT + (constants.COIN_RADIUS * 2)),
                                 constants.COIN_RADIUS);
-                        // this.universe.addCoin(new Position(100 + (new Random().nextFloat())*700, 1000), Constants.COIN_RADIUS);
                     }
                     if (this.counter % 127 == 0) {
                         this.universe.addBarrier(new Position(constants.BARRIER_LONG_SIZE
@@ -92,7 +93,6 @@ public class MainController extends Thread {
                                         (constants.SCREEN_WIDTH - (constants.BARRIER_LONG_SIZE * 2)),
                                         constants.SCREEN_HEIGHT + constants.BARRIER_HEIGHT),
                                 constants.BARRIER_HEIGHT);
-                        // this.universe.addBarrier(new Position(350 + (new Random().nextFloat())*400, 2000), Constants.BARRIER_HEIGHT);
                     }
                 }
                 Thread.sleep(1000/fps);
@@ -100,10 +100,34 @@ public class MainController extends Thread {
                 e.printStackTrace();
             }
         }
-        while (!this.universe.isGameRunning()) {
+
+        long endTime = System.currentTimeMillis();
+        PlayerStats.elapsedTime = endTime - startTime;
+        PlayerStats.coinCounter = this.universe.getPlayer().getCoinCount();
+
+        Firebase.getDatabase().getReference(PlayerStats.playerID)
+                .child("CoinCount").setValue(PlayerStats.coinCounter);
+        Firebase.getDatabase().getReference(PlayerStats.playerID)
+                .child("ElapsedTime").setValue(PlayerStats.elapsedTime);
+
+        Firebase.getDatabase().getReference(PlayerStats.playerID).child("gameRunning").setValue(false);
+
+        Firebase.getDatabase().getReference(PlayerStats.otherPlayerID)
+                .child("gameRunning").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                otherPlayerGameRunning = snapshot.getValue(Boolean.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.i(TAG, "Couldn't get other player's game running state");
+            }
+        });
+
+        while (otherPlayerGameRunning) {
             try {
                 this.universe.stop();
-                // this.universe.waitingForOthers();
                 Thread.sleep(1000/fps);
             } catch (InterruptedException e) {
                 e.printStackTrace(); // TODO: Could add graceful shutdown from PCDP midterm
@@ -111,6 +135,40 @@ public class MainController extends Thread {
 
         }
 
+        Firebase.getDatabase().getReference(PlayerStats.otherPlayerID)
+                .child("CoinCount").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                PlayerStats.otherCoinCounter = snapshot.getValue(Integer.class);
+                Log.i(TAG, "Got other player's coin counter");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.i(TAG, "Did not get other player's coin counter");
+
+            }
+        });
+
+        Firebase.getDatabase().getReference(PlayerStats.otherPlayerID)
+                .child("ElapsedTime").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                PlayerStats.otherElapsedTime = snapshot.getValue(Long.class);
+                Log.i(TAG, "Got other player's elapsed time");
+                currentThread().interrupt();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.i(TAG, "Did not get other player's elapsed time");
+            }
+        });
+
+        Log.i(TAG, "Is it raising the flag?");
+
+        PlayerStats.gameEnded = true;
 
     }
 }
