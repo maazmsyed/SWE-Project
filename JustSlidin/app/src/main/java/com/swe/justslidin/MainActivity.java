@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.SurfaceView;
+import android.media.AudioManager;
+import android.media.SoundPool;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         final String TAG = "MainActivity";
         setContentView(R.layout.activity_main);
         SurfaceView sv = findViewById(R.id.surfaceView);
-        MainController mc = new MainController(sv, getResources());
+        MainController mc = new MainController(sv, getResources(), getApplicationContext());
         DatabaseReference dataBase = Firebase.getDatabase().getReference();
         final Boolean[] playerOneRunning = {true};
         final Boolean[] playerTwoRunning = {true};

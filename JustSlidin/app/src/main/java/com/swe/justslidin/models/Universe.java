@@ -12,6 +12,8 @@ import com.swe.justslidin.constants.Constants;
 import com.swe.justslidin.network.Firebase;
 import com.swe.justslidin.network.PlayerStats;
 import com.swe.justslidin.view.GraphicsRenderer;
+import com.swe.justslidin.view.SoundPlayer;
+import android.media.SoundPool;
 import android.util.Log;
 
 
@@ -38,6 +40,7 @@ public class Universe {
 
     private float additionalMotionY;
     private int speedUpCounter;
+    private SoundPlayer sound;
 
     private int speedDownCounter;
     FinishingLine finishingLine = new FinishingLine((constants.SCREEN_WIDTH / 2),
@@ -319,6 +322,7 @@ public class Universe {
                 if (this.player.getHitBox().collide(hb)) {
                     this.player.updateCoinCount();
                     this.player.setHitCoin(true);
+                    this.player.setHitCoinSound(true);
                     tempVec.add(elem);
                 }
             } else if (elem instanceof Barrier) {
@@ -327,6 +331,7 @@ public class Universe {
                 if (this.player.getHitBox().collide(hb)) {
                     this.player.decrementCoinCount();
                     this.player.setHitBarrier(true);
+                    this.player.setHitBarrierSound(true);
                     tempVec.add(elem);
                     this.speedUpCounter = 0;
                     this.additionalMotionY = constants.PLAYER_GRAVITY -

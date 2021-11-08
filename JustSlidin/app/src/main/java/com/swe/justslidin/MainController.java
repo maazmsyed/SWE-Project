@@ -8,6 +8,9 @@ import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.SurfaceView;
+import android.app.Application;
+import android.content.Context;
+import com.swe.justslidin.view.SoundPlayer;
 
 import androidx.annotation.NonNull;
 
@@ -37,19 +40,21 @@ public class MainController extends Thread {
     private final long fps = 50;
     private int counter;
     private Random generator;
+    private SoundPlayer sound;
     private static final Constants constants = new Constants();
     public Boolean globalGameRunning;
     public Boolean otherPlayerGameRunning;
     private static final String TAG = "MainController";
 
 
-    public MainController(SurfaceView sv, Resources context) {
+    public MainController(SurfaceView sv, Resources context, Context applicationContext) {
         this.otherPlayerGameRunning = true;
         this.globalGameRunning = false;
         this.sv = sv;
         this.universe = new Universe();
         this.counter = 0;
         this.generator = new Random(100); // TODO: Input seed here
+        this.sound = new SoundPlayer(applicationContext);
 
         this.graphicsRenderer = new GraphicsRenderer(this.universe, context);
         this.universe.setCallBack(this.graphicsRenderer);
@@ -74,6 +79,17 @@ public class MainController extends Thread {
         while (this.universe.isGameRunning()) {
 
             try {
+                if (this.universe.getPlayer().isHitCoinSound()){
+
+                    sound.PlayCoinSound();
+                    this.universe.getPlayer().setHitCoin(false);
+
+                } else if (this.universe.getPlayer().isHitBarrierSound()) {
+                    sound.PlayBarrierSound();
+                    this.universe.getPlayer().setHitBarrierSound(false);
+                }
+
+
                 this.universe.checkPlayerCollision();
                 this.universe.removeExtraElements();
                 this.universe.step();
