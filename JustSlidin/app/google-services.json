@@ -1,34 +1,33 @@
 {
   "project_info": {
-    "project_number": "250814093443",
-    "firebase_url": "https://softwareeng-cee86-default-rtdb.asia-southeast1.firebasedatabase.app",
-    "project_id": "softwareeng-cee86",
-    "storage_bucket": "softwareeng-cee86.appspot.com"
+    "project_number": "290228381834",
+    "project_id": "just-slidin",
+    "storage_bucket": "just-slidin.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:250814093443:android:74d89b2d4f8497657323b6",
+        "mobilesdk_app_id": "1:290228381834:android:ae86dd7679a6e92a962573",
         "android_client_info": {
           "package_name": "com.swe.justslidin"
         }
       },
       "oauth_client": [
         {
-          "client_id": "250814093443-bvmjm9qrmh3hsvfup1jvhe4u6e1ivr8h.apps.googleusercontent.com",
+          "client_id": "290228381834-nfvm3vqt67asgdlmaj55m68g6fdtfedh.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDgNM1REHGM3ujg63Mbc4jFhiS7uHmJSeU"
+          "current_key": "AIzaSyA-6wOFTIfqftJwBjXBOlHxiVksyu2LMS8"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "250814093443-bvmjm9qrmh3hsvfup1jvhe4u6e1ivr8h.apps.googleusercontent.com",
+              "client_id": "290228381834-nfvm3vqt67asgdlmaj55m68g6fdtfedh.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
