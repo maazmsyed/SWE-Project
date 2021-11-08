@@ -14,10 +14,10 @@ import com.swe.justslidin.constants.Constants;
  */
 public class Background {
 
+    private static final Constants constants = new Constants();
     private int cut = 0;
     private Bitmap backgroundBitmap;
     private int height = 0;
-    private static final Constants constants = new Constants();
     private static final String TAG = "Background";
 
     public Background() { }
