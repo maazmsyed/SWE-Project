@@ -3,7 +3,6 @@
     package="com.swe.justslidin">
 
     <application
-        android:name="com.swe.justslidin.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -11,13 +10,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.JustSlidin">
         <activity
+            android:name=".EndScreen"
+            android:exported="true" />
+        <activity
             android:name=".MainActivity"
             android:exported="true" />
         <activity
-            android:name=".MainActivity3"
+            android:name=".MainMenu"
             android:exported="true" />
         <activity
-            android:name=".MainActivity2"
+            android:name=".StartScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
