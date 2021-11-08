@@ -83,6 +83,15 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
 //    private Background background;
 
 
+    /**
+     * This is the constructor for the graphic renderer. This is where we create all of the bitmaps
+     * that we plan to render in the future.
+     * @param u
+     * This is just universe of the player.
+     * @param context
+     * This is the resources that we got from the AppCompactActivity class.
+     *
+     */
     public GraphicsRenderer(Universe u, Resources context) {
         Log.i(TAG, "Is it entering GraphicsRenderer or not");
         this.universe = u;
@@ -215,6 +224,9 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
     }
 
 
+    /**
+     * This method draws the surface view (canvas).
+     */
     public void drawSurfaceView () {
         if (universe != null && holder != null) {
             Canvas canvas = holder.lockCanvas();
@@ -224,6 +236,13 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
     }
 
 
+    /**
+     * This method draws all the game objects on the canvas depending on the state of the game.
+     * We have also added the animations in this method. The method also draws the opponent's
+     * bitmap depending on the opponent's position.
+     * @param canvas
+     * The canvas on which to draw on.
+     */
     private void draw(Canvas canvas) {
         if (canvas != null) { // TODO: Double check this (needed or not?)
             Log.i(TAG, "Is it going to draw?");
