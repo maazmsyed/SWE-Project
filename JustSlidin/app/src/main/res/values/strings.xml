@@ -1,6 +1,14 @@
 <resources>
-    <string name="app_name">Just Slidin\'</string>
-    <string name="hint_name">Enter Name Here</string>
-    <string name="log_in_button">LOG IN</string>
-    <string name="create_room_button">CREATE ROOM</string>
+    <string name="app_name">Just Slidin</string>
+    <string name="playerTwoButton">Player Two</string>
+    <string name="playerOneButton">Player One</string>
+    <string name="playerOneButtonAlreadySelected">Unavailable!</string>
+    <string name="playerButtonSelected">Selected!</string>
+    <string name="playerTwoButtonAlreadySelected">Unavailable!</string>
+    <string name="playGame">Play!</string>
+    <string name="startScreenButton">Let\'s Slide!</string>
+    <string name="result_text"></string>
+    <string name="playerOneWon">Player 1 Won!</string>
+    <string name="playerTwoWon">Player 2 Won!</string>
+    <string name="tie">Both are tied!</string>
 </resources>
