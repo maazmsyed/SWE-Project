@@ -169,7 +169,6 @@ public class MainMenu extends AppCompatActivity {
                 gameState = snapshot.getValue(Boolean.class);
                 // Log.i(TAG, gameState != null ? gameState.toString() : null);
                 if (gameState) {
-                    // Thread.sleep(100);
                     database.getReference(PlayerStats.playerID).child("gameRunning").setValue(true);
 
                     // Recently added.
@@ -200,11 +199,6 @@ public class MainMenu extends AppCompatActivity {
 //                            Log.i(TAG, "Did not get other player's Screen Width");
 //                        }
 //                    });
-
-
-
-
-
 
                     startActivity(new Intent(MainMenu.this, MainActivity.class));
                 }

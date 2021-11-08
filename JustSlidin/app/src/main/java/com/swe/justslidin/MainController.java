@@ -102,6 +102,7 @@ public class MainController extends Thread {
         }
 
         long endTime = System.currentTimeMillis();
+
         PlayerStats.elapsedTime = endTime - startTime;
         PlayerStats.coinCounter = this.universe.getPlayer().getCoinCount();
 
@@ -125,15 +126,9 @@ public class MainController extends Thread {
             }
         });
 
-        while (otherPlayerGameRunning) {
-            try {
-                this.universe.stop();
-                Thread.sleep(1000/fps);
-            } catch (InterruptedException e) {
-                e.printStackTrace(); // TODO: Could add graceful shutdown from PCDP midterm
-            }
 
-        }
+        Log.i(TAG, "Did it add other play coin counter? " + PlayerStats.otherCoinCounter);
+        Log.i(TAG, "Did it add other elapsed time? " + PlayerStats.otherCoinCounter);
 
         Firebase.getDatabase().getReference(PlayerStats.otherPlayerID)
                 .child("CoinCount").addValueEventListener(new ValueEventListener() {
@@ -167,8 +162,17 @@ public class MainController extends Thread {
         });
 
         Log.i(TAG, "Is it raising the flag?");
-
         PlayerStats.gameEnded = true;
+
+        while (otherPlayerGameRunning) {
+            try {
+                this.universe.stop();
+                Thread.sleep(1000/fps);
+            } catch (InterruptedException e) {
+                e.printStackTrace(); // TODO: Could add graceful shutdown from PCDP midterm
+            }
+
+        }
 
     }
 }

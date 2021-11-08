@@ -26,26 +26,20 @@ public class EndScreen extends AppCompatActivity {
         database.child(PlayerStats.playerID).child("Already").setValue(false);
         database.child(PlayerStats.playerID).child("gameRunning").setValue(false);
 
-        //        database.child("playerOne").child("Already").setValue(false);
-        //        database.child("playerOne").child("gameRunning").setValue(false);
-        //
-        //        database.child("playerTwo").child("Already").setValue(false);
-        //        database.child("playerTwo").child("gameRunning").setValue(false);
-
         database.child("gameState").setValue(false);
 
         int resPlayer = PlayerStats.coinCounter + ((int) (5000000 / PlayerStats.elapsedTime));
         int resOtherPlayer = PlayerStats.otherCoinCounter + ((int) (5000000 / PlayerStats.otherElapsedTime));
 
         if (resPlayer > resOtherPlayer) {
-            Log.i(TAG, "is res player > other player?");
+            Log.i(TAG, "res player > other player");
             if (PlayerStats.playerID.equals("playerOne")) {
                 resultBox.setText(R.string.playerOneWon);
             } else if (PlayerStats.otherPlayerID.equals("playerTwo")) {
                 resultBox.setText(R.string.playerTwoWon);
             }
         } else if (resPlayer < resOtherPlayer) {
-            Log.i(TAG, "is res player < other player?");
+            Log.i(TAG, "res player < other player");
             if (PlayerStats.playerID.equals("playerOne")) {
                 resultBox.setText(R.string.playerTwoWon);
             } else if (PlayerStats.otherPlayerID.equals("playerTwo")) {

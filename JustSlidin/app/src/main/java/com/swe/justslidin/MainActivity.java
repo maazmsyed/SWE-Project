@@ -29,30 +29,14 @@ public class MainActivity extends AppCompatActivity {
         DatabaseReference dataBase = Firebase.getDatabase().getReference();
         final Boolean[] playerOneRunning = {true};
         final Boolean[] playerTwoRunning = {true};
-//        FirebaseDatabase database = Firebase.getDatabase();
-//        Boolean playerGameRunning;
-//        Boolean otherPlayerGameRunning;
-
-
 
         mc.start();
-//        try {
-//            mc.join(3000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-
 
         dataBase.child("playerOne").child("gameRunning").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 playerOneRunning[0] = snapshot.getValue(Boolean.class);
                 if (!playerOneRunning[0] && !playerTwoRunning[0]) {
-//                    try {
-//                        mc.join();
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
                     startActivity(new Intent(MainActivity.this, EndScreen.class));
                 }
             }
@@ -68,11 +52,6 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 playerTwoRunning[0] = snapshot.getValue(Boolean.class);
                 if (!playerOneRunning[0] && !playerTwoRunning[0]) {
-//                    try {
-//                        mc.join();
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
                     startActivity(new Intent(MainActivity.this, EndScreen.class));
                 }
                 Log.i(TAG, "Fetched player one game running value");
@@ -84,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
 //        if (  !(playerOneRunning[0] && playerTwoRunning[0])  ) {
 //            try {
 //                mc.join();
@@ -93,15 +71,15 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        }
 
-        if (PlayerStats.gameEnded){
-            try {
-                Log.i(TAG, "Is it joining?");
-                mc.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            startActivity(new Intent(MainActivity.this, EndScreen.class));
-        }
+//        if (PlayerStats.gameEnded){
+//            try {
+//                Log.i(TAG, "Is it joining?");
+//                mc.join();
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            startActivity(new Intent(MainActivity.this, EndScreen.class));
+//        }
 
 
 
