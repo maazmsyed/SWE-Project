@@ -130,7 +130,7 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
         this.coinBitmapCount = 0;
         this.playerWalkingCount = 0;
         this.playerWinningCount = 0;
-        this.otherPlayerWalkingCount = 0;
+        this.otherPlayerWalkingCount = 5;
 
         // Player Walking Bitmaps
         this.playerWalkingTwo = BitmapFactory.decodeResource(context,R.mipmap.player_walking_2);
@@ -321,7 +321,7 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
             if (this.universe.getOtherPlayerPos() != null) {
                 Log.i(TAG, "Is it getting the other player's position?");
 
-                float otherPlayerPosY = (PlayerStats.otherPlayerScreenHeight / 4) + (
+                float otherPlayerPosY = (constants.SCREEN_HEIGHT / 4) + (
                         ((((float) screenHeight) / PlayerStats.otherPlayerScreenHeight) *
                                 this.universe.getOtherPlayerPos().getY()) - player.getAbsolutePos().getY());
                 Log.i(TAG, "The other player's screen height is " + PlayerStats.otherPlayerScreenHeight);
@@ -336,11 +336,11 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
                 float hbOtherPlayerTop = otherPlayerPosY - constants.PLAYER_RADIUS;
                 float hbOtherPlayerLeft = otherPlayerPosX - constants.PLAYER_RADIUS;
 
-                canvas.drawBitmap(this.playerWalking.get(this.playerWalkingCount),
+                canvas.drawBitmap(this.otherPlayerWalking.get(this.otherPlayerWalkingCount),
                         (int) hbOtherPlayerLeft, hbOtherPlayerTop, paint);
                 this.otherPlayerWalkingCount += 1;
-                if (this.playerWalkingCount >= 20) {
-                    this.playerWalkingCount = 0;
+                if (this.otherPlayerWalkingCount >= 20) {
+                    this.otherPlayerWalkingCount = 0;
                 }
             }
 
@@ -363,9 +363,8 @@ public class GraphicsRenderer implements SurfaceHolder.Callback, Universe.Callba
             canvas.drawBitmap(this.coinIconBitmap, constants.COIN_RADIUS,
                     constants.COIN_RADIUS / 2, paint);
             canvas.drawText("" + this.universe.getPlayer().getCoinCount(),
-                    constants.COIN_RADIUS * 3.5f, constants.COIN_RADIUS * 2f, paint);
+                    constants.COIN_RADIUS * 3f, constants.COIN_RADIUS * 1.5f, paint);
 
-//         TODO: Implement for the other player(s)
 //         canvas.drawBitmap(this.coinIconBitmap, 50f, 100f, null);
 //         canvas.drawText(": " + this.universe.getPlayer().getCoinCount(), 150f, 165f, ballPaint);
 

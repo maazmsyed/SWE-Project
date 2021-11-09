@@ -21,8 +21,8 @@ public class EndScreen extends AppCompatActivity {
         setContentView(R.layout.activity_end_screen);
 
         final String TAG = "Universe";
-        Button mainMenu = findViewById(R.id.main_menu_end_screen);
-        mainMenu.setText(R.string.main_menu);
+//        Button mainMenu = findViewById(R.id.main_menu_end_screen);
+//        mainMenu.setText(R.string.main_menu);
 
         TextView resultBox = findViewById(R.id.result_text);
 
@@ -64,12 +64,12 @@ public class EndScreen extends AppCompatActivity {
             resultBox.setText(R.string.tie);
         }
 
-        mainMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(EndScreen.this, MainMenu.class));
-            }
-        });
+//        mainMenu.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                startActivity(new Intent(EndScreen.this, MainMenu.class));
+//            }
+//        });
 
     }
 

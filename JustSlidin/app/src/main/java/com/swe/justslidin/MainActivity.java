@@ -21,6 +21,8 @@ import com.swe.justslidin.network.PlayerStats;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static Boolean endGameRunning = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +57,12 @@ public class MainActivity extends AppCompatActivity {
 //                    } catch (InterruptedException e) {
 //                        e.printStackTrace();
 //                    }
+                    endGameRunning = false;
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     startActivity(new Intent(MainActivity.this, EndScreen.class));
                 }
             }
@@ -75,6 +83,12 @@ public class MainActivity extends AppCompatActivity {
 //                    } catch (InterruptedException e) {
 //                        e.printStackTrace();
 //                    }
+                    endGameRunning = false;
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     startActivity(new Intent(MainActivity.this, EndScreen.class));
                 }
                 Log.i(TAG, "Fetched player one game running value");
@@ -95,15 +109,16 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        }
 
-        if (PlayerStats.gameEnded){
-            try {
-                Log.i(TAG, "Is it joining?");
-                mc.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            startActivity(new Intent(MainActivity.this, EndScreen.class));
-        }
+//        if (PlayerStats.gameEnded){
+//            endGameRunning = false;
+//            try {
+//                Log.i(TAG, "Is it joining?");
+//                mc.join();
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            startActivity(new Intent(MainActivity.this, EndScreen.class));
+//        }
 
 
 

@@ -8,7 +8,7 @@ public class PlayerStats {
     public static int coinCounter;
     public static int otherCoinCounter;
     public static long otherElapsedTime;
-    public static float otherPlayerScreenHeight = 1794f;
+    public static float otherPlayerScreenHeight = 1980f;
 
     public static float otherPlayerScreenWidth = 1080f;
     public static Boolean gameEnded = false;
