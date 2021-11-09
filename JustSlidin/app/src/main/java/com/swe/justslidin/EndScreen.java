@@ -39,8 +39,8 @@ public class EndScreen extends AppCompatActivity {
 
         database.child("gameState").setValue(false);
 
-        int resPlayer = PlayerStats.coinCounter + ((int) (5000000 / PlayerStats.elapsedTime));
-        int resOtherPlayer = PlayerStats.otherCoinCounter + ((int) (5000000 / PlayerStats.otherElapsedTime));
+        int resPlayer = (PlayerStats.coinCounter * 10) + ((int) (50000000 / PlayerStats.elapsedTime));
+        int resOtherPlayer = (PlayerStats.otherCoinCounter * 10) + ((int) (50000000 / PlayerStats.otherElapsedTime));
 
         if (resPlayer > resOtherPlayer) {
             Log.i(TAG, "is res player > other player?");

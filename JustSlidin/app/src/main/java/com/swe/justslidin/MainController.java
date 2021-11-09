@@ -114,7 +114,7 @@ public class MainController extends Thread {
                     curTime = System.currentTimeMillis();
                     fps = curTime - prevTime;
                     System.out.println(PlayerStats.playerID + fps);
-                    Thread.sleep(1000 / (fps * 2));
+                    Thread.sleep(1000 / fps);
                     // Thread.sleep(1000 / fps);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
