@@ -1,10 +1,10 @@
 # Just Slidin'
 
-This android application is a game built for YSC3232: Software Engineering by a group of 5 undergraduate Yale-NUS Students.  
+This Android application is a game built for YSC3232: Software Engineering by a group of 5 undergraduate Yale-NUS Students.  
 
 ## Instructions
 
-This repository is a fully packaged android application that can be run on an Android device or an emulator. The programming was done in mind keeping a Pixel 2 in mind, so some issues are expected with usage in other devices.
+This repository is a fully packaged Android application that can be run on an Android device or an emulator. The program was designed for a Pixel 2, so some issues are expected with usage in other devices.
 
 ## Original Timeline
 
