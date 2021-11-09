@@ -10,8 +10,8 @@
 
     <ImageView
         android:id="@+id/mainMenuBackground"
-        android:layout_width="484dp"
-        android:layout_height="813dp"
+        android:layout_width="439dp"
+        android:layout_height="747dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

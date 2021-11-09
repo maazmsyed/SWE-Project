@@ -1,11 +1,6 @@
 package com.swe.justslidin.models;
 
 import android.content.res.Resources;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-
-import com.swe.justslidin.R;
 import com.swe.justslidin.constants.Constants;
 
 /**
@@ -62,13 +57,33 @@ public class Character extends Elements {
     public boolean ifHitCoin() {
         return this.hitCoin;
     }
-  
+
+    /**
+     * Enables sound for the player for hitting a coin.
+     * @param hitCoinSound
+     * Boolean value to determine whether sound should be activated or not upon hitting a coin.
+     */
     public void setHitCoinSound(boolean hitCoinSound) { this.hitCoinSound = hitCoinSound; }
 
+    /**
+     * Enables sound for the player for hitting a coin.
+     * @param hitBarrierSound
+     * Boolean value to determine whether sound should be activated or not upon hitting a barrier.
+     */
     public void setHitBarrierSound(boolean hitBarrierSound) { this.hitBarrierSound = hitBarrierSound; }
 
+    /**
+     * Checks whether the coin sound is currently enabled or not for the player.
+     * @return
+     * Returns the boolean value for whether coin is hit or not.
+     */
     public boolean isHitCoinSound() {  return hitCoinSound; }
 
+    /**
+     * Checks whether the barrier sound is currently enabled or not for the player.
+     * @return
+     * Returns the boolean value for whether barrier is hit or not.
+     */
     public boolean isHitBarrierSound() { return hitBarrierSound;}
 
     /**
@@ -141,6 +156,11 @@ public class Character extends Elements {
         }
     }
 
+    /**
+     * Gets the absolute position of the current player.
+     * @return
+     * Returns the position object for the absolute position.
+     */
     public Position getAbsolutePos() {return this.absolutePos;}
 
     /**

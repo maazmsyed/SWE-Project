@@ -44,7 +44,7 @@ public class Constants {
         PLAYER_RADIUS = SCREEN_WIDTH / 20f;
         PLAYER_MOVE_LEFT = SCREEN_WIDTH / 25f;
         PLAYER_MOVE_RIGHT = SCREEN_WIDTH / 25f;
-        PLAYER_GRAVITY = 10f;
+        PLAYER_GRAVITY = SCREEN_HEIGHT / 180f;
 
     }
 

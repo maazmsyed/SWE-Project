@@ -44,7 +44,7 @@ public class Universe {
 
     private int speedDownCounter;
     FinishingLine finishingLine = new FinishingLine((constants.SCREEN_WIDTH / 2),
-            constants.SCREEN_HEIGHT * 5); // TODO: When to end game?
+            constants.SCREEN_HEIGHT * 20);
     private volatile Boolean gameRunning;
     DatabaseReference refPlayerPos;
 
@@ -184,7 +184,7 @@ public class Universe {
     public void step() {
         this.updateOtherPlayerPos();
         this.setFirebasePlayerPos();
-
+        this.getOtherPlayerScreenDim();
         this.speedUpCounter += 1;
         if (this.additionalMotionY <= (constants.PLAYER_GRAVITY * 2)
                 && this.speedUpCounter % 20 == 0) {
@@ -208,6 +208,9 @@ public class Universe {
         castChanges();
     }
 
+    /**
+     * Sets the position of the current player to the Firebase database.
+     */
     public void setFirebasePlayerPos() {
         refPlayerPos.child("X").setValue(player.getAbsolutePos().getX());
 //        Log.i(TAG, "Set main player's X position");
@@ -216,45 +219,45 @@ public class Universe {
 
     }
 
-//    public void setOtherPlayerScreenDim() {
-//
-//        Firebase.getDatabase().getReference(otherPlayerID)
-//                .child("Screen").child("Height").addValueEventListener(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                        otherPlayerScreenHeight = snapshot.getValue(Float.class);
-//                        Log.i(TAG, "Get other player's Screen Height");
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError error) {
-//                        Log.i(TAG, "Did not get other player's Screen Height");
-//                    }
-//                });
-//
-//        Firebase.getDatabase().getReference(otherPlayerID)
-//                .child("Screen").child("Width").addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                otherPlayerScreenWidth = snapshot.getValue(Float.class);
-//                Log.i(TAG, "Get other player's Screen Width");
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                Log.i(TAG, "Did not get other player's Screen Width");
-//            }
-//        });
-//    }
+    /**
+     * Gets the dimensions of the opposing player's screen.
+     */
+    public void getOtherPlayerScreenDim() {
 
-    public float getOtherPlayerScreenHeight() {
-        return this.otherPlayerScreenHeight;
+        Firebase.getDatabase().getReference(otherPlayerID)
+                .child("Screen").child("Height").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        PlayerStats.otherPlayerScreenHeight = snapshot.getValue(Float.class);
+                        Log.i(TAG, "Get other player's Screen Height " +
+                                snapshot.getValue(Float.class));
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.i(TAG, "Did not get other player's Screen Height");
+                    }
+                });
+
+        Firebase.getDatabase().getReference(otherPlayerID)
+                .child("Screen").child("Width").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        PlayerStats.otherPlayerScreenWidth = snapshot.getValue(Float.class);
+                        Log.i(TAG, "Get other player's Screen Width " +
+                                snapshot.getValue(Float.class));
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.i(TAG, "Did not get other player's Screen Width");
+                    }
+                });
     }
 
-    public float getOtherPlayerScreenWidth() {
-        return this.otherPlayerScreenWidth;
-    }
-
+    /**
+     * Updates locally the position of the opposing player.
+     */
     public void updateOtherPlayerPos() {
 
         refOtherPlayerPos.child("X").addValueEventListener(new ValueEventListener() {
@@ -313,6 +316,12 @@ public class Universe {
         this.addBarrier(pos.getX(), pos.getY(),h);
     }
 
+    /**
+     * Checks whether the player has collided with a barrier or a coin. If it has collided
+     * with a coin, the coin instance is removed and the counter is incremented. If the player
+     * has collided with a barrier, the barrier instance is removed, the counter decremented,
+     * and the speed of the player slowed down.
+     */
     public void checkPlayerCollision() {
         Vector<Elements> tempVec = new Vector<Elements>();
         for (Elements elem : this.elements) {
@@ -343,7 +352,10 @@ public class Universe {
         this.elements.removeAll(tempVec);
     }
 
-
+    /**
+     * A function to remove the extra elements (coins and barriers) that have gone
+     * above the player's display (not been collected).
+     */
     public void removeExtraElements() {
         Vector<Elements> tempVec = new Vector<Elements>();
         for (Elements elem : this.elements) {
@@ -369,7 +381,13 @@ public class Universe {
         this.elements.removeAll(tempVec);
     }
 
+    /**
+     * Activates the stopping motion of the player after the player has crossed the
+     * finishing line.
+     */
     public void stop() {
+        this.updateOtherPlayerPos();
+        this.setFirebasePlayerPos();
         this.speedDownCounter += 1;
         if (this.gravity.getY() > 0 && this.speedDownCounter % 5 == 0) {
             this.gravity.setY(this.gravity.getY() - (constants.PLAYER_GRAVITY / 4f));
@@ -382,9 +400,14 @@ public class Universe {
         for (Elements e : elements) {
             e.moveUp(this.gravity);
         }
+        this.player.updateAbsPosY(this.gravity);
         castChanges();
     }
 
+    /**
+     * Moves the
+     * @param f
+     */
     public void moveCharLeft(float f) {
         //Log.i(TAG,"CHAR HAS MOVED LEFT.");
         player.moveLeft(f);
@@ -416,7 +439,7 @@ public class Universe {
         this.callback = c;
     }
 
-    protected void castChanges() {
+    public void castChanges() {
         if (callback != null) {
             callback.universeChanged(this);
         }

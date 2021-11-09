@@ -21,8 +21,8 @@ public class EndScreen extends AppCompatActivity {
         setContentView(R.layout.activity_end_screen);
 
         final String TAG = "Universe";
-        Button mainMenu = findViewById(R.id.main_menu_end_screen);
-        mainMenu.setText(R.string.main_menu);
+//        Button mainMenu = findViewById(R.id.main_menu_end_screen);
+//        mainMenu.setText(R.string.main_menu);
 
         TextView resultBox = findViewById(R.id.result_text);
 
@@ -39,8 +39,8 @@ public class EndScreen extends AppCompatActivity {
 
         database.child("gameState").setValue(false);
 
-        int resPlayer = PlayerStats.coinCounter + ((int) (5000000 / PlayerStats.elapsedTime));
-        int resOtherPlayer = PlayerStats.otherCoinCounter + ((int) (5000000 / PlayerStats.otherElapsedTime));
+        int resPlayer = (PlayerStats.coinCounter * 10) + ((int) (50000000 / PlayerStats.elapsedTime));
+        int resOtherPlayer = (PlayerStats.otherCoinCounter * 10) + ((int) (50000000 / PlayerStats.otherElapsedTime));
 
         if (resPlayer > resOtherPlayer) {
             Log.i(TAG, "is res player > other player?");
@@ -64,12 +64,12 @@ public class EndScreen extends AppCompatActivity {
             resultBox.setText(R.string.tie);
         }
 
-        mainMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(EndScreen.this, MainMenu.class));
-            }
-        });
+//        mainMenu.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                startActivity(new Intent(EndScreen.this, MainMenu.class));
+//            }
+//        });
 
     }
 

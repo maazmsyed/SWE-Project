@@ -37,7 +37,7 @@ public class MainController extends Thread {
     private final SurfaceView sv;
     private final Universe universe;
     private final GraphicsRenderer graphicsRenderer;
-    private final long fps = 50;
+    private long fps = 50;
     private int counter;
     private Random generator;
     private SoundPlayer sound;
@@ -76,46 +76,49 @@ public class MainController extends Thread {
     @Override
     public void run() {
         long startTime = System.currentTimeMillis();
+        long prevTime = System.currentTimeMillis();
+        long curTime = System.currentTimeMillis();
 
         while (this.universe.isGameRunning()) {
-
-            try {
-                if (this.universe.getPlayer().isHitCoinSound()){
-
-                    sound.PlayCoinSound();
-                    this.universe.getPlayer().setHitCoinSound(false);
-
-                } else if (this.universe.getPlayer().isHitBarrierSound()) {
-                    sound.PlayBarrierSound();
-                    this.universe.getPlayer().setHitBarrierSound(false);
-                }
-
-
-                this.universe.checkPlayerCollision();
-                this.universe.removeExtraElements();
-                this.universe.step();
-                this.counter += 1;
-
-                if (this.universe.getFinishingLine().getHitBox().getTop() > constants.SCREEN_HEIGHT) {
-                    if (this.counter % 67 == 0) {
-                        this.universe.addCoin(new Position((constants.COIN_RADIUS * 2)
-                                        + generator.nextFloat() *
-                                        (constants.SCREEN_WIDTH - (constants.COIN_RADIUS * 4)),
-                                        constants.SCREEN_HEIGHT + (constants.COIN_RADIUS * 2)),
-                                constants.COIN_RADIUS);
+            prevTime = System.currentTimeMillis();
+                try {
+                    if (this.universe.getPlayer().isHitCoinSound()) {
+                        sound.PlayCoinSound();
+                        this.universe.getPlayer().setHitCoinSound(false);
+                    } else if (this.universe.getPlayer().isHitBarrierSound()) {
+                        sound.PlayBarrierSound();
+                        this.universe.getPlayer().setHitBarrierSound(false);
                     }
-                    if (this.counter % 127 == 0) {
-                        this.universe.addBarrier(new Position(constants.BARRIER_LONG_SIZE
-                                        + generator.nextFloat() *
-                                        (constants.SCREEN_WIDTH - (constants.BARRIER_LONG_SIZE * 2)),
-                                        constants.SCREEN_HEIGHT + constants.BARRIER_HEIGHT),
-                                constants.BARRIER_HEIGHT);
+
+                    this.universe.checkPlayerCollision();
+                    this.universe.removeExtraElements();
+                    this.universe.step();
+                    this.counter += 1;
+
+                    if (this.universe.getFinishingLine().getHitBox().getTop() > constants.SCREEN_HEIGHT) {
+                        if (this.counter % 67 == 0) {
+                            this.universe.addCoin(new Position((constants.COIN_RADIUS * 2)
+                                            + generator.nextFloat() *
+                                            (constants.SCREEN_WIDTH - (constants.COIN_RADIUS * 4)),
+                                            constants.SCREEN_HEIGHT + (constants.COIN_RADIUS * 2)),
+                                    constants.COIN_RADIUS);
+                        }
+                        if (this.counter % 127 == 0) {
+                            this.universe.addBarrier(new Position(constants.BARRIER_LONG_SIZE
+                                            + generator.nextFloat() *
+                                            (constants.SCREEN_WIDTH - (constants.BARRIER_LONG_SIZE * 2)),
+                                            constants.SCREEN_HEIGHT + constants.BARRIER_HEIGHT),
+                                    constants.BARRIER_HEIGHT);
+                        }
                     }
+                    curTime = System.currentTimeMillis();
+                    fps = curTime - prevTime;
+                    System.out.println(PlayerStats.playerID + fps);
+                    Thread.sleep(1000 / fps);
+                    // Thread.sleep(1000 / fps);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-                Thread.sleep(1000/fps);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
 
         long endTime = System.currentTimeMillis();
@@ -186,6 +189,15 @@ public class MainController extends Thread {
         Log.i(TAG, "Is it raising the flag?");
         Firebase.getDatabase().getReference(PlayerStats.playerID).child("gameRunning").setValue(false);
         PlayerStats.gameEnded = true;
+
+        while (MainActivity.endGameRunning) {
+            try {
+                this.universe.stop();
+                Thread.sleep(1000/fps);
+            } catch (InterruptedException e) {
+                e.printStackTrace(); // TODO: Could add graceful shutdown from PCDP midterm
+            }
+        }
 
     }
 }
